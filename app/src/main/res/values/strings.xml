@@ -4,5 +4,7 @@
     <string name="txt_titel">Titel</string>
     <string name="txt_desc">Beschreibung</string>
     <string name="txt_prio">Priorität</string>
+    <string name="btn_save">Speichern</string>
+    <string name="btn_cancel">Abbrechen</string>
 
 </resources>

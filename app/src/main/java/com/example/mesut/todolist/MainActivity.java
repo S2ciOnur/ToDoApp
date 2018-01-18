@@ -58,7 +58,7 @@ public class MainActivity extends AppCompatActivity {
                 startItemActivity();
                 break;
             default :
-                Toast.makeText(getApplicationContext(), "Error", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "ERROR", Toast.LENGTH_SHORT).show();
         }
     }
 

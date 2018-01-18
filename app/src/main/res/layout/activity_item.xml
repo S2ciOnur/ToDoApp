@@ -9,57 +9,74 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_weight="1"
         android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/titel_textView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/txt_titel"
+            android:textSize="@dimen/headline_textSize" />
+
+        <EditText
+            android:id="@+id/title_editText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:ems="10"
+            android:inputType="textPersonName" />
+
+        <TextView
+            android:id="@+id/desc_textView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/txt_desc"
+            android:textSize="@dimen/headline_textSize" />
+
+        <EditText
+            android:id="@+id/desc_editText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="3"
+            android:ems="10"
+            android:inputType="textMultiLine" />
+
+        <TextView
+            android:id="@+id/prio_textView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/txt_prio"
+            android:textSize="@dimen/headline_textSize" />
+
+        <Spinner
+            android:id="@+id/prio_spinner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1" />
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:orientation="vertical">
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
 
-            <TextView
-                android:id="@+id/titel_textView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/txt_titel"
-                android:textSize="@dimen/headline_textSize" />
-
-            <EditText
-                android:id="@+id/title_editText"
-                android:layout_width="match_parent"
+            <Button
+                android:id="@+id/cancel_button"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:ems="10"
-                android:inputType="textPersonName" />
+                android:background="@android:color/holo_red_light"
+                android:onClick="onClick"
+                android:text="@string/btn_cancel" />
 
-            <TextView
-                android:id="@+id/desc_textView"
-                android:layout_width="match_parent"
+            <Button
+                android:id="@+id/save_button"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/txt_desc"
-                android:textSize="@dimen/headline_textSize" />
-
-            <EditText
-                android:id="@+id/desc_editText"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="3"
-                android:ems="10"
-                android:inputType="textMultiLine" />
-
-            <TextView
-                android:id="@+id/prio_textView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/txt_prio"
-                android:textSize="@dimen/headline_textSize" />
-
-            <Spinner
-                android:id="@+id/prio_spinner"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1" />
-
+                android:layout_weight="1"
+                android:background="@android:color/holo_green_light"
+                android:onClick="onClick"
+                android:text="@string/btn_save" />
         </LinearLayout>
 
     </LinearLayout>
