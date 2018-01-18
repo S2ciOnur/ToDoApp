@@ -38,9 +38,9 @@
             android:id="@+id/desc_editText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="3"
+            android:layout_weight="1"
             android:ems="10"
-            android:inputType="textMultiLine" />
+            android:inputType="textPersonName" />
 
         <TextView
             android:id="@+id/prio_textView"

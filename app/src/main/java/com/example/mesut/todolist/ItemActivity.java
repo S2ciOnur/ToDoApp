@@ -31,16 +31,16 @@ public class ItemActivity extends AppCompatActivity {
         }
     }
 
+    private void saveItem(){
+        //Speichern...
+        startMainActivity();
+    }
+
     private void startMainActivity(){
         Toast.makeText(getApplicationContext(), "Settings geht klar", Toast.LENGTH_SHORT).show();
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
     }
 
-    private void saveItem(){
-        //Speichern...
-        Toast.makeText(getApplicationContext(), "ERROR", Toast.LENGTH_SHORT).show();
-        startMainActivity();
-    }
 
 }
