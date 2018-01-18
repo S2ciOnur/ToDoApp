@@ -39,6 +39,8 @@ public class ItemActivity extends AppCompatActivity {
 
     private void saveItem(){
         //Speichern...
+        Toast.makeText(getApplicationContext(), "ERROR", Toast.LENGTH_SHORT).show();
         startMainActivity();
     }
+
 }
