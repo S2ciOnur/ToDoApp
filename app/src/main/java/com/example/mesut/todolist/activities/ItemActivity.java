@@ -1,4 +1,4 @@
-package com.example.mesut.todolist;
+package com.example.mesut.todolist.activities;
 
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
@@ -9,10 +9,10 @@ import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-import java.util.ArrayList;
-import java.util.List;
+import com.example.mesut.todolist.R;
 
 public class ItemActivity extends AppCompatActivity {
+
     private static final String TAG = "ItemActivity";
 
     @Override

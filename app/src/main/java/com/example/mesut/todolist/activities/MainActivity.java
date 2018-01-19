@@ -1,4 +1,4 @@
-package com.example.mesut.todolist;
+package com.example.mesut.todolist.activities;
 
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
@@ -8,8 +8,9 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.Toast;
+
+import com.example.mesut.todolist.R;
 
 public class MainActivity extends AppCompatActivity {
 
