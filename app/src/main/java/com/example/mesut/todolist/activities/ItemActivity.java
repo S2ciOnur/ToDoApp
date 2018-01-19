@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -15,11 +16,16 @@ public class ItemActivity extends AppCompatActivity {
 
     private static final String TAG = "ItemActivity";
 
+    private EditText title;
+    private EditText desc;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_item);
         initPrioSpinner();
+        this.title = (EditText) findViewById(R.id.title_editText);
+        this.desc = (EditText) findViewById(R.id.desc_editText);
     }
 
     public void onClick(View v){
@@ -38,7 +44,6 @@ public class ItemActivity extends AppCompatActivity {
     }
 
     private void saveItem(){
-        //Speichern...
         startMainActivity();
     }
 
