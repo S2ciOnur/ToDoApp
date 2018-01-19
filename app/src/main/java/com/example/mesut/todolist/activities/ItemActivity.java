@@ -18,6 +18,7 @@ public class ItemActivity extends AppCompatActivity {
 
     private EditText title;
     private EditText desc;
+    private Spinner prio;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,6 +27,7 @@ public class ItemActivity extends AppCompatActivity {
         initPrioSpinner();
         this.title = (EditText) findViewById(R.id.title_editText);
         this.desc = (EditText) findViewById(R.id.desc_editText);
+        this.prio = (Spinner) findViewById(R.id.prio_spinner);
     }
 
     public void onClick(View v){
