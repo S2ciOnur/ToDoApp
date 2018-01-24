@@ -13,4 +13,13 @@
             <item>Priorität 3</item>
         </string-array>
 
+    <string-array name="string_size_Array">
+        <item>px</item>
+        <item>in</item>
+        <item>mm</item>
+        <item>pt</item>
+        <item>dp</item>
+        <item>sp</item>
+    </string-array>
+
 </resources>

@@ -23,11 +23,26 @@
                 android:layout_weight="1"
                 android:text="TextView" />
 
+            <EditText
+                android:id="@+id/fontsize_editText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:ems="10"
+                android:inputType="textPersonName|number" />
+
             <Button
                 android:id="@+id/fontSize_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1" />
+                android:layout_weight="1"
+                android:onClick="onClick" />
         </LinearLayout>
+
+        <Spinner
+            android:id="@+id/spinner_sizeUnit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
     </LinearLayout>
 </android.support.constraint.ConstraintLayout>
