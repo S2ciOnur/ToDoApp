@@ -15,8 +15,8 @@ import java.util.ArrayList;
 /**
  * Created by Janik on 19.01.2018.
  */
-public class TodoDatabaseHelper extends SQLiteOpenHelper {
-    private static final String TAG = "TodoDatabaseHelper";
+public class DatabaseHelper extends SQLiteOpenHelper {
+    private static final String TAG = "DatabaseHelper";
 
 
     //Name + Version
@@ -42,7 +42,7 @@ public class TodoDatabaseHelper extends SQLiteOpenHelper {
             PRIO_FIELD_NAME  + " " + PRIO_FIELD_TYPE  + ")";
 
     // Konstruktor
-    public TodoDatabaseHelper(Context context) {
+    public DatabaseHelper(Context context) {
         super(context, DATABASE_NAME,null , DATABASE_VERSION);
     }
 
@@ -96,18 +96,6 @@ public class TodoDatabaseHelper extends SQLiteOpenHelper {
                 new String[]{Integer.toString(id)});
     }
 
-    public void insertSomeCars() {
-
-        insertPlate("Fuck Bitches" , "very hard" , 10);
-        insertPlate("Dont take of your jacket" , "cause man's not hot" , 1);
-        insertPlate("2 + 2 = 4" , "- 1 = " , 3);
-        insertPlate("Do Quick Maths" , "" , 1);
-        insertPlate("" , "Quack Quack Quack" , 1);
-        insertPlate("Check tha statisteks" , "Man's never hot", 2);
-
-    }
-
-
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         // alte Tabellen auslesen und löschen, neue Tabellen anlegen
@@ -119,5 +107,16 @@ public class TodoDatabaseHelper extends SQLiteOpenHelper {
     public void onDowngrade(SQLiteDatabase db, int oldVer, int newVer) {
         // alte Tabellen auslesen und löschen, neue Tabellen anlegen
         // alten Inhalt in neue Tabellen einfügen
+    }
+
+    /**
+     * Debug
+     */
+    public void insertTestDataForDebug() {
+        insertPlate("Butter kaufen" , "" , 1);
+        insertPlate("Ölwechsel" , "bei ATU" , 1);
+        insertPlate("Uhr umstellen" , "1h vor" , 1);
+        insertPlate("MPT lernen" , "" , 1);
+        insertPlate("TODOListe programmieren" , "Quack Quack Quack" , 1);
     }
 }

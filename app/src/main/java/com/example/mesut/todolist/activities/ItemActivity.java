@@ -13,12 +13,12 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.example.mesut.todolist.R;
-import com.example.mesut.todolist.db.TodoDatabaseHelper;
+import com.example.mesut.todolist.db.DatabaseHelper;
 
 public class ItemActivity extends AppCompatActivity {
     private static final String TAG = "ItemActivity";
 
-    private TodoDatabaseHelper todoDbHelper;
+    private DatabaseHelper todoDbHelper;
     private EditText title;
     private EditText desc;
     private Spinner prio;
@@ -56,11 +56,11 @@ public class ItemActivity extends AppCompatActivity {
         SQLiteDatabase db = todoDbHelper.getWritableDatabase();
         // Datensatz erstellen
         ContentValues vals = new ContentValues();
-        vals.put(TodoDatabaseHelper.TITLE_FIELD_NAME, title.getText().toString());
-        vals.put(TodoDatabaseHelper.DESC_FIELD_NAME, desc.getText().toString());
+        vals.put(DatabaseHelper.TITLE_FIELD_NAME, title.getText().toString());
+        vals.put(DatabaseHelper.DESC_FIELD_NAME, desc.getText().toString());
 
         // Datensatz in die Datenbank einfügen
-        db.insert(TodoDatabaseHelper.TABLE_NAME,null, vals);
+        db.insert(DatabaseHelper.TABLE_NAME,null, vals);
 
         // Datenbank schließen
         db.close();
