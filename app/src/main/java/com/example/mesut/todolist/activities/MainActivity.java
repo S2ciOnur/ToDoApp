@@ -39,7 +39,6 @@ public class MainActivity extends AppCompatActivity {
         // Handle item selection
         switch (item.getItemId()) {
             case R.id.action_settings:
-                Log.d(TAG, "Start new Activity: SettingsActivity");
                 startSettingsActivity();
                 return true;
             default:
@@ -54,7 +53,6 @@ public class MainActivity extends AppCompatActivity {
     public void onClick(View v){
         switch(v.getId()) {
             case R.id.add_fab :
-                Log.d(TAG, "Start new Activity: ItemActivity");
                 startItemActivity();
                 break;
             default :
@@ -63,13 +61,13 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void startSettingsActivity(){
-        Toast.makeText(getApplicationContext(), "Settings geht klar", Toast.LENGTH_SHORT).show();
+        Log.d(TAG, "Start new Activity: SettingsActivity");
         Intent intent = new Intent(this, SettingsActivity.class);
         startActivity(intent);
     }
 
     private void startItemActivity(){
-        Toast.makeText(getApplicationContext(), "fertig", Toast.LENGTH_SHORT).show();
+        Log.d(TAG, "Start new Activity: ItemActivity");
         Intent intent = new Intent(this, ItemActivity.class);
         startActivity(intent);
     }

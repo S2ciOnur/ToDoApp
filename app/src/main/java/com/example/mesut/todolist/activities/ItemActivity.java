@@ -1,6 +1,8 @@
 package com.example.mesut.todolist.activities;
 
+import android.content.ContentValues;
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -11,11 +13,12 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.example.mesut.todolist.R;
+import com.example.mesut.todolist.db.TodoDatabaseHelper;
 
 public class ItemActivity extends AppCompatActivity {
-
     private static final String TAG = "ItemActivity";
 
+    private TodoDatabaseHelper todoDbHelper;
     private EditText title;
     private EditText desc;
     private Spinner prio;
@@ -24,10 +27,12 @@ public class ItemActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_item);
-        initPrioSpinner();
+
         this.title = (EditText) findViewById(R.id.title_editText);
         this.desc = (EditText) findViewById(R.id.desc_editText);
         this.prio = (Spinner) findViewById(R.id.prio_spinner);
+
+        initPrioSpinner();
     }
 
     public void onClick(View v){
@@ -46,6 +51,20 @@ public class ItemActivity extends AppCompatActivity {
     }
 
     private void saveItem(){
+
+        // Datenbank zum Schreiben öffnen
+        SQLiteDatabase db = todoDbHelper.getWritableDatabase();
+        // Datensatz erstellen
+        ContentValues vals = new ContentValues();
+        vals.put(TodoDatabaseHelper.TITLE_FIELD_NAME, title.getText().toString());
+        vals.put(TodoDatabaseHelper.DESC_FIELD_NAME, desc.getText().toString());
+
+        // Datensatz in die Datenbank einfügen
+        db.insert(TodoDatabaseHelper.TABLE_NAME,null, vals);
+
+        // Datenbank schließen
+        db.close();
+
         startMainActivity();
     }
 
@@ -56,14 +75,13 @@ public class ItemActivity extends AppCompatActivity {
     }
 
     private void initPrioSpinner(){
-        Spinner spinner = (Spinner) findViewById(R.id.prio_spinner);
         // Create an ArrayAdapter using the string array and a default spinner layout
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
                 R.array.prio_Array, android.R.layout.simple_spinner_item);
         // Specify the layout to use when the list of choices appears
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         // Apply the adapter to the spinner
-        spinner.setAdapter(adapter);
+        prio.setAdapter(adapter);
 
     }
 }
