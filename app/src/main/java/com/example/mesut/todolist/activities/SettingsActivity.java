@@ -17,28 +17,46 @@ import com.example.mesut.todolist.R;
 public class SettingsActivity extends AppCompatActivity {
 
     private static final String TAG = "SettingsActivity";
-    private Button settingsBtn;
+    private Button textSizeBtn;
+    private Button priorityBtn;
+    private Button categoryBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
-        this.settingsBtn = (Button) findViewById(R.id.btnSettings);
+        this.textSizeBtn = (Button) findViewById(R.id.btnTextSize);
+        this.priorityBtn = (Button) findViewById(R.id.btnPriority);
+        this.categoryBtn = (Button) findViewById(R.id.btnCategory);
+
 
     }
 
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.btnSettings:
-                showSettingsDialog();
+            case R.id.btnTextSize:
+                showTextSizeDialog();
+                break;
+            case R.id.btnCategory:
+                showCategoryActivity();
+                break;
+            case R.id.btnPriority:
+                showPriorityActivity();
                 break;
             default:
                 Toast.makeText(getApplicationContext(), "ERROR", Toast.LENGTH_SHORT).show();
         }
     }
 
+    public void showCategoryActivity(){
+        Toast.makeText(getApplicationContext(), "ERROR", Toast.LENGTH_SHORT).show();
+    }
 
-    public void showSettingsDialog() {
+    public void showPriorityActivity() {
+        Toast.makeText(getApplicationContext(), "ERROR", Toast.LENGTH_SHORT).show();
+    }
+
+    public void showTextSizeDialog() {
         AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
         LayoutInflater inflater = this.getLayoutInflater();
         final View dialogView = inflater.inflate(R.layout.textsize_alert, null);
