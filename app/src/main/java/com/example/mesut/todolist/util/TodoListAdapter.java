@@ -56,9 +56,9 @@ public class TodoListAdapter extends ArrayAdapter{
         }
 
         TodoItem todoItem = todoItems.get(position);
-        holder.txtPrio.setText("Title: " +  todoItem.getTitle() + "");
-        holder.txtTitle.setText("Description: "+ todoItem.getDesc() + "");
-        holder.txtDesc.setText("Priority: " + todoItem.getPrio() + "");
+        holder.txtTitle.setText(todoItem.getTitle());
+        holder.txtDesc.setText(todoItem.getDesc());
+        holder.txtPrio.setText(todoItem.getPrio() + "");
         return convertView;
 
 
