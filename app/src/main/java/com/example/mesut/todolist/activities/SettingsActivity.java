@@ -49,17 +49,17 @@ public class SettingsActivity extends AppCompatActivity {
         }
     }
 
-    public void startCategoryActivity(){
+    private void startCategoryActivity(){
             Intent intent = new Intent(this, CategoryActivity.class);
             startActivity(intent);
     }
 
-    public void startPriorityActivity() {
+    private void startPriorityActivity() {
         Intent intent = new Intent(this, PriorityActivity.class);
         startActivity(intent);
     }
 
-    public void showTextSizeDialog() {
+    private void showTextSizeDialog() {
         AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
         LayoutInflater inflater = this.getLayoutInflater();
         final View dialogView = inflater.inflate(R.layout.textsize_alert, null);
