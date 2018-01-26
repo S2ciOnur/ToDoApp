@@ -45,9 +45,9 @@ public class TodoListAdapter extends ArrayAdapter{
             convertView = vi.inflate(R.layout.layout_todolist, null);
 
             holder = new ViewHolder();
-            holder.txtTitle = (TextView) convertView.findViewById(R.id.carName);
-            holder.txtDesc = (TextView) convertView.findViewById(R.id.carColor);
-            holder.txtPrio =(TextView) convertView.findViewById(R.id.carPlace);
+            holder.txtTitle = (TextView) convertView.findViewById(R.id.titleTextView);
+            holder.txtDesc = (TextView) convertView.findViewById(R.id.descTextView);
+            holder.txtPrio =(TextView) convertView.findViewById(R.id.prioTextView);
             convertView.setTag(holder);
 
         }
@@ -57,8 +57,8 @@ public class TodoListAdapter extends ArrayAdapter{
 
         TodoItem todoItem = todoItems.get(position);
         holder.txtPrio.setText("Title: " +  todoItem.getTitle() + "");
-        holder.txtTitle.setText("Description: "+ todoItem.getDesc()+"");
-        holder.txtDesc.setText("Priority: " + todoItem.getPrio());
+        holder.txtTitle.setText("Description: "+ todoItem.getDesc() + "");
+        holder.txtDesc.setText("Priority: " + todoItem.getPrio() + "");
         return convertView;
 
 

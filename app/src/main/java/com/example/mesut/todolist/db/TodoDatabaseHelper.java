@@ -18,8 +18,6 @@ import java.util.ArrayList;
 public class TodoDatabaseHelper extends SQLiteOpenHelper {
     private static final String TAG = "TodoDatabaseHelper";
 
-
-    //Name + Version
     public static final String DATABASE_NAME = "todoapp.db";
     private static final int DATABASE_VERSION = 1;
 
