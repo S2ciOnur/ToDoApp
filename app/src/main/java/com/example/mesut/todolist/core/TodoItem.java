@@ -6,14 +6,20 @@ package com.example.mesut.todolist.core;
 
 public class TodoItem {
 
+    private int id;
     private String title;
     private String desc;
     private int prio;
 
-    public TodoItem(String title, String desc, int prio){
+    public TodoItem(int id, String title, String desc, int prio){
+        this.id = id;
         this.title = title;
         this.desc = desc;
         this.prio = prio;
+    }
+
+    public int getId() {
+        return id;
     }
 
     public String getTitle() {

@@ -18,7 +18,6 @@ import com.example.mesut.todolist.db.DatabaseHelper;
 public class ItemActivity extends AppCompatActivity {
     private static final String TAG = "ItemActivity";
 
-    private DatabaseHelper todoDbHelper;
     private EditText title;
     private EditText desc;
     private Spinner prio;
@@ -51,25 +50,14 @@ public class ItemActivity extends AppCompatActivity {
     }
 
     private void saveItem(){
+        String newTitle = title.getText().toString();
+        String newDesc = desc.getText().toString();
+        //int prio;
 
-        // Datenbank zum Schreiben öffnen
-        SQLiteDatabase db = todoDbHelper.getWritableDatabase();
-        // Datensatz erstellen
-        ContentValues vals = new ContentValues();
-        vals.put(DatabaseHelper.TITLE_FIELD_NAME, title.getText().toString());
-        vals.put(DatabaseHelper.DESC_FIELD_NAME, desc.getText().toString());
 
-        // Datensatz in die Datenbank einfügen
-        db.insert(DatabaseHelper.TABLE_NAME,null, vals);
-
-        // Datenbank schließen
-        db.close();
-
-        startMainActivity();
     }
 
     private void startMainActivity(){
-        Toast.makeText(getApplicationContext(), "Settings geht klar", Toast.LENGTH_SHORT).show();
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
     }

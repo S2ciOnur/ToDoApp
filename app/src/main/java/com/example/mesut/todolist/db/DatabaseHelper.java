@@ -26,6 +26,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     //todo Tabelle:
     public static final String TABLE_NAME = "todo";
 
+    public static final String ID_FIELD_NAME = "id";
+    public static final String ID_FIELD_TYPE = "INTEGER PRIMARY KEY AUTOINCREMENT";
+
     public static final String TITLE_FIELD_NAME = "title";
     public static final String TITLE_FIELD_TYPE = "TEXT";
 
@@ -36,7 +39,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String PRIO_FIELD_TYPE = "INTEGER";
 
     // SQL statement zum Erstellen der Tabelle
-    private static final String TABLE_CREATE = "CREATE TABLE " + TABLE_NAME + "(" +
+    private static final String TABLE_CREATE =
+            "CREATE TABLE " + TABLE_NAME + "(" +
+            ID_FIELD_NAME    + " " + ID_FIELD_TYPE    + ", " +
             TITLE_FIELD_NAME + " " + TITLE_FIELD_TYPE + ", " +
             DESC_FIELD_NAME  + " " + DESC_FIELD_TYPE  + ", " +
             PRIO_FIELD_NAME  + " " + PRIO_FIELD_TYPE  + ")";
@@ -50,12 +55,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         try {
             db.execSQL(TABLE_CREATE);
+
         } catch(SQLException ex) {
             Log.e(TAG,"Error creating tables", ex);
         }
     }
 
-    public boolean insertPlate(String title, String desc, int prio ) {
+    public boolean insertPlate(String title, String desc, int prio) {
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues contentValues = new ContentValues();
@@ -72,7 +78,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         ArrayList<TodoItem> todoItems = new ArrayList<TodoItem>();
         Cursor result = db.rawQuery("select * from " + TABLE_NAME , null);
         while(result.moveToNext()){
-            todoItems.add(new TodoItem(result.getString(result.getColumnIndex(TITLE_FIELD_NAME)), result.getString(result.getColumnIndex(DESC_FIELD_NAME)), 0 ));
+            todoItems.add(new TodoItem(
+                    result.getInt(result.getColumnIndex(ID_FIELD_NAME)),
+                    result.getString(result.getColumnIndex(TITLE_FIELD_NAME)),
+                    result.getString(result.getColumnIndex(DESC_FIELD_NAME)),
+                    result.getInt(result.getColumnIndex((PRIO_FIELD_NAME)))
+            ));
+
         }
         return todoItems;
     }
@@ -98,15 +110,15 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        // alte Tabellen auslesen und löschen, neue Tabellen anlegen
-        // alten Inhalt in neue Tabellen einfügen
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME);
+        onCreate(db);
     }
 
     // ab API-Level 11
     @Override
     public void onDowngrade(SQLiteDatabase db, int oldVer, int newVer) {
-        // alte Tabellen auslesen und löschen, neue Tabellen anlegen
-        // alten Inhalt in neue Tabellen einfügen
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME);
+        onCreate(db);
     }
 
     /**
@@ -114,9 +126,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
      */
     public void insertTestDataForDebug() {
         insertPlate("Butter kaufen" , "" , 1);
-        insertPlate("Ölwechsel" , "bei ATU" , 1);
-        insertPlate("Uhr umstellen" , "1h vor" , 1);
-        insertPlate("MPT lernen" , "" , 1);
-        insertPlate("TODOListe programmieren" , "Quack Quack Quack" , 1);
+        insertPlate("Ölwechsel" , "bei ATU" , 4);
+        insertPlate("Uhr umstellen" , "1h vor" , 3);
+        insertPlate("MPT lernen" , "" , 2);
+        insertPlate("TODOListe programmieren" , "Quack Quack Quack" , 10);
     }
 }
