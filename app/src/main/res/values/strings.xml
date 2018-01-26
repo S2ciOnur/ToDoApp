@@ -7,11 +7,11 @@
     <string name="btn_save">Speichern</string>
     <string name="btn_cancel">Abbrechen</string>
 
-        <string-array name="prio_Array">
-            <item>Priorität 1</item>
-            <item>Priorität 2</item>
-            <item>Priorität 3</item>
-        </string-array>
+    <string-array name="prio_Array">
+        <item>Priorität 1</item>
+        <item>Priorität 2</item>
+        <item>Priorität 3</item>
+    </string-array>
 
     <string-array name="string_size_Array">
         <item>px</item>
