@@ -5,7 +5,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -40,23 +39,24 @@ public class SettingsActivity extends AppCompatActivity {
                 showTextSizeDialog();
                 break;
             case R.id.btnCategory:
-                showCategoryActivity();
+                startCategoryActivity();
                 break;
             case R.id.btnPriority:
-                showPriorityActivity();
+                startPriorityActivity();
                 break;
             default:
                 Toast.makeText(getApplicationContext(), "ERROR", Toast.LENGTH_SHORT).show();
         }
     }
 
-    public void showCategoryActivity(){
-            Intent intent = new Intent(this, SettingsActivity.class);
+    public void startCategoryActivity(){
+            Intent intent = new Intent(this, CategoryActivity.class);
             startActivity(intent);
     }
 
-    public void showPriorityActivity() {
-        Toast.makeText(getApplicationContext(), "ERROR", Toast.LENGTH_SHORT).show();
+    public void startPriorityActivity() {
+        Intent intent = new Intent(this, PriorityActivity.class);
+        startActivity(intent);
     }
 
     public void showTextSizeDialog() {
