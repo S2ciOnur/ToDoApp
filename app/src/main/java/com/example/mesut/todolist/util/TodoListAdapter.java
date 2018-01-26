@@ -45,8 +45,8 @@ public class TodoListAdapter extends ArrayAdapter{
             convertView = vi.inflate(R.layout.layout_todolist, null);
 
             holder = new ViewHolder();
-            holder.txtDesc = (TextView) convertView.findViewById(R.id.carColor);
             holder.txtTitle = (TextView) convertView.findViewById(R.id.carName);
+            holder.txtDesc = (TextView) convertView.findViewById(R.id.carColor);
             holder.txtPrio =(TextView) convertView.findViewById(R.id.carPlace);
             convertView.setTag(holder);
 

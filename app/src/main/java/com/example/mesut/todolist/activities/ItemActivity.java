@@ -1,8 +1,6 @@
 package com.example.mesut.todolist.activities;
 
-import android.content.ContentValues;
 import android.content.Intent;
-import android.database.sqlite.SQLiteDatabase;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -13,23 +11,24 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.example.mesut.todolist.R;
-import com.example.mesut.todolist.db.DatabaseHelper;
+import com.example.mesut.todolist.db.TodoDatabaseHelper;
 
 public class ItemActivity extends AppCompatActivity {
     private static final String TAG = "ItemActivity";
 
-    private EditText title;
-    private EditText desc;
-    private Spinner prio;
+    private EditText txtTitle;
+    private EditText txtDesc;
+    private Spinner spinnerPrio;
+    private TodoDatabaseHelper todoDbh;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_item);
 
-        this.title = (EditText) findViewById(R.id.title_editText);
-        this.desc = (EditText) findViewById(R.id.desc_editText);
-        this.prio = (Spinner) findViewById(R.id.prio_spinner);
+        this.txtTitle = (EditText) findViewById(R.id.title_editText);
+        this.txtDesc = (EditText) findViewById(R.id.desc_editText);
+        this.spinnerPrio = (Spinner) findViewById(R.id.prio_spinner);
 
         initPrioSpinner();
     }
@@ -50,9 +49,9 @@ public class ItemActivity extends AppCompatActivity {
     }
 
     private void saveItem(){
-        String newTitle = title.getText().toString();
-        String newDesc = desc.getText().toString();
-        //int prio;
+        String newTitle = txtTitle.getText().toString();
+        String newDesc = txtDesc.getText().toString();
+        //int spinnerPrio;
 
 
     }
@@ -69,7 +68,7 @@ public class ItemActivity extends AppCompatActivity {
         // Specify the layout to use when the list of choices appears
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         // Apply the adapter to the spinner
-        prio.setAdapter(adapter);
+        spinnerPrio.setAdapter(adapter);
 
     }
 }
