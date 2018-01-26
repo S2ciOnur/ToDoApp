@@ -12,10 +12,24 @@
         android:orientation="vertical">
 
         <Button
-            android:id="@+id/btnSettings"
+            android:id="@+id/btnTextSize"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:onClick="onClick"
-            android:text="Text Size" />
+            android:text="Text Settings" />
+
+        <Button
+            android:id="@+id/btnCategory"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="onClick"
+            android:text="Category Settings" />
+
+        <Button
+            android:id="@+id/btnPriority"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="onClick"
+            android:text="Priority Settings" />
     </LinearLayout>
 </android.support.constraint.ConstraintLayout>
