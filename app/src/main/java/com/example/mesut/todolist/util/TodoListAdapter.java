@@ -8,7 +8,7 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import com.example.mesut.todolist.R;
-import com.example.mesut.todolist.core.TodoItem;
+import com.example.mesut.todolist.core.Todo;
 
 import java.util.ArrayList;
 
@@ -18,13 +18,13 @@ import java.util.ArrayList;
 
 public class TodoListAdapter extends ArrayAdapter{
     private Context context;
-    private ArrayList<TodoItem> todoItems;
+    private ArrayList<Todo> todos;
 
     public TodoListAdapter(Context context, int textViewResourceId, ArrayList objects) {
         super(context,textViewResourceId, objects);
 
         this.context = context;
-        todoItems = objects;
+        todos = objects;
 
     }
 
@@ -38,7 +38,7 @@ public class TodoListAdapter extends ArrayAdapter{
     @Override
     public View getView(int position, View convertView, ViewGroup parent)
     {
-        ViewHolder holder=null;
+        ViewHolder holder = null;
         if (convertView == null)
         {
             LayoutInflater vi = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -55,10 +55,10 @@ public class TodoListAdapter extends ArrayAdapter{
             holder = (ViewHolder) convertView.getTag();
         }
 
-        TodoItem todoItem = todoItems.get(position);
-        holder.txtTitle.setText(todoItem.getTitle());
-        holder.txtDesc.setText(todoItem.getDesc());
-        holder.txtPrio.setText(todoItem.getPrio() + "");
+        Todo todo = todos.get(position);
+        holder.txtTitle.setText(todo.getTitle());
+        holder.txtDesc.setText(todo.getDesc());
+        holder.txtPrio.setText(todo.getPrio_id() + "");
         return convertView;
 
 

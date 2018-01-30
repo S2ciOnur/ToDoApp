@@ -4,22 +4,22 @@ package com.example.mesut.todolist.core;
  * Created by Janik on 24.01.2018.
  */
 
-public class TodoItem {
+public class Todo {
 
     private int id;
     private String title;
     private String desc;
-    private int prio;
+    private String date;
+    private int prio_id;
 
-    public TodoItem(int id, String title, String desc, int prio){
-        this.id = id;
-        this.title = title;
-        this.desc = desc;
-        this.prio = prio;
-    }
+    public Todo(){}
 
     public int getId() {
         return id;
+    }
+
+    public void setId(int id){
+        this.id = id;
     }
 
     public String getTitle() {
@@ -38,11 +38,20 @@ public class TodoItem {
         this.desc = desc;
     }
 
-    public int getPrio() {
-        return prio;
+    public String getDate() {
+        return date;
     }
 
-    public void setPrio(int prio) {
-        this.prio = prio;
+    public void setDate(String date) {
+        this.date = date;
     }
+
+    public int getPrio_id() {
+        return prio_id;
+    }
+
+    public void setPrio_id(int prio_id) {
+        this.prio_id = prio_id;
+    }
+
 }

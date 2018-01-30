@@ -12,8 +12,8 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.example.mesut.todolist.R;
-import com.example.mesut.todolist.core.TodoItem;
-import com.example.mesut.todolist.db.TodoDatabaseHelper;
+import com.example.mesut.todolist.core.Todo;
+import com.example.mesut.todolist.db.DatabaseHelper;
 import com.example.mesut.todolist.util.TodoListAdapter;
 
 import java.util.ArrayList;
@@ -23,17 +23,19 @@ public class MainActivity extends AppCompatActivity {
 
     TodoListAdapter todoListAdapter = null;
     ListView listView = null;
-    TodoDatabaseHelper todoDbh = null;
-    ArrayList<TodoItem> todoItems = null;
+    DatabaseHelper todoDbh = null;
+    ArrayList<Todo> todos = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        todoDbh = new TodoDatabaseHelper(this);
-        todoItems = todoDbh.getData();
-        todoListAdapter = new TodoListAdapter(this,R.layout.layout_todolist, todoItems);
+        todoDbh = new DatabaseHelper(this);
+
+
+        todos = todoDbh.getAllTodos();
+        todoListAdapter = new TodoListAdapter(this,R.layout.layout_todolist, todos);
 
         listView = (ListView) findViewById(R.id.simpleListView);
         listView.setAdapter(todoListAdapter);
@@ -72,7 +74,9 @@ public class MainActivity extends AppCompatActivity {
     public void onClick(View v){
         switch(v.getId()) {
             case R.id.add_fab :
-                //todoDbh.insertTestDataForDebug();
+                todoDbh.insertTestDataForDebug();
+                Log.d(TAG, "TODO_DATA IN!!!");
+
                 startItemActivity();
                 break;
             default :

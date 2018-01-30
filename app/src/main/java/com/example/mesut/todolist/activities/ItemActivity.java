@@ -11,7 +11,6 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.example.mesut.todolist.R;
-import com.example.mesut.todolist.db.TodoDatabaseHelper;
 
 public class ItemActivity extends AppCompatActivity {
     private static final String TAG = "ItemActivity";
@@ -19,7 +18,6 @@ public class ItemActivity extends AppCompatActivity {
     private EditText txtTitle;
     private EditText txtDesc;
     private Spinner spinnerPrio;
-    private TodoDatabaseHelper todoDbh;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
