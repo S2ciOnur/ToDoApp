@@ -23,7 +23,7 @@ public class MainActivity extends AppCompatActivity {
 
     TodoListAdapter todoListAdapter = null;
     ListView listView = null;
-    DatabaseHelper todoDbh = null;
+    DatabaseHelper dbh = null;
     ArrayList<Todo> todos = null;
 
     @Override
@@ -31,10 +31,9 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        todoDbh = new DatabaseHelper(this);
+        dbh = new DatabaseHelper(this);
+        todos = dbh.getAllTodos();
 
-
-        todos = todoDbh.getAllTodos();
         todoListAdapter = new TodoListAdapter(this,R.layout.layout_todolist, todos);
 
         listView = (ListView) findViewById(R.id.simpleListView);
@@ -74,9 +73,8 @@ public class MainActivity extends AppCompatActivity {
     public void onClick(View v){
         switch(v.getId()) {
             case R.id.add_fab :
-                todoDbh.insertTestDataForDebug();
-                Log.d(TAG, "TODO_DATA IN!!!");
-
+                //TODO
+                //dbh.insertTestDataForDebug();
                 startItemActivity();
                 break;
             default :

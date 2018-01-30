@@ -28,8 +28,7 @@ public class TodoListAdapter extends ArrayAdapter{
 
     }
 
-    private class ViewHolder
-    {
+    private class ViewHolder {
         TextView txtTitle;
         TextView txtDesc;
         TextView txtPrio;

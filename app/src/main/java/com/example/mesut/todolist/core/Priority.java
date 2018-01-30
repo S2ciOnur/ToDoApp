@@ -2,6 +2,7 @@ package com.example.mesut.todolist.core;
 
 /**
  * Created by Janik on 29.01.2018.
+ *
  */
 
 public class Priority {
@@ -10,14 +11,15 @@ public class Priority {
     private String name;
     private int weight;
 
-    public  Priority(int id, String name, int weight){
-        this.id = id;
-        this.name = name;
-        this.weight = weight;
+    public  Priority(){
     }
 
     public int getId() {
         return id;
+    }
+
+    public void setId(int id){
+        this.id = id;
     }
 
     public String getName() {

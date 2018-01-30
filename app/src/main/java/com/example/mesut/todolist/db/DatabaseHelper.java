@@ -8,6 +8,8 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
+import com.example.mesut.todolist.core.Category;
+import com.example.mesut.todolist.core.Priority;
 import com.example.mesut.todolist.core.Todo;
 
 import java.util.ArrayList;
@@ -153,6 +155,29 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return true;
     }
 
+    public boolean createCategory(String name) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+
+        values.put(NAME_CAT_NAME, name);
+
+        db.insert(CAT_TABLE_NAME, null, values);
+
+        return true;
+    }
+
+    public boolean createPriority(String name, int weight) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+
+        values.put(NAME_PRIO_NAME, name);
+        values.put(WEIGHT_PRIO_NAME, weight);
+
+        db.insert(PRIO_TABLE_NAME, null, values);
+
+        return true;
+    }
+
     private boolean createTodoCat(int todo_id, int cat_id){
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
@@ -182,19 +207,97 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         // looping through all rows and adding to list
         if (c.moveToFirst()) {
             do {
-                Todo td = new Todo();
-                td.setId(c.getInt((c.getColumnIndex(ID_TODO_NAME))));
-                td.setTitle((c.getString(c.getColumnIndex(TITLE_TODO_NAME))));
-                td.setDesc((c.getString(c.getColumnIndex(DESC_TODO_NAME))));
-                td.setDate((c.getString(c.getColumnIndex(DATE_TODO_NAME))));
-                td.setPrio_id(c.getInt(c.getColumnIndex(PRIO_TODO_NAME)));
+                Todo todo = new Todo();
+                todo.setId(c.getInt((c.getColumnIndex(ID_TODO_NAME))));
+                todo.setTitle((c.getString(c.getColumnIndex(TITLE_TODO_NAME))));
+                todo.setDesc((c.getString(c.getColumnIndex(DESC_TODO_NAME))));
+                todo.setDate((c.getString(c.getColumnIndex(DATE_TODO_NAME))));
+                todo.setPrio_id(c.getInt(c.getColumnIndex(PRIO_TODO_NAME)));
 
                 // adding to todo list
-                todos.add(td);
+                todos.add(todo);
             } while (c.moveToNext());
         }
 
         return todos;
+    }
+
+    public ArrayList<Todo>getTodosFromCat(int cat_id){
+
+        ArrayList<Todo> todos = new ArrayList<Todo>();
+        String selectQuery = "SELECT DISTINCT n.* " +
+                "FROM todo n, category g, todocat ng " +
+                "WHERE n.id = ng.todo_id " +
+                "AND ng.cat_id = " + cat_id;
+
+        Log.e(TAG, selectQuery);
+
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor c = db.rawQuery(selectQuery, null);
+
+        // looping through all rows and adding to list
+        if (c.moveToFirst()) {
+            do {
+                Todo todo = new Todo();
+                todo.setId(c.getInt((c.getColumnIndex(ID_TODO_NAME))));
+                todo.setTitle((c.getString(c.getColumnIndex(TITLE_TODO_NAME))));
+                todo.setDesc((c.getString(c.getColumnIndex(DESC_TODO_NAME))));
+                todo.setDate((c.getString(c.getColumnIndex(DATE_TODO_NAME))));
+                todo.setPrio_id(c.getInt(c.getColumnIndex(PRIO_TODO_NAME)));
+
+                // adding to todo list
+                todos.add(todo);
+            } while (c.moveToNext());
+        }
+
+        return todos;
+    }
+
+    public ArrayList<Category> getAllCategories() {
+        ArrayList<Category> categories = new ArrayList<Category>();
+        String selectQuery = "SELECT  * FROM " + CAT_TABLE_NAME;
+
+        Log.e(TAG, selectQuery);
+
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor c = db.rawQuery(selectQuery, null);
+
+        // looping through all rows and adding to list
+        if (c.moveToFirst()) {
+            do {
+                Category cat = new Category();
+                cat.setId(c.getInt((c.getColumnIndex(ID_CAT_NAME))));
+                cat.setName((c.getString(c.getColumnIndex(NAME_CAT_NAME))));
+
+                // adding to cat list
+                categories.add(cat);
+            } while (c.moveToNext());
+        }
+        return categories;
+    }
+
+    public ArrayList<Priority> getAllPriorities() {
+        ArrayList<Priority> priorities = new ArrayList<Priority>();
+        String selectQuery = "SELECT  * FROM " + PRIO_TABLE_NAME;
+
+        Log.e(TAG, selectQuery);
+
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor c = db.rawQuery(selectQuery, null);
+
+        // looping through all rows and adding to list
+        if (c.moveToFirst()) {
+            do {
+                Priority prio = new Priority();
+                prio.setId(c.getInt(c.getColumnIndex(ID_PRIO_NAME)));
+                prio.setName(c.getString(c.getColumnIndex(NAME_PRIO_NAME)));
+                prio.setWeight(c.getInt(c.getColumnIndex(WEIGHT_PRIO_NAME)));
+
+                // adding to cat list
+                priorities.add(prio);
+            } while (c.moveToNext());
+        }
+        return priorities;
     }
 
     /**
@@ -205,7 +308,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     /**
      * Deletes
      */
-
     public Integer deleteTodo(Integer id) {
         SQLiteDatabase db = this.getWritableDatabase();
         return db.delete(TODO_TABLE_NAME,
@@ -213,6 +315,19 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 new String[]{Integer.toString(id)});
     }
 
+    public Integer deleteCat(Integer id) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        return db.delete(CAT_TABLE_NAME,
+                "id = ? ",
+                new String[]{Integer.toString(id)});
+    }
+
+    public Integer deletePrio(Integer id) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        return db.delete(CAT_TABLE_NAME,
+                "id = ? ",
+                new String[]{Integer.toString(id)});
+    }
 
 
     @Override
@@ -244,7 +359,21 @@ public class DatabaseHelper extends SQLiteOpenHelper {
      * Debug
      */
     public void insertTestDataForDebug() {
-        int[] test = {1 ,2, 3, 4};
-        createTodo("Hallo Welt", "Das ist ein Test", "5 Uhr",3, test);
+
+        createPriority("WICHTIG!" , 20);
+        createPriority("Normal" , 10);
+        createPriority("Kann warten..." , 5);
+
+        createCategory("Haus");
+        createCategory("Uni");
+        createCategory("Auto");
+
+        int [] cats1 = {1,2};
+        createTodo("MPT Lernen", "Treffpunkt in der Fachschaft", "Jeden Tag um 10" , 2, cats1);
+        int [] cats2 = {3};
+        createTodo("Ölwechsel", "Beim ATU", "14.02.2018 9:00Uhr" , 1, cats2);
+        int [] cats3 = {1};
+        createTodo("Staubsaugen", "", "" , 3, cats3);
+
     }
 }
