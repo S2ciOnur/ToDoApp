@@ -27,7 +27,7 @@ public class ItemActivity extends AppCompatActivity {
     private Spinner spinnerCat;
     private DatabaseHelper dbh;
     private int priotitaet;
-    private int categorie;
+    private String categorie;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -130,7 +130,7 @@ public class ItemActivity extends AppCompatActivity {
         spinnerPrio.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
-                categorie = categorys.get(position).getId();
+                categorie = categorys.get(position).getName();
             }
 
             @Override
