@@ -19,62 +19,58 @@ import java.util.ArrayList;
  *
  */
 public class DatabaseHelper extends SQLiteOpenHelper {
-    private static final String TAG = "PriorityDatabaseHelper";
+    private static final String TAG = "DatabaseHelper";
 
-    public static final String DATABASE_NAME  = "todoapp.db";
+    private static final String DATABASE_NAME  = "todoapp.db";
     private static final int DATABASE_VERSION = 1;
 
     //Tabelle für Todo
-    public static final String TODO_TABLE_NAME = "todo";
+    private static final String TODO_TABLE_NAME = "todo";
 
-    public static final String ID_TODO_NAME    = "id";
-    public static final String ID_TODO_TYPE    = "INTEGER PRIMARY KEY AUTOINCREMENT";
+    private static final String ID_TODO_NAME    = "id";
+    private static final String ID_TODO_TYPE    = "INTEGER PRIMARY KEY AUTOINCREMENT";
 
-    public static final String TITLE_TODO_NAME = "title";
-    public static final String TITLE_TODO_TYPE = "TEXT";
+    private static final String TITLE_TODO_NAME = "title";
+    private static final String TITLE_TODO_TYPE = "TEXT";
 
-    public static final String DESC_TODO_NAME  = "desc";
-    public static final String DESC_TODO_TYPE  = "TEXT";
+    private static final String DESC_TODO_NAME  = "desc";
+    private static final String DESC_TODO_TYPE  = "TEXT";
 
-    public static final String DATE_TODO_NAME  = "date";
-    public static final String DATE_TODO_TYPE  = "TEXT";
+    private static final String DATE_TODO_NAME  = "date";
+    private static final String DATE_TODO_TYPE  = "TEXT";
 
-    public static final String PRIO_TODO_NAME  = "prio_id";
-    public static final String PRIO_TODO_TYPE  = "INTEGER";
+    private static final String PRIO_TODO_NAME  = "prio_id";
+    private static final String PRIO_TODO_TYPE  = "INTEGER";
 
     //Tabelle für Category
-    public static final String CAT_TABLE_NAME = "category";
+    private static final String CAT_TABLE_NAME = "category";
 
-    public static final String ID_CAT_NAME    = "id";
-    public static final String ID_CAT_TYPE    = "INTEGER PRIMARY KEY AUTOINCREMENT";
+    private static final String ID_CAT_NAME    = "id";
+    private static final String ID_CAT_TYPE    = "INTEGER PRIMARY KEY AUTOINCREMENT";
 
-    public static final String NAME_CAT_NAME  = "name";
-    public static final String NAME_CAT_TYPE  = "TEXT";
+    private static final String NAME_CAT_NAME  = "name";
+    private static final String NAME_CAT_TYPE  = "TEXT";
 
     //Tabelle für Priority
-    public static final String PRIO_TABLE_NAME  = "priority";
+    private static final String PRIO_TABLE_NAME  = "priority";
 
-    public static final String ID_PRIO_NAME     = "id";
-    public static final String ID_PRIO_TYPE     = "INTEGER PRIMARY KEY AUTOINCREMENT";
+    private static final String ID_PRIO_NAME     = "id";
+    private static final String ID_PRIO_TYPE     = "INTEGER PRIMARY KEY AUTOINCREMENT";
 
-    public static final String NAME_PRIO_NAME   = "name";
-    public static final String NAME_PRIO_TYPE   = "TEXT";
+    private static final String NAME_PRIO_NAME   = "name";
+    private static final String NAME_PRIO_TYPE   = "TEXT";
 
-    public static final String WEIGHT_PRIO_NAME = "weight";
-    public static final String WEIGHT_PRIO_TYPE = "INTEGER";
+    private static final String WEIGHT_PRIO_NAME = "weight";
+    private static final String WEIGHT_PRIO_TYPE = "INTEGER";
 
     //Tabelle für TodoCat
-    public static final String TODO_CAT_TABLE_NAME   = "todocat";
+    private static final String TODO_CAT_TABLE_NAME   = "todocat";
 
-    public static final String TODO_ID_TODOCAT_NAME = "todo_id";
-    public static final String TODO_ID_TODOCAT_TYPE = "INTEGER";
+    private static final String TODO_ID_TODOCAT_NAME = "todo_id";
+    private static final String TODO_ID_TODOCAT_TYPE = "INTEGER";
 
-    public static final String CAT_ID_TODOCAT_NAME  = "cat_id";
-    public static final String CAT_ID_TODOCAT_TYPE  = "INTEGER";
-
-    //
-    //TODO: DAS ISCH VERDREHT
-    //"INTEGER FOREIGN KEY(id) REFERENCES priority(id)";
+    private static final String CAT_ID_TODOCAT_NAME  = "cat_id";
+    private static final String CAT_ID_TODOCAT_TYPE  = "INTEGER";
 
     // SQL statement zum Erstellen der Tabelle
     private static final String TODO_TABLE_CREATE =
@@ -278,7 +274,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     public ArrayList<Priority> getAllPriorities() {
         ArrayList<Priority> priorities = new ArrayList<Priority>();
-        String selectQuery = "SELECT  * FROM " + PRIO_TABLE_NAME;
+        String selectQuery = "SELECT  *" +
+                             " FROM " + PRIO_TABLE_NAME +
+                             " ORDER BY " + WEIGHT_PRIO_NAME + " DESC";
 
         Log.e(TAG, selectQuery);
 
