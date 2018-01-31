@@ -4,10 +4,10 @@
     <string name="txt_title">Titel</string>
     <string name="txt_desc">Beschreibung</string>
     <string name="txt_prio">Priorität</string>
-    <string name="btn_save">Speichern</string>
-    <string name="btn_cancel">Abbrechen</string>
     <string name="txt_cat">Kategorie</string>
     <string name="txt_date">Ablaufdatum</string>
+    <string name="btn_save">Speichern</string>
+    <string name="btn_cancel">Abbrechen</string>
 
     <string-array name="string_size_Array">
         <item>px</item>
