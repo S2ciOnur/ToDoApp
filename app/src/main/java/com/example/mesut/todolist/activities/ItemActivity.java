@@ -1,7 +1,6 @@
 package com.example.mesut.todolist.activities;
 
 import android.app.DatePickerDialog;
-import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
@@ -11,7 +10,6 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
@@ -19,13 +17,10 @@ import android.widget.Toast;
 import com.example.mesut.todolist.R;
 import com.example.mesut.todolist.core.Category;
 import com.example.mesut.todolist.core.Priority;
-import com.example.mesut.todolist.core.Todo;
 import com.example.mesut.todolist.db.DatabaseHelper;
 import com.example.mesut.todolist.util.DatePickerFragment;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 
 public class ItemActivity extends AppCompatActivity {
     private static final String TAG = "ItemActivity";
@@ -38,8 +33,9 @@ public class ItemActivity extends AppCompatActivity {
 
     private DatePickerDialog datePicker;
     private DatabaseHelper dbh;
-    private int idPrioritaet;
-    private String categorie;
+
+    private int prio_id;
+    private int[] cat_ids;
 
 
     @Override
@@ -89,9 +85,9 @@ public class ItemActivity extends AppCompatActivity {
         String newTitle = txtTitle.getText().toString();
         String newDesc = txtDesc.getText().toString();
         String newDate = buttonDate.getText().toString();
-        int newPrio_id = idPrioritaet;
-        int[] newCats = {2,3};
-        dbh.createTodo(newTitle, newDesc, newDate, newPrio_id, newCats);
+        int newPrio_id = prio_id;
+        int[] newCat_ids = cat_ids;
+        dbh.createTodo(newTitle, newDesc, newDate, newPrio_id, newCat_ids);
         Toast.makeText(getApplicationContext(), "ERROR", Toast.LENGTH_SHORT).show();
         startMainActivity();
     }
@@ -123,7 +119,7 @@ public class ItemActivity extends AppCompatActivity {
         spinnerPrio.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
-                idPrioritaet = prioritys.get(position).getWeight();
+                prio_id = prioritys.get(position).getWeight();
                 Toast.makeText(getApplicationContext(), "id: " + prioritys.get(position).getId() + " Weigth: " + prioritys.get(position).getWeight(), Toast.LENGTH_SHORT).show();
             }
 
@@ -158,7 +154,8 @@ public class ItemActivity extends AppCompatActivity {
         spinnerCat.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
-                categorie = categorys.get(position).getName();
+                //TODO geht nur mit einer
+                cat_ids[0] = categorys.get(position).getId();
                 Toast.makeText(getApplicationContext(), "id: " + categorys.get(position).getId() + " Name: " + categorys.get(position).getName(), Toast.LENGTH_SHORT).show();
 
             }
