@@ -125,9 +125,9 @@ public class ItemActivity extends AppCompatActivity {
         // Specify the layout to use when the list of choices appears
         dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         // Apply the adapter to the spinner
-        spinnerPrio.setAdapter(dataAdapter);
+        spinnerCat.setAdapter(dataAdapter);
 
-        spinnerPrio.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        spinnerCat.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
                 categorie = categorys.get(position).getName();
