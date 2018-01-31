@@ -97,6 +97,7 @@ public class ItemActivity extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
                 priotitaet = prioritys.get(position).getWeight();
+                Toast.makeText(getApplicationContext(), "id: " + prioritys.get(position).getId() + " Weigth: " + prioritys.get(position).getWeight(), Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -131,6 +132,8 @@ public class ItemActivity extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
                 categorie = categorys.get(position).getName();
+                Toast.makeText(getApplicationContext(), "id: " + categorys.get(position).getId() + " Name: " + categorys.get(position).getName(), Toast.LENGTH_SHORT).show();
+
             }
 
             @Override
