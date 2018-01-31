@@ -218,6 +218,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return todos;
     }
 
+    @Deprecated
     public ArrayList<Todo>getTodosFromCat(int cat_id){
 
         ArrayList<Todo> todos = new ArrayList<Todo>();
