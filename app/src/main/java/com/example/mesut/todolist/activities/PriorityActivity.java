@@ -91,5 +91,6 @@ public class PriorityActivity extends AppCompatActivity {
     private void getInputValue(String usersNewCategory, Integer priorityWeight){
         Toast.makeText(getApplicationContext(), usersNewCategory, Toast.LENGTH_SHORT).show();
         Toast.makeText(getApplicationContext(), priorityWeight.toString(), Toast.LENGTH_SHORT).show();
+        dbh.createPriority(usersNewCategory, priorityWeight);
     }
 }

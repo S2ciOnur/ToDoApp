@@ -10,13 +10,20 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.mesut.todolist.R;
+import com.example.mesut.todolist.db.DatabaseHelper;
 
 public class CategoryActivity extends AppCompatActivity {
+
+    private DatabaseHelper dbh;
+
+    private static final String TAG = "CategoryActivity";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_category);
+        dbh = new DatabaseHelper(this);
     }
 
     public void onClick(View v){
@@ -66,5 +73,6 @@ public class CategoryActivity extends AppCompatActivity {
 
         private void getInputValue(String usersNewCategory){
             Toast.makeText(getApplicationContext(), usersNewCategory, Toast.LENGTH_SHORT).show();
+            dbh.createCategory(usersNewCategory);
         }
 }

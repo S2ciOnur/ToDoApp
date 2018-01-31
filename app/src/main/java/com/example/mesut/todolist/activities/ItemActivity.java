@@ -5,12 +5,18 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.example.mesut.todolist.R;
+import com.example.mesut.todolist.core.Category;
+import com.example.mesut.todolist.core.Priority;
+import com.example.mesut.todolist.db.DatabaseHelper;
+
+import java.util.ArrayList;
 
 public class ItemActivity extends AppCompatActivity {
     private static final String TAG = "ItemActivity";
@@ -18,6 +24,10 @@ public class ItemActivity extends AppCompatActivity {
     private EditText txtTitle;
     private EditText txtDesc;
     private Spinner spinnerPrio;
+    private Spinner spinnerCat;
+    private DatabaseHelper dbh;
+    private int priotitaet;
+    private int categorie;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,8 +37,13 @@ public class ItemActivity extends AppCompatActivity {
         this.txtTitle = (EditText) findViewById(R.id.title_editText);
         this.txtDesc = (EditText) findViewById(R.id.desc_editText);
         this.spinnerPrio = (Spinner) findViewById(R.id.prio_spinner);
+        this.spinnerCat = (Spinner) findViewById(R.id.cat_spinner);
+
+        dbh = new DatabaseHelper(this);
 
         initPrioSpinner();
+        initCatSpinner();
+
     }
 
     public void onClick(View v){
@@ -60,13 +75,70 @@ public class ItemActivity extends AppCompatActivity {
     }
 
     private void initPrioSpinner(){
+        final ArrayList<Priority> prioritys = dbh.getAllPriorities();
+        ArrayList<String> names = new ArrayList<String>();
+
+
+        for(Priority prio : prioritys) {
+            names.add(prio.getName());
+          //  Toast.makeText(getApplicationContext(), prio.getName(), Toast.LENGTH_SHORT).show();
+        }
+
+
         // Create an ArrayAdapter using the string array and a default spinner layout
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
-                R.array.prio_Array, android.R.layout.simple_spinner_item);
+        ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this,
+                android.R.layout.simple_spinner_item, names);
         // Specify the layout to use when the list of choices appears
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         // Apply the adapter to the spinner
-        spinnerPrio.setAdapter(adapter);
+        spinnerPrio.setAdapter(dataAdapter);
+
+        spinnerPrio.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
+                priotitaet = prioritys.get(position).getWeight();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parentView) {
+                // your code here
+            }
+
+        });
+
+    }
+
+    private void initCatSpinner(){
+        final ArrayList<Category> categorys = dbh.getAllCategories();
+        ArrayList<String> names = new ArrayList<String>();
+
+
+        for(Category cat : categorys) {
+            names.add(cat.getName());
+            //  Toast.makeText(getApplicationContext(), prio.getName(), Toast.LENGTH_SHORT).show();
+        }
+
+
+        // Create an ArrayAdapter using the string array and a default spinner layout
+        ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this,
+                android.R.layout.simple_spinner_item, names);
+        // Specify the layout to use when the list of choices appears
+        dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        // Apply the adapter to the spinner
+        spinnerPrio.setAdapter(dataAdapter);
+
+        spinnerPrio.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
+                categorie = categorys.get(position).getId();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parentView) {
+                // your code here
+            }
+
+        });
 
     }
 }
