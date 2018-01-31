@@ -26,7 +26,7 @@ public class ItemActivity extends AppCompatActivity {
     private Spinner spinnerPrio;
     private Spinner spinnerCat;
     private DatabaseHelper dbh;
-    private int priotitaet;
+    private int idPrioritaet;
     private String categorie;
 
     @Override
@@ -96,7 +96,7 @@ public class ItemActivity extends AppCompatActivity {
         spinnerPrio.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
-                priotitaet = prioritys.get(position).getWeight();
+                idPrioritaet = prioritys.get(position).getWeight();
                 Toast.makeText(getApplicationContext(), "id: " + prioritys.get(position).getId() + " Weigth: " + prioritys.get(position).getWeight(), Toast.LENGTH_SHORT).show();
             }
 
