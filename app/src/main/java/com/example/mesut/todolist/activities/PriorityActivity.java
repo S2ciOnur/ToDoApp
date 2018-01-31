@@ -10,8 +10,15 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.mesut.todolist.R;
+import com.example.mesut.todolist.core.Priority;
+import com.example.mesut.todolist.db.DatabaseHelper;
+
+import java.util.ArrayList;
 
 public class PriorityActivity extends AppCompatActivity {
+
+    private DatabaseHelper dbh = null;
+    private ArrayList<Priority> prios;
 
     private static final String TAG = "PriorityActivity";
 
@@ -19,6 +26,13 @@ public class PriorityActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_category);
+
+        dbh = new DatabaseHelper(this);
+
+        //TODO: Beispiel Datenbankhelper für Prio wie man was macht
+        //prios = dbh.getAllPriorities();
+        //dbh.createPriority("NET SO WICHTIG" , -3);
+        //dbh.deletePrio(prios.get(1).getId());
     }
 
     public void onClick(View v){

@@ -21,10 +21,10 @@ import java.util.ArrayList;
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
 
-    TodoListAdapter todoListAdapter = null;
-    ListView listView = null;
-    DatabaseHelper dbh = null;
-    ArrayList<Todo> todos = null;
+    private TodoListAdapter todoListAdapter = null;
+    private ListView listView = null;
+    private DatabaseHelper dbh = null;
+    private ArrayList<Todo> todos = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -304,25 +304,49 @@ public class DatabaseHelper extends SQLiteOpenHelper {
      * Updates
      */
 
+    //Scheiß auf Updates!
+    //UPDATE = DELETE + INSERT
 
     /**
      * Deletes
      */
-    public Integer deleteTodo(Integer id) {
+    public boolean deleteTodo(Integer id) {
+        try {
+            SQLiteDatabase db = this.getWritableDatabase();
+            db.delete(TODO_TABLE_NAME, "id = ? ", new String[]{Integer.toString(id)});
+            db.delete(TODO_CAT_TABLE_NAME, "todo_id = ? ", new String[]{Integer.toString(id)});
+        }catch (SQLException ex){
+            Log.e(TAG, "Couldn't delete TODO with id = " + id.toString());
+            return false;
+        }
+        return true;
+    }
+
+    public boolean deleteCat(Integer id) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        try {
+            db.delete(CAT_TABLE_NAME, "id = ? ", new String[]{Integer.toString(id)});
+            db.delete(TODO_CAT_TABLE_NAME, "cat_id = ? ", new String[]{Integer.toString(id)});
+        }catch (SQLException ex){
+            Log.e(TAG, "Couldn't delete CAT with id = " + id.toString());
+            return false;
+        }
+        return true;
+    }
+
+    public Integer deletePrio(Integer id) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        return db.delete(CAT_TABLE_NAME, "id = ? ", new String[]{Integer.toString(id)});
+    }
+
+    public Integer deleteTodoGay(Integer id) {
         SQLiteDatabase db = this.getWritableDatabase();
         return db.delete(TODO_TABLE_NAME,
                 "id = ? ",
                 new String[]{Integer.toString(id)});
     }
 
-    public Integer deleteCat(Integer id) {
-        SQLiteDatabase db = this.getWritableDatabase();
-        return db.delete(CAT_TABLE_NAME,
-                "id = ? ",
-                new String[]{Integer.toString(id)});
-    }
-
-    public Integer deletePrio(Integer id) {
+    public Integer deleteCatGay(Integer id) {
         SQLiteDatabase db = this.getWritableDatabase();
         return db.delete(CAT_TABLE_NAME,
                 "id = ? ",
