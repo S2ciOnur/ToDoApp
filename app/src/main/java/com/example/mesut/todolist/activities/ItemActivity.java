@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
@@ -33,12 +34,13 @@ public class ItemActivity extends AppCompatActivity {
     private EditText txtDesc;
     private Spinner spinnerPrio;
     private Spinner spinnerCat;
+    private Button buttonDate;
+
     private DatePickerDialog datePicker;
     private DatabaseHelper dbh;
     private int idPrioritaet;
     private String categorie;
 
-    private Todo currentTodo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,9 +51,10 @@ public class ItemActivity extends AppCompatActivity {
         this.txtDesc = (EditText) findViewById(R.id.desc_editText);
         this.spinnerPrio = (Spinner) findViewById(R.id.prio_spinner);
         this.spinnerCat = (Spinner) findViewById(R.id.cat_spinner);
+        this.buttonDate = (Button) findViewById(R.id.date_button);
+
 
         dbh = new DatabaseHelper(this);
-        currentTodo = new Todo();
 
         initPrioSpinner();
         initCatSpinner();
@@ -85,9 +88,12 @@ public class ItemActivity extends AppCompatActivity {
     private void saveItem(){
         String newTitle = txtTitle.getText().toString();
         String newDesc = txtDesc.getText().toString();
-        //int spinnerPrio;
-
-
+        String newDate = buttonDate.getText().toString();
+        int newPrio_id = idPrioritaet;
+        int[] newCats = {2,3};
+        dbh.createTodo(newTitle, newDesc, newDate, newPrio_id, newCats);
+        Toast.makeText(getApplicationContext(), "ERROR", Toast.LENGTH_SHORT).show();
+        startMainActivity();
     }
 
     private void startMainActivity(){
