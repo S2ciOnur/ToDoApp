@@ -35,7 +35,7 @@ public class ItemActivity extends AppCompatActivity {
     private DatabaseHelper dbh;
 
     private int prio_id;
-    private int[] cat_ids;
+    private int[] cat_ids = new int[50];
 
 
     @Override
@@ -48,7 +48,6 @@ public class ItemActivity extends AppCompatActivity {
         this.spinnerPrio = (Spinner) findViewById(R.id.prio_spinner);
         this.spinnerCat = (Spinner) findViewById(R.id.cat_spinner);
         this.buttonDate = (Button) findViewById(R.id.date_button);
-
 
         dbh = new DatabaseHelper(this);
 
@@ -88,7 +87,7 @@ public class ItemActivity extends AppCompatActivity {
         int newPrio_id = prio_id;
         int[] newCat_ids = cat_ids;
         dbh.createTodo(newTitle, newDesc, newDate, newPrio_id, newCat_ids);
-        Toast.makeText(getApplicationContext(), "ERROR", Toast.LENGTH_SHORT).show();
+        Toast.makeText(getApplicationContext(), newTitle + " erstellt!", Toast.LENGTH_SHORT).show();
         startMainActivity();
     }
 
