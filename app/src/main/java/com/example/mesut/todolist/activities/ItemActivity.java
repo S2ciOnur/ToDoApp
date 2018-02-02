@@ -83,10 +83,20 @@ public class ItemActivity extends AppCompatActivity {
 
     private void showCatDialog(){
         Dialog dialog;
-        final String[] items = {" Queen!", " Fake Queen", " Draw big Pipi", " Do u know da wey", " You dono da wey"};
+        final ArrayList<Category> categories = dbh.getAllCategories();
+        ArrayList<String> itemsList = new ArrayList<String>();
         final ArrayList itemsSelected = new ArrayList();
+
+        for(Category cat : categories) {
+            itemsList.add(cat.getName());
+            //  Toast.makeText(getApplicationContext(), prio.getName(), Toast.LENGTH_SHORT).show();
+        }
+
+        String[] items = itemsList.toArray(new String[itemsList.size()]);
+
+
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Select Categories for Queen: ");
+        builder.setTitle("Select Categories");
         builder.setMultiChoiceItems(items, null,
                 new DialogInterface.OnMultiChoiceClickListener() {
                     @Override
@@ -99,13 +109,13 @@ public class ItemActivity extends AppCompatActivity {
                         }
                     }
                 })
-                .setPositiveButton("Cluck!", new DialogInterface.OnClickListener() {
+                .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int id) {
                         //Your logic when OK button is clicked
                     }
                 })
-                .setNegativeButton("Spit!", new DialogInterface.OnClickListener() {
+                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int id) {
                     }
@@ -113,7 +123,6 @@ public class ItemActivity extends AppCompatActivity {
         dialog = builder.create();
         dialog.show();
     }
-
 
     private void openDatePicker(){
         DialogFragment newFragment = new DatePickerFragment();
