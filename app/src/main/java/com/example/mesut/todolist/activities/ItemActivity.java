@@ -1,7 +1,10 @@
 package com.example.mesut.todolist.activities;
 
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
+import android.app.Dialog;
 import android.app.DialogFragment;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -28,7 +31,7 @@ public class ItemActivity extends AppCompatActivity {
     private EditText txtTitle;
     private EditText txtDesc;
     private Spinner spinnerPrio;
-    private Spinner spinnerCat;
+    private Button buttonCat;
     private Button buttonDate;
 
     private DatePickerDialog datePicker;
@@ -46,13 +49,12 @@ public class ItemActivity extends AppCompatActivity {
         this.txtTitle = (EditText) findViewById(R.id.title_editText);
         this.txtDesc = (EditText) findViewById(R.id.desc_editText);
         this.spinnerPrio = (Spinner) findViewById(R.id.prio_spinner);
-        this.spinnerCat = (Spinner) findViewById(R.id.cat_spinner);
+        this.buttonCat = (Button) findViewById(R.id.cat_button);
         this.buttonDate = (Button) findViewById(R.id.date_button);
 
         dbh = new DatabaseHelper(this);
 
         initPrioSpinner();
-        initCatSpinner();
 
     }
 
@@ -70,10 +72,48 @@ public class ItemActivity extends AppCompatActivity {
                 Log.d(TAG, "Open Datepicker");
                 openDatePicker();
                 break;
+            case R.id.cat_button :
+                Log.d(TAG, "Open CatAlertDialog");
+                showCatDialog();
+                break;
             default :
                 Toast.makeText(getApplicationContext(), "ERROR", Toast.LENGTH_SHORT).show();
         }
     }
+
+    private void showCatDialog(){
+        Dialog dialog;
+        final String[] items = {" Queen!", " Fake Queen", " Draw big Pipi", " Do u know da wey", " You dono da wey"};
+        final ArrayList itemsSelected = new ArrayList();
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Select Categories for Queen: ");
+        builder.setMultiChoiceItems(items, null,
+                new DialogInterface.OnMultiChoiceClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int selectedItemId,
+                                        boolean isSelected) {
+                        if (isSelected) {
+                            itemsSelected.add(selectedItemId);
+                        } else if (itemsSelected.contains(selectedItemId)) {
+                            itemsSelected.remove(Integer.valueOf(selectedItemId));
+                        }
+                    }
+                })
+                .setPositiveButton("Cluck!", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int id) {
+                        //Your logic when OK button is clicked
+                    }
+                })
+                .setNegativeButton("Spit!", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int id) {
+                    }
+                });
+        dialog = builder.create();
+        dialog.show();
+    }
+
 
     private void openDatePicker(){
         DialogFragment newFragment = new DatePickerFragment();
@@ -120,43 +160,6 @@ public class ItemActivity extends AppCompatActivity {
             public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
                 prio_id = prioritys.get(position).getWeight();
                 Toast.makeText(getApplicationContext(), "id: " + prioritys.get(position).getId() + " Weigth: " + prioritys.get(position).getWeight(), Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parentView) {
-                // your code here
-            }
-
-        });
-
-    }
-
-    private void initCatSpinner(){
-        final ArrayList<Category> categorys = dbh.getAllCategories();
-        ArrayList<String> names = new ArrayList<String>();
-
-
-        for(Category cat : categorys) {
-            names.add(cat.getName());
-            //  Toast.makeText(getApplicationContext(), prio.getName(), Toast.LENGTH_SHORT).show();
-        }
-
-
-        // Create an ArrayAdapter using the string array and a default spinner layout
-        ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this,
-                android.R.layout.simple_spinner_item, names);
-        // Specify the layout to use when the list of choices appears
-        dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        // Apply the adapter to the spinner
-        spinnerCat.setAdapter(dataAdapter);
-
-        spinnerCat.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
-                //TODO geht nur mit einer
-                cat_ids[0] = categorys.get(position).getId();
-                Toast.makeText(getApplicationContext(), "id: " + categorys.get(position).getId() + " Name: " + categorys.get(position).getName(), Toast.LENGTH_SHORT).show();
-
             }
 
             @Override
