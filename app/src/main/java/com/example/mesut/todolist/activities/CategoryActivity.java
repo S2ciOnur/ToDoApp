@@ -7,14 +7,22 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.Toast;
 
 import com.example.mesut.todolist.R;
+import com.example.mesut.todolist.core.Category;
 import com.example.mesut.todolist.db.DatabaseHelper;
+import com.example.mesut.todolist.util.CatListAdapter;
+
+import java.util.ArrayList;
 
 public class CategoryActivity extends AppCompatActivity {
 
     private DatabaseHelper dbh;
+    private ArrayList<Category> cats;
+    private CatListAdapter catListAdapter;
+    private ListView listView;
 
     private static final String TAG = "CategoryActivity";
 
@@ -24,6 +32,11 @@ public class CategoryActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_category);
         dbh = new DatabaseHelper(this);
+
+        cats = dbh.getAllCategories();
+        catListAdapter = new CatListAdapter(this, R.layout.layout_category_settings, cats);
+        listView = (ListView) findViewById(R.id.simpleListView);
+        listView.setAdapter(catListAdapter);
     }
 
     public void onClick(View v){

@@ -32,8 +32,8 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         dbh = new DatabaseHelper(this);
-        todos = dbh.getAllTodos();
 
+        todos = dbh.getAllTodos();
         todoListAdapter = new TodoListAdapter(this,R.layout.layout_todolist, todos);
 
         listView = (ListView) findViewById(R.id.simpleListView);

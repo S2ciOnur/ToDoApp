@@ -4,23 +4,29 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.Toast;
 
 import com.example.mesut.todolist.R;
 import com.example.mesut.todolist.core.Priority;
 import com.example.mesut.todolist.db.DatabaseHelper;
+import com.example.mesut.todolist.util.PrioListAdapter;
+import com.example.mesut.todolist.util.TodoListAdapter;
 
 import java.util.ArrayList;
 
 public class PriorityActivity extends AppCompatActivity {
+    private static final String TAG = "PriorityActivity";
 
     private DatabaseHelper dbh = null;
     private ArrayList<Priority> prios;
+    private PrioListAdapter prioListAdapter;
+    private ListView listView;
 
-    private static final String TAG = "PriorityActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,6 +39,11 @@ public class PriorityActivity extends AppCompatActivity {
         //prios = dbh.getAllPriorities();
         //dbh.createPriority("NET SO WICHTIG" , -3);
         //dbh.deletePrio(prios.get(1).getId());
+
+        prios = dbh.getAllPriorities();
+        prioListAdapter = new PrioListAdapter(this, R.layout.layout_priority_settings, prios);
+        listView = (ListView) findViewById(R.id.simpleListView);
+        listView.setAdapter(prioListAdapter);
     }
 
     public void onClick(View v){

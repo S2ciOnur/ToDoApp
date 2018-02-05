@@ -112,7 +112,7 @@ public class ItemActivity extends AppCompatActivity {
                 .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int id) {
-                        //Your logic when OK button is clicked
+
                     }
                 })
                 .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
