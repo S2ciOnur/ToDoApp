@@ -23,7 +23,11 @@ import com.example.mesut.todolist.core.Priority;
 import com.example.mesut.todolist.db.DatabaseHelper;
 import com.example.mesut.todolist.util.DatePickerFragment;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 
 public class ItemActivity extends AppCompatActivity {
     private static final String TAG = "ItemActivity";
@@ -39,6 +43,7 @@ public class ItemActivity extends AppCompatActivity {
 
     private int prio_id;
     private int[] cat_ids = new int[50];
+    int[] selectedIdDb = new int[50];
 
 
     @Override
@@ -82,18 +87,19 @@ public class ItemActivity extends AppCompatActivity {
     }
 
     private void showCatDialog(){
+
         Dialog dialog;
         final ArrayList<Category> categories = dbh.getAllCategories();
-        ArrayList<String> itemsList = new ArrayList<String>();
-        final ArrayList itemsSelected = new ArrayList();
+        final ArrayList<String> itemsList = new ArrayList<String>();
+        final ArrayList<Integer> itemsSelected = new ArrayList<Integer>();
 
         for(Category cat : categories) {
             itemsList.add(cat.getName());
-            //  Toast.makeText(getApplicationContext(), prio.getName(), Toast.LENGTH_SHORT).show();
+
+            //  Toast.makeText(getApplicationContext(),  itemsSelected.remove(Integer.valueOf(selectedItemId)), Toast.LENGTH_SHORT).show();
         }
 
-        String[] items = itemsList.toArray(new String[itemsList.size()]);
-
+        final String[] items = itemsList.toArray(new String[itemsList.size()]);
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Select Categories");
@@ -104,6 +110,8 @@ public class ItemActivity extends AppCompatActivity {
                                         boolean isSelected) {
                         if (isSelected) {
                             itemsSelected.add(selectedItemId);
+
+
                         } else if (itemsSelected.contains(selectedItemId)) {
                             itemsSelected.remove(Integer.valueOf(selectedItemId));
                         }
@@ -112,16 +120,51 @@ public class ItemActivity extends AppCompatActivity {
                 .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int id) {
+                       // Log.e(TAG, "Selected Items: " + itemsSelected.toString());
 
-                    }
-                })
-                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int id) {
+                        int[] ids = new int[itemsSelected.size()];
+
+
+                        for(int i = 0; i < ids.length; i++){
+
+                            ids[i] = itemsSelected.get(i).intValue();
+
+                        }
+                        //Log.e(TAG, "ID Array Laenge: " + ids.length);
+                        writeInIntArray(categories, ids);
                     }
                 });
+
         dialog = builder.create();
         dialog.show();
+    }
+
+    /**
+     * nimmt die ID's der ausgewaehlten Kategorien aus der DB um diese im Save setzen zu koennen.
+     *
+     * @param selectedItemId hier stehen die positionen der ausgewaehlten checkboxen drinn (Lokale ID --> Position)
+     * @param  categories eine ArrayList mit allen Kategorien aus der DB
+     *
+     * ids[] in diesem Array stehen die ID's der ausgewaehlten Kategorien drin, wie sie in der DB gespeichert sind // !!nicht die Lokale ID (Position)!!
+     *
+     * Hash set wird genutzt um duplikate zu vermeiden.
+     */
+    private void writeInIntArray(ArrayList<Category> categories, int[] selectedItemId){
+        Set<Integer> set = new HashSet<Integer>();
+        int[] ids = new int[selectedItemId.length];
+
+       // Log.e(TAG, "Funktion, laenge" + selectedItemId.length);
+
+        for(int i = 0; i < selectedItemId.length; i++) {
+                //Log.e(TAG, "Kategorien: " + categories.get(selectedItemId[i]).getId());
+                set.add(categories.get(selectedItemId[i]).getId());
+        }
+
+        int i = 0;
+        for (Integer val : set){
+            ids[i++] = val;
+        }
+        Arrays.sort(ids);
     }
 
     private void openDatePicker(){

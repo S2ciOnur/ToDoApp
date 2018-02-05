@@ -75,6 +75,8 @@ public class MainActivity extends AppCompatActivity {
             case R.id.add_fab :
                 //TODO
                 //dbh.insertTestDataForDebug();
+                //dbh.deleteCat(1);
+                //dbh.deleteCat(0);
                 startItemActivity();
                 break;
             default :
