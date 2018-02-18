@@ -113,6 +113,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+
     private void startSettingsActivity(){
         Log.d(TAG, "Start new Activity: SettingsActivity");
         Intent intent = new Intent(this, SettingsActivity.class);
