@@ -14,7 +14,6 @@ import android.widget.Toast;
 
 import com.example.mesut.todolist.R;
 import com.example.mesut.todolist.core.Priority;
-import com.example.mesut.todolist.core.Todo;
 import com.example.mesut.todolist.db.DatabaseHelper;
 import com.example.mesut.todolist.util.PrioListAdapter;
 
@@ -29,7 +28,6 @@ public class PriorityActivity extends AppCompatActivity {
     private ListView listView;
     private String prioName = "";
     private String prioWeight = "";
-
 
 
     @Override
@@ -69,7 +67,6 @@ public class PriorityActivity extends AppCompatActivity {
                 dbh.deletePrio(priorityId);
                 prioName = "";
                 prioWeight = "";
-                update();
             }
         });
 
