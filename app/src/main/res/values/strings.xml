@@ -8,6 +8,8 @@
     <string name="txt_date">Ablaufdatum</string>
     <string name="btn_save">Speichern</string>
     <string name="btn_cancel">Abbrechen</string>
+    <string name="btn_done">Done</string>
+    <string name="btn_delete">Delete</string>
 
     <string-array name="string_size_Array">
         <item>px</item>
