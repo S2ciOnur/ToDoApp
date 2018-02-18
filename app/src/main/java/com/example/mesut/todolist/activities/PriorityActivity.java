@@ -65,7 +65,8 @@ public class PriorityActivity extends AppCompatActivity {
                 prioWeight = prioGewicht + "";
 
                 newPriority(prioName, prioWeight);
-                dbh.deletePrio(clickedPrio.getId());
+                Integer priorityId = new Integer(clickedPrio.getId());
+                dbh.deletePrio(priorityId);
                 prioName = "";
                 prioWeight = "";
             }
