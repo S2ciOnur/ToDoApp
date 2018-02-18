@@ -64,18 +64,6 @@ public class PriorityActivity extends AppCompatActivity {
                 int prioGewicht = clickedPrio.getWeight();
                 prioWeight = prioGewicht + "";
 
-                /*Intent intent = new Intent(PriorityActivity.this, PriorityActivity.class);
-
-                //Sending data to another Activity
-                intent.putExtra("title", clickedPrio.getName());
-                intent.putExtra("weigth", clickedPrio.getWeight());
-                intent.putExtra("prio_id", clickedPrio.getId());
-
-
-                //Log.e("n", inputName.getText()+"."+ inputEmail.getText());
-
-                startActivity(intent);*/
-
                 newPriority(prioName, prioWeight);
                 dbh.deletePrio(clickedPrio.getId());
                 prioName = "";
