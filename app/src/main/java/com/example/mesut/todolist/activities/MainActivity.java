@@ -8,7 +8,9 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.mesut.todolist.R;
@@ -36,8 +38,35 @@ public class MainActivity extends AppCompatActivity {
         todos = dbh.getAllTodos();
         todoListAdapter = new TodoListAdapter(this,R.layout.layout_todolist, todos);
 
+        //TODO INITLIST
         listView = (ListView) findViewById(R.id.simpleListView);
         listView.setAdapter(todoListAdapter);
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+
+                Todo clickedTodo = todos.get((int) l);
+
+                String todoText = "ArrayID: " + l + " Todo: " + clickedTodo.toString();
+                Toast.makeText(MainActivity.this, todoText, Toast.LENGTH_SHORT).show();
+
+                Intent intent = new Intent(getApplicationContext(), ItemActivity.class);
+
+                //Sending data to another Activity
+                intent.putExtra("title", clickedTodo.getTitle());
+                intent.putExtra("desc", clickedTodo.getDesc());
+                intent.putExtra("date", clickedTodo.getDate());
+                intent.putExtra("prio_id", clickedTodo.getPrio_id());
+
+
+                //Log.e("n", inputName.getText()+"."+ inputEmail.getText());
+
+                startActivity(intent);
+            }
+        });
+
+        //TODO ENDINITLIST
 
     }
 

@@ -14,6 +14,12 @@ public class Priority {
     public  Priority(){
     }
 
+    @Override
+    public String toString(){
+        String s = id + "-" + name + "-" + weight;
+        return s;
+    }
+
     public int getId() {
         return id;
     }

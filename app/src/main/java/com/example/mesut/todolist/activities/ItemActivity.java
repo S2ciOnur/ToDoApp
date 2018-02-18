@@ -43,7 +43,7 @@ public class ItemActivity extends AppCompatActivity {
 
     private int prio_id;
     private int[] cat_ids = new int[50];
-    int[] selectedIdDb = new int[50];
+    private int[] selectedIdDb = new int[50];
 
 
     @Override
@@ -61,6 +61,17 @@ public class ItemActivity extends AppCompatActivity {
 
         initPrioSpinner();
 
+        Intent intent = getIntent();
+        // Receiving the Data
+        String intentTitle = intent.getStringExtra("title");
+        String intentDesc = intent.getStringExtra("desc");
+        String intentDate = intent.getStringExtra("date");
+        Log.e("Second Screen", intentTitle + "." + intentDesc + "." + intentDate);
+
+        // Displaying Received data
+        txtTitle.setText(intentTitle);
+        txtDesc.setText(intentDesc);
+        buttonDate.setText(intentDate);
     }
 
     public void onClick(View v){
@@ -165,6 +176,7 @@ public class ItemActivity extends AppCompatActivity {
             ids[i++] = val;
         }
         Arrays.sort(ids);
+        cat_ids = ids;
     }
 
     private void openDatePicker(){

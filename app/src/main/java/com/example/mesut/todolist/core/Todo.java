@@ -14,6 +14,12 @@ public class Todo {
 
     public Todo(){}
 
+    @Override
+    public String toString(){
+        String s = id + "-" + title + "-" + desc + "-" + date + "-" + prio_id;
+        return s;
+    }
+
     public int getId() {
         return id;
     }

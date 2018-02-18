@@ -12,6 +12,12 @@ public class Category {
     public Category(){
     }
 
+    @Override
+    public String toString(){
+        String s = id + "-" + name;
+        return s;
+    }
+
 
     public int getId() {
         return id;

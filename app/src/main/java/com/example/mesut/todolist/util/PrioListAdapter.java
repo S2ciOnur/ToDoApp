@@ -14,6 +14,7 @@ import java.util.ArrayList;
 
 /**
  * Created by Janik on 05.02.2018.
+ *
  */
 public class PrioListAdapter extends ArrayAdapter {
     private Context context;
