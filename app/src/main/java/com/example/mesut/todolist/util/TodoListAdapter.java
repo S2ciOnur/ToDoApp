@@ -48,7 +48,7 @@ public class TodoListAdapter extends ArrayAdapter{
             holder.txtTitle = (TextView) convertView.findViewById(R.id.titleTextView);
             holder.txtDesc = (TextView) convertView.findViewById(R.id.descTextView);
             holder.txtPrio =(TextView) convertView.findViewById(R.id.prioTextView);
-            holder.txtDate =(TextView) convertView.findViewById(R.id.datetextView);
+            holder.txtDate =(TextView) convertView.findViewById(R.id.dateTextView);
             convertView.setTag(holder);
 
         }
@@ -61,9 +61,8 @@ public class TodoListAdapter extends ArrayAdapter{
         holder.txtDesc.setText(todo.getDesc());
         //TODO
         holder.txtPrio.setText(todo.getPrio_id() + "");
-        holder.txtPrio.setText(todo.getDate() + "");
+        holder.txtDate.setText(todo.getDate());
         return convertView;
-
 
     }
 }

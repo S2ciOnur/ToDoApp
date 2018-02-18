@@ -66,7 +66,7 @@ public class PriorityActivity extends AppCompatActivity {
 
                 newPriority(prioName, prioWeight);
                 Integer priorityId = new Integer(clickedPrio.getId());
-                dbh.deletePrio(priorityId);
+                //dbh.deletePrio(priorityId);
                 prioName = "";
                 prioWeight = "";
             }
@@ -125,6 +125,7 @@ public class PriorityActivity extends AppCompatActivity {
                 //pass
             }
         });
+
         AlertDialog b = dialogBuilder.create();
         b.show();
     }

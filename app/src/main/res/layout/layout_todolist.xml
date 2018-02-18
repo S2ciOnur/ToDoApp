@@ -18,6 +18,13 @@
         android:layout_weight="1"
         android:text="Beschreibung" />
 
+    <TextView
+        android:id="@+id/prioTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="Priorität" />
+
 
     <TextView
         android:id="@+id/dateTextView"
@@ -26,11 +33,5 @@
         android:layout_weight="1"
         android:text="Datum" />
 
-    <TextView
-        android:id="@+id/prioTextView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:text="Priorität" />
 
 </LinearLayout>

@@ -333,9 +333,20 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return true;
     }
 
-    public Integer deletePrio(Integer id) {
+    public boolean deletePrio(Integer id) {
         SQLiteDatabase db = this.getWritableDatabase();
-        return db.delete(CAT_TABLE_NAME, "id = ? ", new String[]{Integer.toString(id)});
+        try {
+            db.delete(PRIO_TABLE_NAME, "id = ? ", new String[]{Integer.toString(id)});
+        }catch (SQLException ex){
+            Log.e(TAG, "Couldn't delete PRIO with id = " + id.toString());
+            return false;
+        }
+        return true;
+    }
+
+    public Integer deletePrioGay(Integer id) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        return db.delete(PRIO_TABLE_NAME, "id = ? ", new String[]{Integer.toString(id)});
     }
 
     public Integer deleteTodoGay(Integer id) {
