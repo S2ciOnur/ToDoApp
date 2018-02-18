@@ -66,12 +66,23 @@ public class PriorityActivity extends AppCompatActivity {
 
                 newPriority(prioName, prioWeight);
                 Integer priorityId = new Integer(clickedPrio.getId());
-                //dbh.deletePrio(priorityId);
+                dbh.deletePrio(priorityId);
                 prioName = "";
                 prioWeight = "";
+                update();
             }
         });
 
+
+    }
+
+    private void update() {
+
+        Intent intent = getIntent();
+
+        finish();
+
+        startActivity(intent);
 
     }
 
@@ -134,8 +145,6 @@ public class PriorityActivity extends AppCompatActivity {
         Toast.makeText(getApplicationContext(), usersNewCategory, Toast.LENGTH_SHORT).show();
         Toast.makeText(getApplicationContext(), priorityWeight.toString(), Toast.LENGTH_SHORT).show();
         dbh.createPriority(usersNewCategory, priorityWeight);
-        Intent intent = getIntent();
-        finish();
-        startActivity(intent);
+        update();
     }
 }
