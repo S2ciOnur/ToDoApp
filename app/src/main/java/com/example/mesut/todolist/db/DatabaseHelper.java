@@ -134,56 +134,76 @@ public class DatabaseHelper extends SQLiteOpenHelper {
      */
 
     public boolean createTodo(String title, String desc, String date, int prio_id, int [] cat_ids) {
-        SQLiteDatabase db = this.getWritableDatabase();
-        ContentValues values = new ContentValues();
+        try {
+            SQLiteDatabase db = this.getWritableDatabase();
+            ContentValues values = new ContentValues();
 
-        values.put(TITLE_TODO_NAME, title);
-        values.put(DESC_TODO_NAME, desc);
-        values.put(DATE_TODO_NAME, date);
-        values.put(PRIO_TODO_NAME, prio_id);
+            values.put(TITLE_TODO_NAME, title);
+            values.put(DESC_TODO_NAME, desc);
+            values.put(DATE_TODO_NAME, date);
+            values.put(PRIO_TODO_NAME, prio_id);
 
-        int todo_id =  (int) db.insert(TODO_TABLE_NAME, null, values);
+            int todo_id = (int) db.insert(TODO_TABLE_NAME, null, values);
 
-        for (int cat_id : cat_ids) {
-            createTodoCat(todo_id, cat_id);
+            for (int cat_id : cat_ids) {
+                createTodoCat(todo_id, cat_id);
+            }
+
+            return true;
+        }catch (SQLException ex){
+            Log.e(TAG, "Couldn't create new TODO with title=" + title + ".\n" + ex);
+            return false;
         }
-
-        return true;
     }
 
     public boolean createCategory(String name) {
-        SQLiteDatabase db = this.getWritableDatabase();
-        ContentValues values = new ContentValues();
+        try {
+            SQLiteDatabase db = this.getWritableDatabase();
+            ContentValues values = new ContentValues();
 
-        values.put(NAME_CAT_NAME, name);
+            values.put(NAME_CAT_NAME, name);
 
-        db.insert(CAT_TABLE_NAME, null, values);
+            db.insert(CAT_TABLE_NAME, null, values);
 
-        return true;
+            return true;
+        }catch (SQLException ex){
+            Log.e(TAG, "Couldn't create new TODO with name=" + name + ".\n" + ex);
+            return false;
+        }
     }
 
     public boolean createPriority(String name, int weight) {
-        SQLiteDatabase db = this.getWritableDatabase();
-        ContentValues values = new ContentValues();
+        try {
+            SQLiteDatabase db = this.getWritableDatabase();
+            ContentValues values = new ContentValues();
 
-        values.put(NAME_PRIO_NAME, name);
-        values.put(WEIGHT_PRIO_NAME, weight);
+            values.put(NAME_PRIO_NAME, name);
+            values.put(WEIGHT_PRIO_NAME, weight);
 
-        db.insert(PRIO_TABLE_NAME, null, values);
+            db.insert(PRIO_TABLE_NAME, null, values);
 
-        return true;
+            return true;
+        }catch (SQLException ex){
+            Log.e(TAG, "Couldn't create new PRIO with name=" + name + ".\n" + ex);
+            return false;
+        }
     }
 
     private boolean createTodoCat(int todo_id, int cat_id){
-        SQLiteDatabase db = this.getWritableDatabase();
-        ContentValues values = new ContentValues();
+        try {
+            SQLiteDatabase db = this.getWritableDatabase();
+            ContentValues values = new ContentValues();
 
-        values.put(TODO_ID_TODOCAT_NAME, todo_id);
-        values.put(CAT_ID_TODOCAT_NAME, cat_id);
+            values.put(TODO_ID_TODOCAT_NAME, todo_id);
+            values.put(CAT_ID_TODOCAT_NAME, cat_id);
 
-        db.insert(TODO_CAT_TABLE_NAME, null, values);
+            db.insert(TODO_CAT_TABLE_NAME, null, values);
 
-        return true;
+            return true;
+        }catch (SQLException ex){
+            Log.e(TAG, "Couldn't create new TODO_CAT with FATAL ERROR!\n" + ex);
+            return false;
+        }
     }
 
 
@@ -192,119 +212,196 @@ public class DatabaseHelper extends SQLiteOpenHelper {
      */
 
     public ArrayList<Todo> getAllTodos() {
-        ArrayList<Todo> todos = new ArrayList<Todo>();
-        String selectQuery = "SELECT  * FROM " + TODO_TABLE_NAME;
+        try {
+            ArrayList<Todo> todos = new ArrayList<Todo>();
+            String selectQuery = "SELECT  * FROM " + TODO_TABLE_NAME;
 
-        Log.e(TAG, selectQuery);
+            Log.e(TAG, selectQuery);
 
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor c = db.rawQuery(selectQuery, null);
+            SQLiteDatabase db = this.getReadableDatabase();
+            Cursor c = db.rawQuery(selectQuery, null);
 
-        // looping through all rows and adding to list
-        if (c.moveToFirst()) {
-            do {
-                Todo todo = new Todo();
-                todo.setId(c.getInt((c.getColumnIndex(ID_TODO_NAME))));
-                todo.setTitle((c.getString(c.getColumnIndex(TITLE_TODO_NAME))));
-                todo.setDesc((c.getString(c.getColumnIndex(DESC_TODO_NAME))));
-                todo.setDate((c.getString(c.getColumnIndex(DATE_TODO_NAME))));
-                todo.setPrio_id(c.getInt(c.getColumnIndex(PRIO_TODO_NAME)));
+            // looping through all rows and adding to list
+            if (c.moveToFirst()) {
+                do {
+                    Todo todo = new Todo();
+                    todo.setId(c.getInt((c.getColumnIndex(ID_TODO_NAME))));
+                    todo.setTitle((c.getString(c.getColumnIndex(TITLE_TODO_NAME))));
+                    todo.setDesc((c.getString(c.getColumnIndex(DESC_TODO_NAME))));
+                    todo.setDate((c.getString(c.getColumnIndex(DATE_TODO_NAME))));
+                    todo.setPrio_id(c.getInt(c.getColumnIndex(PRIO_TODO_NAME)));
 
-                // adding to todo list
-                todos.add(todo);
-            } while (c.moveToNext());
+                    // adding to todo list
+                    todos.add(todo);
+                } while (c.moveToNext());
+            }
+
+            return todos;
+        }catch (SQLException ex){
+            Log.e(TAG, "Couldn't get ALL TODOS.\n" + ex);
+            return null;
         }
-
-        return todos;
     }
 
     @Deprecated
     public ArrayList<Todo>getTodosFromCat(int cat_id){
+        try {
 
-        ArrayList<Todo> todos = new ArrayList<Todo>();
-        String selectQuery = "SELECT DISTINCT n.* " +
-                "FROM todo n, category g, todocat ng " +
-                "WHERE n.id = ng.todo_id " +
-                "AND ng.cat_id = " + cat_id;
+            ArrayList<Todo> todos = new ArrayList<Todo>();
+            String selectQuery = "SELECT DISTINCT n.* " +
+                    "FROM todo n, category g, todocat ng " +
+                    "WHERE n.id = ng.todo_id " +
+                    "AND ng.cat_id = " + cat_id;
 
-        Log.e(TAG, selectQuery);
+            Log.e(TAG, selectQuery);
 
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor c = db.rawQuery(selectQuery, null);
+            SQLiteDatabase db = this.getReadableDatabase();
+            Cursor c = db.rawQuery(selectQuery, null);
 
-        // looping through all rows and adding to list
-        if (c.moveToFirst()) {
-            do {
-                Todo todo = new Todo();
-                todo.setId(c.getInt((c.getColumnIndex(ID_TODO_NAME))));
-                todo.setTitle((c.getString(c.getColumnIndex(TITLE_TODO_NAME))));
-                todo.setDesc((c.getString(c.getColumnIndex(DESC_TODO_NAME))));
-                todo.setDate((c.getString(c.getColumnIndex(DATE_TODO_NAME))));
-                todo.setPrio_id(c.getInt(c.getColumnIndex(PRIO_TODO_NAME)));
+            // looping through all rows and adding to list
+            if (c.moveToFirst()) {
+                do {
+                    Todo todo = new Todo();
+                    todo.setId(c.getInt((c.getColumnIndex(ID_TODO_NAME))));
+                    todo.setTitle((c.getString(c.getColumnIndex(TITLE_TODO_NAME))));
+                    todo.setDesc((c.getString(c.getColumnIndex(DESC_TODO_NAME))));
+                    todo.setDate((c.getString(c.getColumnIndex(DATE_TODO_NAME))));
+                    todo.setPrio_id(c.getInt(c.getColumnIndex(PRIO_TODO_NAME)));
 
-                // adding to todo list
-                todos.add(todo);
-            } while (c.moveToNext());
+                    // adding to todo list
+                    todos.add(todo);
+                } while (c.moveToNext());
+            }
+
+            return todos;
+        }catch (SQLException ex){
+            Log.e(TAG, "Couldn't update TODO from Cat with id = " + cat_id + ".\n" + ex);
+            return null;
         }
-
-        return todos;
     }
 
     public ArrayList<Category> getAllCategories() {
-        ArrayList<Category> categories = new ArrayList<Category>();
-        String selectQuery = "SELECT  * FROM " + CAT_TABLE_NAME;
+        try {
+            ArrayList<Category> categories = new ArrayList<Category>();
+            String selectQuery = "SELECT  * FROM " + CAT_TABLE_NAME;
 
-        Log.e(TAG, selectQuery);
+            Log.e(TAG, selectQuery);
 
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor c = db.rawQuery(selectQuery, null);
+            SQLiteDatabase db = this.getReadableDatabase();
+            Cursor c = db.rawQuery(selectQuery, null);
 
-        // looping through all rows and adding to list
-        if (c.moveToFirst()) {
-            do {
-                Category cat = new Category();
-                cat.setId(c.getInt((c.getColumnIndex(ID_CAT_NAME))));
-                cat.setName((c.getString(c.getColumnIndex(NAME_CAT_NAME))));
+            // looping through all rows and adding to list
+            if (c.moveToFirst()) {
+                do {
+                    Category cat = new Category();
+                    cat.setId(c.getInt((c.getColumnIndex(ID_CAT_NAME))));
+                    cat.setName((c.getString(c.getColumnIndex(NAME_CAT_NAME))));
 
-                // adding to cat list
-                categories.add(cat);
-            } while (c.moveToNext());
+                    // adding to cat list
+                    categories.add(cat);
+                } while (c.moveToNext());
+            }
+            return categories;
+        }catch (SQLException ex){
+            Log.e(TAG, "Couldn't get ALL CATS.\n" + ex);
+            return null;
         }
-        return categories;
     }
 
     public ArrayList<Priority> getAllPriorities() {
-        ArrayList<Priority> priorities = new ArrayList<Priority>();
-        String selectQuery = "SELECT  *" +
-                             " FROM " + PRIO_TABLE_NAME +
-                             " ORDER BY " + WEIGHT_PRIO_NAME + " DESC";
+        try {
+            ArrayList<Priority> priorities = new ArrayList<Priority>();
+            String selectQuery = "SELECT  *" +
+                    " FROM " + PRIO_TABLE_NAME +
+                    " ORDER BY " + WEIGHT_PRIO_NAME + " DESC";
 
-        Log.e(TAG, selectQuery);
+            Log.e(TAG, selectQuery);
 
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor c = db.rawQuery(selectQuery, null);
+            SQLiteDatabase db = this.getReadableDatabase();
+            Cursor c = db.rawQuery(selectQuery, null);
 
-        // looping through all rows and adding to list
-        if (c.moveToFirst()) {
-            do {
-                Priority prio = new Priority();
-                prio.setId(c.getInt(c.getColumnIndex(ID_PRIO_NAME)));
-                prio.setName(c.getString(c.getColumnIndex(NAME_PRIO_NAME)));
-                prio.setWeight(c.getInt(c.getColumnIndex(WEIGHT_PRIO_NAME)));
+            // looping through all rows and adding to list
+            if (c.moveToFirst()) {
+                do {
+                    Priority prio = new Priority();
+                    prio.setId(c.getInt(c.getColumnIndex(ID_PRIO_NAME)));
+                    prio.setName(c.getString(c.getColumnIndex(NAME_PRIO_NAME)));
+                    prio.setWeight(c.getInt(c.getColumnIndex(WEIGHT_PRIO_NAME)));
 
-                // adding to cat list
-                priorities.add(prio);
-            } while (c.moveToNext());
+                    // adding to cat list
+                    priorities.add(prio);
+                } while (c.moveToNext());
+            }
+            return priorities;
+        }catch (SQLException ex){
+            Log.e(TAG, "Couldn't get ALL PRIOS.\n" + ex);
+            return null;
         }
-        return priorities;
     }
 
     /**
      * Updates
      */
 
-    //Scheiß auf Updates!
-    //UPDATE = DELETE + INSERT
+    public boolean updateTodo(int id, String title, String desc, String date, int prio_id, int [] cat_ids) {
+        try {
+            SQLiteDatabase db = this.getWritableDatabase();
+
+            ContentValues values = new ContentValues();
+            values.put(TITLE_TODO_NAME, title);
+            values.put(DESC_TODO_NAME, desc);
+            values.put(DATE_TODO_NAME, date);
+            values.put(PRIO_TODO_NAME, prio_id);
+
+            // updating row
+            db.update(TODO_TABLE_NAME, values, ID_TODO_NAME + " = ?", new String[]{String.valueOf(id)});
+
+            deleteTodoCatByTodoId(id);
+
+            for (int cat_id : cat_ids) {
+                createTodoCat(id, cat_id);
+            }
+            return true;
+        }catch (SQLException ex){
+            Log.e(TAG, "Couldn't update TODO with id = " + id + ".\n" + ex);
+            return false;
+        }
+    }
+
+    public boolean updatePrio(int id, String name, int weight) {
+        try {
+            SQLiteDatabase db = this.getWritableDatabase();
+
+            ContentValues values = new ContentValues();
+            values.put(NAME_PRIO_NAME, name);
+            values.put(WEIGHT_PRIO_NAME, weight);
+
+            // updating row
+            db.update(PRIO_TABLE_NAME, values, ID_PRIO_NAME + " = ?", new String[]{String.valueOf(id)});
+
+            return true;
+        }catch (SQLException ex){
+            Log.e(TAG, "Couldn't update PRIO with id = " + id + ".\n" + ex);
+            return false;
+        }
+    }
+
+    public boolean updateCat(int id, String name) {
+        try {
+            SQLiteDatabase db = this.getWritableDatabase();
+
+            ContentValues values = new ContentValues();
+            values.put(NAME_CAT_NAME, name);
+
+            // updating row
+            db.update(CAT_TABLE_NAME, values, ID_CAT_NAME + " = ?", new String[]{String.valueOf(id)});
+
+            return true;
+        }catch (SQLException ex){
+            Log.e(TAG, "Couldn't update CAT with id = " + id + ".\n" + ex);
+            return false;
+        }
+    }
 
     /**
      * Deletes
@@ -314,11 +411,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             SQLiteDatabase db = this.getWritableDatabase();
             db.delete(TODO_TABLE_NAME, "id = ? ", new String[]{Integer.toString(id)});
             db.delete(TODO_CAT_TABLE_NAME, "todo_id = ? ", new String[]{Integer.toString(id)});
+            return true;
         }catch (SQLException ex){
-            Log.e(TAG, "Couldn't delete TODO with id = " + id.toString());
+            Log.e(TAG, "Couldn't delete TODO with id = " + id.toString() + ".\n" + ex);
             return false;
         }
-        return true;
     }
 
     public boolean deleteCat(Integer id) {
@@ -326,22 +423,44 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         try {
             db.delete(CAT_TABLE_NAME, "id = ? ", new String[]{Integer.toString(id)});
             db.delete(TODO_CAT_TABLE_NAME, "cat_id = ? ", new String[]{Integer.toString(id)});
+            return true;
         }catch (SQLException ex){
             Log.e(TAG, "Couldn't delete CAT with id = " + id.toString());
             return false;
         }
-        return true;
     }
 
     public boolean deletePrio(Integer id) {
         SQLiteDatabase db = this.getWritableDatabase();
         try {
             db.delete(PRIO_TABLE_NAME, "id = ? ", new String[]{Integer.toString(id)});
+            return true;
         }catch (SQLException ex){
             Log.e(TAG, "Couldn't delete PRIO with id = " + id.toString());
             return false;
         }
-        return true;
+    }
+
+    private boolean deleteTodoCatByTodoId(Integer id){
+        SQLiteDatabase db = this.getWritableDatabase();
+        try {
+            db.delete(TODO_CAT_TABLE_NAME, "todo_id = ? ", new String[]{Integer.toString(id)});
+            return true;
+        }catch (SQLException ex){
+            Log.e(TAG, "Couldn't delete TODOCAT with todo_id = " + id.toString());
+            return false;
+        }
+    }
+
+    private boolean deleteTodoCatByCatId(Integer id){
+        SQLiteDatabase db = this.getWritableDatabase();
+        try {
+            db.delete(TODO_CAT_TABLE_NAME, "cat_id = ? ", new String[]{Integer.toString(id)});
+            return true;
+        }catch (SQLException ex){
+            Log.e(TAG, "Couldn't delete TODOCAT with cat_id = " + id.toString());
+            return false;
+        }
     }
 
     public Integer deletePrioGay(Integer id) {
