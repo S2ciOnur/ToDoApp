@@ -59,10 +59,8 @@ public class TodoListAdapter extends ArrayAdapter{
         Todo todo = todos.get(position);
         holder.txtTitle.setText(todo.getTitle());
         holder.txtDesc.setText(todo.getDesc());
-        //TODO
         holder.txtPrio.setText(todo.getPrio_id() + "");
         holder.txtDate.setText(todo.getDate());
         return convertView;
-
     }
 }

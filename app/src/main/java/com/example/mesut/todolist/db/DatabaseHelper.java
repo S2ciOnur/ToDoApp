@@ -509,6 +509,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     /**
+     * Counts
+     */
+
+
+    /**
      * Debug
      */
     public void insertTestDataForDebug() {
