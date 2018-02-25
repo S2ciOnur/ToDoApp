@@ -66,6 +66,46 @@ public class PriorityActivity extends AppCompatActivity {
             }
         });
 
+        listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Priority clickedPrio = prios.get((int) l);
+                priorityId = new Integer(clickedPrio.getId());
+                Toast.makeText(PriorityActivity.this, "LÖSCHE " + prios.get((int) l).getName() + "???", Toast.LENGTH_SHORT).show();
+                deleteAlert(priorityId);
+                return true;
+            }
+        });
+
+
+    }
+
+    private void deleteAlert(final Integer priorityId) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+        builder.setTitle("Confirm");
+        builder.setMessage("Are you sure to delete?");
+
+        builder.setPositiveButton("YES", new DialogInterface.OnClickListener() {
+
+            public void onClick(DialogInterface dialog, int which) {
+                dbh.deletePrio(priorityId);
+                updateScreen();
+                dialog.dismiss();
+            }
+        });
+
+        builder.setNegativeButton("NO", new DialogInterface.OnClickListener() {
+
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+                dialog.dismiss();
+            }
+        });
+
+        AlertDialog alert = builder.create();
+        alert.show();
 
     }
 

@@ -71,7 +71,7 @@ public class MainActivity extends AppCompatActivity {
             public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
                 Toast.makeText(MainActivity.this, "LÖSCHE " + todos.get((int) l).getTitle() + "???", Toast.LENGTH_SHORT).show();
                 deleteAlert();
-                return false;
+                return true;
             }
         });
 

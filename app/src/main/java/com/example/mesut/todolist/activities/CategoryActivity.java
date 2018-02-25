@@ -3,8 +3,8 @@ package com.example.mesut.todolist.activities;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
@@ -14,7 +14,6 @@ import android.widget.Toast;
 
 import com.example.mesut.todolist.R;
 import com.example.mesut.todolist.core.Category;
-import com.example.mesut.todolist.core.Priority;
 import com.example.mesut.todolist.db.DatabaseHelper;
 import com.example.mesut.todolist.util.CatListAdapter;
 
@@ -65,6 +64,46 @@ public class CategoryActivity extends AppCompatActivity {
                 newCategory(catId, catName);
             }
         });
+        listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Category clickedCat = cats.get((int) l);
+                catId = new Integer(clickedCat.getId());
+                Toast.makeText(CategoryActivity.this, "LÖSCHE " + cats.get((int) l).getName() + "???", Toast.LENGTH_SHORT).show();
+                deleteAlert(catId);
+                return true;
+            }
+        });
+
+
+    }
+
+    private void deleteAlert(final Integer catId) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+        builder.setTitle("Confirm");
+        builder.setMessage("Are you sure to delete?");
+
+        builder.setPositiveButton("YES", new DialogInterface.OnClickListener() {
+
+            public void onClick(DialogInterface dialog, int which) {
+                dbh.deleteCat(catId);
+                updateScreen();
+                dialog.dismiss();
+            }
+        });
+
+        builder.setNegativeButton("NO", new DialogInterface.OnClickListener() {
+
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+                dialog.dismiss();
+            }
+        });
+
+        AlertDialog alert = builder.create();
+        alert.show();
 
     }
 
