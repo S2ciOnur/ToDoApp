@@ -371,7 +371,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
     }
 
-    public  Priority getPrioById(int id){
+    public  String getPrioNameById(int id){
         try {
             SQLiteDatabase db = this.getReadableDatabase();
 
@@ -386,12 +386,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             if (c != null)
                 c.moveToFirst();
 
-            Priority prio = new Priority();
-            prio.setId(c.getInt(c.getColumnIndex(ID_PRIO_NAME)));
-            prio.setName((c.getString(c.getColumnIndex(NAME_PRIO_NAME))));
-            prio.setWeight(c.getInt(c.getColumnIndex(WEIGHT_PRIO_NAME)));
+            String s = c.getString(c.getColumnIndex(NAME_PRIO_NAME));
 
-            return prio;
+            return s;
         }catch (SQLException ex){
             Log.e(TAG, "Couldn't get PRIO with id = " + id + ".\n" + ex);
             return null;

@@ -1,7 +1,6 @@
 package com.example.mesut.todolist.util;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -63,11 +62,10 @@ public class TodoListAdapter extends ArrayAdapter{
         }
 
         Todo todo = todos.get(position);
-        Priority prio = dbh.getPrioById(todo.getPrio_id());
 
         holder.txtTitle.setText(todo.getTitle());
         holder.txtDesc.setText(todo.getDesc());
-        holder.txtPrio.setText(prio.getName());
+        //holder.txtPrio.setText(dbh.getPrioNameById(todo.getPrio_id()));
         holder.txtDate.setText(todo.getDate());
 
         holder.txtCats.setText(todo.catString());
