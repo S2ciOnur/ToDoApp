@@ -20,7 +20,6 @@
         <activity android:name=".activities.SettingsActivity" />
         <activity android:name=".activities.CategoryActivity" />
         <activity android:name=".activities.PriorityActivity" />
-        <activity android:name=".activities.StartActivity" />
     </application>
 
 </manifest>

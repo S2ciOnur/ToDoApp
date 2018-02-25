@@ -1,6 +1,7 @@
 package com.example.mesut.todolist.util;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,7 +9,9 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import com.example.mesut.todolist.R;
+import com.example.mesut.todolist.core.Priority;
 import com.example.mesut.todolist.core.Todo;
+import com.example.mesut.todolist.db.DatabaseHelper;
 
 import java.util.ArrayList;
 
@@ -19,6 +22,7 @@ import java.util.ArrayList;
 public class TodoListAdapter extends ArrayAdapter{
     private Context context;
     private ArrayList<Todo> todos;
+    private DatabaseHelper dbh;
 
     public TodoListAdapter(Context context, int textViewResourceId, ArrayList objects) {
         super(context,textViewResourceId, objects);
@@ -33,6 +37,7 @@ public class TodoListAdapter extends ArrayAdapter{
         TextView txtDesc;
         TextView txtPrio;
         TextView txtDate;
+        TextView txtCats;
     }
 
     @Override
@@ -49,6 +54,7 @@ public class TodoListAdapter extends ArrayAdapter{
             holder.txtDesc = (TextView) convertView.findViewById(R.id.descTextView);
             holder.txtPrio =(TextView) convertView.findViewById(R.id.prioTextView);
             holder.txtDate =(TextView) convertView.findViewById(R.id.dateTextView);
+            holder.txtCats = (TextView) convertView.findViewById(R.id.catsTextView);
             convertView.setTag(holder);
 
         }
@@ -57,10 +63,15 @@ public class TodoListAdapter extends ArrayAdapter{
         }
 
         Todo todo = todos.get(position);
+        Priority prio = dbh.getPrioById(todo.getPrio_id());
+
         holder.txtTitle.setText(todo.getTitle());
         holder.txtDesc.setText(todo.getDesc());
-        holder.txtPrio.setText(todo.getPrio_id() + "");
+        holder.txtPrio.setText(prio.getName());
         holder.txtDate.setText(todo.getDate());
+
+        holder.txtCats.setText(todo.catString());
+
         return convertView;
     }
 }

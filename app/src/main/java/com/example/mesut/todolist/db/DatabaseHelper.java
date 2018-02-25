@@ -230,8 +230,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                     todo.setDesc((c.getString(c.getColumnIndex(DESC_TODO_NAME))));
                     todo.setDate((c.getString(c.getColumnIndex(DATE_TODO_NAME))));
                     todo.setPrio_id(c.getInt(c.getColumnIndex(PRIO_TODO_NAME)));
+                    todo.setCats(getCatsFromTodo(todo.getId()));
 
-                    // adding to todo list
                     todos.add(todo);
                 } while (c.moveToNext());
             }
@@ -243,8 +243,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
     }
 
-    @Deprecated
-    public ArrayList<Todo>getTodosFromCat(int cat_id){
+    public ArrayList<Todo> getTodosFromCat(int cat_id){
         try {
 
             ArrayList<Todo> todos = new ArrayList<Todo>();
@@ -280,6 +279,39 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
     }
 
+    public ArrayList<Category> getCatsFromTodo(int todo_id){
+        try {
+
+            ArrayList<Category> cats = new ArrayList<Category>();
+            String selectQuery = "SELECT DISTINCT n.* " +
+                    "FROM category n, todo g, todocat ng " +
+                    "WHERE n.id = ng.cat_id " +
+                    "AND ng.todo_id = " + todo_id;
+
+            Log.e(TAG, selectQuery);
+
+            SQLiteDatabase db = this.getReadableDatabase();
+            Cursor c = db.rawQuery(selectQuery, null);
+
+            // looping through all rows and adding to list
+            if (c.moveToFirst()) {
+                do {
+                    Category cat = new Category();
+                    cat.setId(c.getInt((c.getColumnIndex(ID_CAT_NAME))));
+                    cat.setName(c.getString(c.getColumnIndex(NAME_CAT_NAME)));
+
+                    cats.add(cat);
+                } while (c.moveToNext());
+            }
+
+            Log.e(TAG,"ID: " + todo_id + " " +  cats.toString());
+            return cats;
+        }catch (SQLException ex){
+            Log.e(TAG, "Couldn't update CATS from todo with id = " + todo_id + ".\n" + ex);
+            return null;
+        }
+    }
+
     public ArrayList<Category> getAllCategories() {
         try {
             ArrayList<Category> categories = new ArrayList<Category>();
@@ -294,8 +326,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             if (c.moveToFirst()) {
                 do {
                     Category cat = new Category();
-                    cat.setId(c.getInt((c.getColumnIndex(ID_CAT_NAME))));
-                    cat.setName((c.getString(c.getColumnIndex(NAME_CAT_NAME))));
+                    cat.setId(c.getInt(c.getColumnIndex(ID_CAT_NAME)));
+                    cat.setName(c.getString(c.getColumnIndex(NAME_CAT_NAME)));
 
                     // adding to cat list
                     categories.add(cat);
@@ -335,6 +367,33 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             return priorities;
         }catch (SQLException ex){
             Log.e(TAG, "Couldn't get ALL PRIOS.\n" + ex);
+            return null;
+        }
+    }
+
+    public  Priority getPrioById(int id){
+        try {
+            SQLiteDatabase db = this.getReadableDatabase();
+
+            String selectQuery = "SELECT  * " +
+                    "FROM " + PRIO_TABLE_NAME
+                    + " WHERE " + ID_PRIO_NAME + " = " + id;
+
+            Log.e(TAG, selectQuery);
+
+            Cursor c = db.rawQuery(selectQuery, null);
+
+            if (c != null)
+                c.moveToFirst();
+
+            Priority prio = new Priority();
+            prio.setId(c.getInt(c.getColumnIndex(ID_PRIO_NAME)));
+            prio.setName((c.getString(c.getColumnIndex(NAME_PRIO_NAME))));
+            prio.setWeight(c.getInt(c.getColumnIndex(WEIGHT_PRIO_NAME)));
+
+            return prio;
+        }catch (SQLException ex){
+            Log.e(TAG, "Couldn't get PRIO with id = " + id + ".\n" + ex);
             return null;
         }
     }

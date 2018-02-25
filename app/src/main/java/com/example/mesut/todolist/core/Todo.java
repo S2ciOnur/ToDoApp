@@ -1,5 +1,7 @@
 package com.example.mesut.todolist.core;
 
+import java.util.ArrayList;
+
 /**
  * Created by Janik on 24.01.2018.
  */
@@ -11,8 +13,20 @@ public class Todo {
     private String desc;
     private String date;
     private int prio_id;
+    private ArrayList<Category> cats = new ArrayList<Category>();
 
     public Todo(){}
+
+    public String catString(){
+        String s = "";
+
+        for(Category cat : cats){
+            s += "[" + cat.getName() + "] ";
+        }
+
+        return s;
+    }
+
 
     @Override
     public String toString(){
@@ -58,6 +72,14 @@ public class Todo {
 
     public void setPrio_id(int prio_id) {
         this.prio_id = prio_id;
+    }
+
+    public ArrayList<Category> getCats() {
+        return cats;
+    }
+
+    public void setCats(ArrayList<Category> cats) {
+        this.cats = cats;
     }
 
 }
