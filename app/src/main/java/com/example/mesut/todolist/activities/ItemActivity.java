@@ -6,8 +6,8 @@ import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -23,7 +23,6 @@ import com.example.mesut.todolist.core.Priority;
 import com.example.mesut.todolist.db.DatabaseHelper;
 import com.example.mesut.todolist.util.DatePickerFragment;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -74,37 +73,37 @@ public class ItemActivity extends AppCompatActivity {
         buttonDate.setText(intentDate);
     }
 
-    public void onClick(View v){
-        switch(v.getId()) {
-            case R.id.cancel_button :
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.cancel_button:
                 Log.d(TAG, "Abbrechen");
                 startMainActivity();
                 break;
-            case R.id.save_button :
+            case R.id.save_button:
                 Log.d(TAG, "Speichern");
                 saveItem();
                 break;
-            case R.id.date_button :
+            case R.id.date_button:
                 Log.d(TAG, "Open Datepicker");
                 openDatePicker();
                 break;
-            case R.id.cat_button :
+            case R.id.cat_button:
                 Log.d(TAG, "Open CatAlertDialog");
                 showCatDialog();
                 break;
-            default :
+            default:
                 Toast.makeText(getApplicationContext(), "ERROR", Toast.LENGTH_SHORT).show();
         }
     }
 
-    private void showCatDialog(){
+    private void showCatDialog() {
 
         Dialog dialog;
         final ArrayList<Category> categories = dbh.getAllCategories();
         final ArrayList<String> itemsList = new ArrayList<String>();
         final ArrayList<Integer> itemsSelected = new ArrayList<Integer>();
 
-        for(Category cat : categories) {
+        for (Category cat : categories) {
             itemsList.add(cat.getName());
 
             //  Toast.makeText(getApplicationContext(),  itemsSelected.remove(Integer.valueOf(selectedItemId)), Toast.LENGTH_SHORT).show();
@@ -131,12 +130,12 @@ public class ItemActivity extends AppCompatActivity {
                 .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int id) {
-                       // Log.e(TAG, "Selected Items: " + itemsSelected.toString());
+                        // Log.e(TAG, "Selected Items: " + itemsSelected.toString());
 
                         int[] ids = new int[itemsSelected.size()];
 
 
-                        for(int i = 0; i < ids.length; i++){
+                        for (int i = 0; i < ids.length; i++) {
 
                             ids[i] = itemsSelected.get(i).intValue();
 
@@ -154,37 +153,34 @@ public class ItemActivity extends AppCompatActivity {
      * nimmt die ID's der ausgewaehlten Kategorien aus der DB um diese im Save setzen zu koennen.
      *
      * @param selectedItemId hier stehen die positionen der ausgewaehlten checkboxen drinn (Lokale ID --> Position)
-     * @param  categories eine ArrayList mit allen Kategorien aus der DB
-     *
-     * ids[] in diesem Array stehen die ID's der ausgewaehlten Kategorien drin, wie sie in der DB gespeichert sind // !!nicht die Lokale ID (Position)!!
-     *
-     * Hash set wird genutzt um duplikate zu vermeiden.
+     * @param categories     eine ArrayList mit allen Kategorien aus der DB
+     *                       <p>
+     *                       ids[] in diesem Array stehen die ID's der ausgewaehlten Kategorien drin, wie sie in der DB gespeichert sind // !!nicht die Lokale ID (Position)!!
+     *                       <p>
+     *                       Hash set wird genutzt um duplikate zu vermeiden.
      */
-    private void writeInIntArray(ArrayList<Category> categories, int[] selectedItemId){
+    private void writeInIntArray(ArrayList<Category> categories, int[] selectedItemId) {
         Set<Integer> set = new HashSet<Integer>();
         int[] ids = new int[selectedItemId.length];
 
-       // Log.e(TAG, "Funktion, laenge" + selectedItemId.length);
-
-        for(int i = 0; i < selectedItemId.length; i++) {
-                //Log.e(TAG, "Kategorien: " + categories.get(selectedItemId[i]).getId());
-                set.add(categories.get(selectedItemId[i]).getId());
+        for (int i = 0; i < selectedItemId.length; i++) {
+            set.add(categories.get(selectedItemId[i]).getId());
         }
 
         int i = 0;
-        for (Integer val : set){
+        for (Integer val : set) {
             ids[i++] = val;
         }
         Arrays.sort(ids);
         cat_ids = ids;
     }
 
-    private void openDatePicker(){
+    private void openDatePicker() {
         DialogFragment newFragment = new DatePickerFragment();
-        newFragment.show(getFragmentManager(),"Date Picker");
+        newFragment.show(getFragmentManager(), "Date Picker");
     }
 
-    private void saveItem(){
+    private void saveItem() {
         String newTitle = txtTitle.getText().toString();
         String newDesc = txtDesc.getText().toString();
         String newDate = buttonDate.getText().toString();
@@ -195,19 +191,18 @@ public class ItemActivity extends AppCompatActivity {
         startMainActivity();
     }
 
-    private void startMainActivity(){
+    private void startMainActivity() {
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
     }
 
-    private void initPrioSpinner(){
+    private void initPrioSpinner() {
         final ArrayList<Priority> prioritys = dbh.getAllPriorities();
         ArrayList<String> names = new ArrayList<String>();
 
 
-        for(Priority prio : prioritys) {
+        for (Priority prio : prioritys) {
             names.add(prio.getName());
-          //  Toast.makeText(getApplicationContext(), prio.getName(), Toast.LENGTH_SHORT).show();
         }
 
 

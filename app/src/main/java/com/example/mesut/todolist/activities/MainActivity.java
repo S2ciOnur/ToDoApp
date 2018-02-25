@@ -113,10 +113,7 @@ public class MainActivity extends AppCompatActivity {
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.add_fab:
-                //TODO
-                //dbh.insertTestDataForDebug();
-                //dbh.deleteCat(1);
-                //dbh.deleteCat(0);
+
                 startItemActivity();
                 break;
             default:
@@ -147,7 +144,6 @@ public class MainActivity extends AppCompatActivity {
 
             public void onClick(DialogInterface dialog, int which) {
                 // Do nothing but close the dialog
-
                 dialog.dismiss();
             }
         });
@@ -157,7 +153,6 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(DialogInterface dialog, int which) {
 
-                // Do nothing
                 dialog.dismiss();
             }
         });

@@ -28,6 +28,8 @@ public class PriorityActivity extends AppCompatActivity {
     private ListView listView;
     private String prioName = "";
     private String prioWeight = "";
+    private Integer priorityId;
+    private boolean newElement = true;
 
 
     @Override
@@ -36,11 +38,6 @@ public class PriorityActivity extends AppCompatActivity {
         setContentView(R.layout.activity_category);
 
         dbh = new DatabaseHelper(this);
-
-        //TODO: Beispiel Datenbankhelper für Prio wie man was macht
-        //prios = dbh.getAllPriorities();
-        //dbh.createPriority("NET SO WICHTIG" , -3);
-        //dbh.deletePrio(prios.get(1).getId());
 
         prios = dbh.getAllPriorities();
         prioListAdapter = new PrioListAdapter(this, R.layout.layout_priority_settings, prios);
@@ -62,18 +59,17 @@ public class PriorityActivity extends AppCompatActivity {
                 int prioGewicht = clickedPrio.getWeight();
                 prioWeight = prioGewicht + "";
 
-                newPriority(prioName, prioWeight);
-                Integer priorityId = new Integer(clickedPrio.getId());
-                dbh.deletePrio(priorityId);
-                prioName = "";
-                prioWeight = "";
+                priorityId = new Integer(clickedPrio.getId());
+                newElement = false;
+
+                newPriority(priorityId, prioName, prioWeight);
             }
         });
 
 
     }
 
-    private void update() {
+    private void updateScreen() {
 
         Intent intent = getIntent();
 
@@ -86,14 +82,14 @@ public class PriorityActivity extends AppCompatActivity {
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.add_fab:
-                newPriority(prioName, prioWeight);
+                newPriority(priorityId, prioName, prioWeight);
                 break;
             default:
                 Toast.makeText(getApplicationContext(), "ERROR", Toast.LENGTH_SHORT).show();
         }
     }
 
-    private void newPriority(String iva_prioName, String iva_prioWeight) {
+    private void newPriority(final Integer priorityId, final String iva_prioName, String iva_prioWeight) {
         AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
         LayoutInflater inflater = this.getLayoutInflater();
         final View dialogView = inflater.inflate(R.layout.priority_alert, null);
@@ -102,17 +98,11 @@ public class PriorityActivity extends AppCompatActivity {
         final EditText userInput = (EditText) dialogView.findViewById(R.id.userInputnewPrio);
         final EditText prioWeight = (EditText) dialogView.findViewById(R.id.priorityWeight);
 
-        userInput.setText(iva_prioName);
-        prioWeight.setText(iva_prioWeight);
-        /*
-        Zum fuzellen des Spinners benoetigte Funktion
+        if (newElement != true) {
+            userInput.setText(iva_prioName);
+            prioWeight.setText(iva_prioWeight);
+        }
 
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
-                R.array.string_size_Array, android.R.layout.simple_spinner_item);
-        // Specify the layout to use when the list of choices appears
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        // Apply the adapter to the spinner
-        choosenTextSize.setAdapter(adapter);*/
 
         dialogBuilder.setTitle("Add Priority");
 
@@ -121,11 +111,18 @@ public class PriorityActivity extends AppCompatActivity {
                 String usersNewCategory = userInput.getText().toString();
                 String usersPrioWeight = prioWeight.getText().toString();
                 try {
-                    Integer priorityWeight = Integer.parseInt(usersPrioWeight);
-                    getInputValue(usersNewCategory, priorityWeight);
+                    if (newElement != true) {
+                        Integer priorityWeight = Integer.parseInt(usersPrioWeight);
+                        dbh.updatePrio(priorityId, usersNewCategory, priorityWeight);
+                        updateScreen();
+                    } else {
+                        Integer priorityWeight = Integer.parseInt(usersPrioWeight);
+                        getInputValue(usersNewCategory, priorityWeight);
+                    }
                 } catch (RuntimeException e) {
                     Toast.makeText(getApplicationContext(), "Weigth schould be Integer", Toast.LENGTH_SHORT).show();
                 }
+                newElement = true;
             }
         });
         dialogBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -142,6 +139,6 @@ public class PriorityActivity extends AppCompatActivity {
         Toast.makeText(getApplicationContext(), usersNewCategory, Toast.LENGTH_SHORT).show();
         Toast.makeText(getApplicationContext(), priorityWeight.toString(), Toast.LENGTH_SHORT).show();
         dbh.createPriority(usersNewCategory, priorityWeight);
-        update();
+        updateScreen();
     }
 }
