@@ -39,6 +39,7 @@ public class ItemActivity extends AppCompatActivity {
 
     private DatePickerDialog datePicker;
     private DatabaseHelper dbh;
+    private boolean update = false;
 
     private int prio_id;
     private int[] cat_ids = new int[50];
@@ -62,10 +63,15 @@ public class ItemActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         // Receiving the Data
+
+        update = intent.getBooleanExtra("update" , false);
         String intentTitle = intent.getStringExtra("title");
         String intentDesc = intent.getStringExtra("desc");
         String intentDate = intent.getStringExtra("date");
-        Log.e("Second Screen", intentTitle + "." + intentDesc + "." + intentDate);
+        //int intentPrio_id = Integer.getInteger(intent.getStringExtra("prio_id"));
+        //ArrayList<Category> cats = intent.getStringExtra("cats");
+
+        Log.e("Second Screen", intentTitle + "." + intentDesc + "." + intentDate  + "." + prio_id);
 
         // Displaying Received data
         txtTitle.setText(intentTitle);
@@ -186,8 +192,13 @@ public class ItemActivity extends AppCompatActivity {
         String newDate = buttonDate.getText().toString();
         int newPrio_id = prio_id;
         int[] newCat_ids = cat_ids;
-        dbh.createTodo(newTitle, newDesc, newDate, newPrio_id, newCat_ids);
-        Toast.makeText(getApplicationContext(), newTitle + " erstellt!", Toast.LENGTH_SHORT).show();
+
+        if(update){
+            //dbh.updateTodo()
+        }else {
+            dbh.createTodo(newTitle, newDesc, newDate, newPrio_id, newCat_ids);
+            Toast.makeText(getApplicationContext(), newTitle + " erstellt!", Toast.LENGTH_SHORT).show();
+        }
         startMainActivity();
     }
 
@@ -217,7 +228,7 @@ public class ItemActivity extends AppCompatActivity {
         spinnerPrio.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
-                prio_id = prioritys.get(position).getWeight();
+                prio_id = prioritys.get(position).getId();
                 Toast.makeText(getApplicationContext(), "id: " + prioritys.get(position).getId() + " Weigth: " + prioritys.get(position).getWeight(), Toast.LENGTH_SHORT).show();
             }
 

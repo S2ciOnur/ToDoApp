@@ -20,7 +20,7 @@ import com.example.mesut.todolist.util.CatListAdapter;
 import java.util.ArrayList;
 
 /**
- * Diese Klasse steuert die Kategorien erstellung und Löschung in der AQpp
+ * Diese Klasse steuert die Kategorien erstellung und Löschung in der App
  */
 public class CategoryActivity extends AppCompatActivity {
 

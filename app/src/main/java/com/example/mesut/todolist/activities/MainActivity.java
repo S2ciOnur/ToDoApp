@@ -15,6 +15,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.example.mesut.todolist.R;
+import com.example.mesut.todolist.core.Priority;
 import com.example.mesut.todolist.core.Todo;
 import com.example.mesut.todolist.db.DatabaseHelper;
 import com.example.mesut.todolist.util.TodoListAdapter;
@@ -28,6 +29,7 @@ public class MainActivity extends AppCompatActivity {
     private ListView listView = null;
     private DatabaseHelper dbh = null;
     private ArrayList<Todo> todos = null;
+    private ArrayList<Priority> prios = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,7 +38,8 @@ public class MainActivity extends AppCompatActivity {
         dbh = new DatabaseHelper(this);
 
         todos = dbh.getAllTodos();
-        todoListAdapter = new TodoListAdapter(this, R.layout.layout_todolist, todos);
+        prios = dbh.getAllPriorities();
+        todoListAdapter = new TodoListAdapter(this, R.layout.layout_todolist, todos , prios);
 
         //TODO INITLIST
         listView = (ListView) findViewById(R.id.simpleListView);
@@ -54,10 +57,12 @@ public class MainActivity extends AppCompatActivity {
                 Intent intent = new Intent(getApplicationContext(), ItemActivity.class);
 
                 //Sending data to another Activity
+                intent.putExtra("update", true);
                 intent.putExtra("title", clickedTodo.getTitle());
                 intent.putExtra("desc", clickedTodo.getDesc());
                 intent.putExtra("date", clickedTodo.getDate());
-                intent.putExtra("prio_id", clickedTodo.getPrio_id());
+                //intent.putExtra("prio_id", clickedTodo.getPrio_id());
+                //intent.putExtra("cats" , clickedTodo.getCats());
 
 
                 //Log.e("n", inputName.getText()+"."+ inputEmail.getText());

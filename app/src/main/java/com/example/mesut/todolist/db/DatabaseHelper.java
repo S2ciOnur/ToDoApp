@@ -22,7 +22,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String TAG = "DatabaseHelper";
 
     private static final String DATABASE_NAME  = "todoapp.db";
-    private static final int DATABASE_VERSION = 1;
+    private static final int DATABASE_VERSION = 2;
 
     //Tabelle für Todo
     private static final String TODO_TABLE_NAME = "todo";
@@ -375,7 +375,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         try {
             SQLiteDatabase db = this.getReadableDatabase();
 
-            String selectQuery = "SELECT  * " +
+            String selectQuery = "SELECT " + NAME_PRIO_NAME +
                     "FROM " + PRIO_TABLE_NAME
                     + " WHERE " + ID_PRIO_NAME + " = " + id;
 

@@ -8,6 +8,7 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import com.example.mesut.todolist.R;
+import com.example.mesut.todolist.activities.MainActivity;
 import com.example.mesut.todolist.core.Priority;
 import com.example.mesut.todolist.core.Todo;
 import com.example.mesut.todolist.db.DatabaseHelper;
@@ -21,14 +22,15 @@ import java.util.ArrayList;
 public class TodoListAdapter extends ArrayAdapter{
     private Context context;
     private ArrayList<Todo> todos;
+    private ArrayList<Priority> prios;
     private DatabaseHelper dbh;
 
-    public TodoListAdapter(Context context, int textViewResourceId, ArrayList objects) {
-        super(context,textViewResourceId, objects);
+    public TodoListAdapter(Context context, int textViewResourceId, ArrayList todos , ArrayList<Priority> prios) {
+        super(context,textViewResourceId, todos);
 
         this.context = context;
-        todos = objects;
-
+        this.todos = todos;
+        this.prios = prios;
     }
 
     private class ViewHolder {
@@ -63,11 +65,18 @@ public class TodoListAdapter extends ArrayAdapter{
 
         Todo todo = todos.get(position);
 
+        int prio_id = todo.getPrio_id();
+        String prioName = "404 Priority not found";
+        for(Priority prio : prios){
+            if(prio.getId() == prio_id){
+                prioName = prio.getName();
+            }
+        }
+
         holder.txtTitle.setText(todo.getTitle());
         holder.txtDesc.setText(todo.getDesc());
-        //holder.txtPrio.setText(dbh.getPrioNameById(todo.getPrio_id()));
+        holder.txtPrio.setText(prioName);
         holder.txtDate.setText(todo.getDate());
-
         holder.txtCats.setText(todo.catString());
 
         return convertView;
