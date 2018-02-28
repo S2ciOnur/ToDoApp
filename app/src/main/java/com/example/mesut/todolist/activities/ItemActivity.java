@@ -76,14 +76,14 @@ public class ItemActivity extends AppCompatActivity {
     private void extractIntent(){
         Intent intent = getIntent();
         // Receiving the Data
-        update = intent.getBooleanExtra("update" , false);
+        update = intent.getBooleanExtra(getString(R.string.activity_update) , false);
         if(update){
-            int intentId = intent.getIntExtra("id", 0);
-            String intentTitle = intent.getStringExtra("title");
-            String intentDesc = intent.getStringExtra("desc");
-            String intentDate = intent.getStringExtra("date");
-            int intentPrio_id = intent.getIntExtra("prio_id", 0);
-            int[] intentCat_ids = intent.getIntArrayExtra("cats");
+            int intentId = intent.getIntExtra(getString(R.string.activity_id), 0);
+            String intentTitle = intent.getStringExtra(getString(R.string.activity_title));
+            String intentDesc = intent.getStringExtra(getString(R.string.activity_desc));
+            String intentDate = intent.getStringExtra(getString(R.string.activity_date));
+            int intentPrio_id = intent.getIntExtra(getString(R.string.activity_prio_id), 0);
+            int[] intentCat_ids = intent.getIntArrayExtra(getString(R.string.activity_cats));
 
             Log.e("Second Screen", intentTitle + "." + intentDesc + "." + intentDate + "." + prio_id);
 
