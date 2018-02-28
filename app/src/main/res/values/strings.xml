@@ -17,6 +17,7 @@
     <string name="alert_btn_no">NO</string>
 
     <string name="dialog_title_category">Add Category</string>
+    <string name="dialog_title_priority">Add Priority</string>
     <string name="dialog_done_btn">Done</string>
     <string name="dialog_cancel_btn">Cancel</string>
 
@@ -24,6 +25,8 @@
     <string name="activity_title">title</string>
     <string name="activity_desc">desc</string>
     <string name="activity_date">date</string>
+
+    <string name="toast_message">Weight should be Integer</string>
 
     <string name="builder_categorie_title">Select Categories</string>
     <string name="datepicker">Date Picker</string>
