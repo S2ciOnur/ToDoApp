@@ -59,19 +59,19 @@ public class MainActivity extends AppCompatActivity {
                 Intent intent = new Intent(getApplicationContext(), ItemActivity.class);
 
                 //Sending data to another Activity
-                intent.putExtra("update", true);
-                intent.putExtra("id", clickedTodo.getId());
-                intent.putExtra("title", clickedTodo.getTitle());
-                intent.putExtra("desc", clickedTodo.getDesc());
-                intent.putExtra("date", clickedTodo.getDate());
-                intent.putExtra("prio_id", clickedTodo.getPrio_id());
+                intent.putExtra(getString(R.string.activity_update), true);
+                intent.putExtra(getString(R.string.activity_id), clickedTodo.getId());
+                intent.putExtra(getString(R.string.activity_title), clickedTodo.getTitle());
+                intent.putExtra(getString(R.string.activity_desc), clickedTodo.getDesc());
+                intent.putExtra(getString(R.string.activity_date), clickedTodo.getDate());
+                intent.putExtra(getString(R.string.activity_prio_id), clickedTodo.getPrio_id());
 
                 int [] cat_ids = new int [50];
                 ArrayList<Category> cats = clickedTodo.getCats();
                 for(int z = 0; z <= cats.size(); z++){
                     cat_ids[i] = cats.get(i).getId();
                 }
-                intent.putExtra("cats" , cat_ids);
+                intent.putExtra(getString(R.string.activity_cats) , cat_ids);
 
                 startActivity(intent);
             }
