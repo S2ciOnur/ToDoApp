@@ -44,9 +44,8 @@ public class MainActivity extends AppCompatActivity {
         prios = dbh.getAllPriorities();
         todoListAdapter = new TodoListAdapter(this, R.layout.layout_todolist, todos, prios);
 
-        //TODO INITLIST
         listView = (ListView) findViewById(R.id.simpleListView);
-        listView.setAdapter(todoListAdapter);
+        updateListView(todoListAdapter);
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -90,6 +89,11 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    private void updateListView(TodoListAdapter listAdapter) {
+        //TODO INITLIST
+        listView = (ListView) findViewById(R.id.simpleListView);
+        listView.setAdapter(todoListAdapter);
+    }
     @Override
     public void onResume() {
         dbh = new DatabaseHelper(this);
@@ -108,9 +112,8 @@ public class MainActivity extends AppCompatActivity {
             textSize = 12;
         }
 
-        Log.d("bla", textSize + " , " + unit);
         todoListAdapter.setTextSize(unit, textSize);
-
+        updateListView(todoListAdapter);
         super.onResume();
     }
 
