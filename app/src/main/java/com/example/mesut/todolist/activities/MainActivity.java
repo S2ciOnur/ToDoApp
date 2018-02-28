@@ -57,10 +57,10 @@ public class MainActivity extends AppCompatActivity {
                 Intent intent = new Intent(getApplicationContext(), ItemActivity.class);
 
                 //Sending data to another Activity
-                intent.putExtra("update", true);
-                intent.putExtra("title", clickedTodo.getTitle());
-                intent.putExtra("desc", clickedTodo.getDesc());
-                intent.putExtra("date", clickedTodo.getDate());
+                intent.putExtra(getString(R.string.activity_update), true);
+                intent.putExtra(getString(R.string.activity_title), clickedTodo.getTitle());
+                intent.putExtra(getString(R.string.activity_desc), clickedTodo.getDesc());
+                intent.putExtra(getString(R.string.activity_date), clickedTodo.getDate());
                 //intent.putExtra("prio_id", clickedTodo.getPrio_id());
                 //intent.putExtra("cats" , clickedTodo.getCats());
 
@@ -142,10 +142,10 @@ public class MainActivity extends AppCompatActivity {
     private void deleteAlert() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
-        builder.setTitle("Confirm");
-        builder.setMessage("Are you sure to delete?");
+        builder.setTitle(getString(R.string.alert_title_confirm));
+        builder.setMessage(getString(R.string.alert_message));
 
-        builder.setPositiveButton("YES", new DialogInterface.OnClickListener() {
+        builder.setPositiveButton(getString(R.string.alert_btn_yes), new DialogInterface.OnClickListener() {
 
             public void onClick(DialogInterface dialog, int which) {
                 // Do nothing but close the dialog
@@ -153,7 +153,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        builder.setNegativeButton("NO", new DialogInterface.OnClickListener() {
+        builder.setNegativeButton(getString(R.string.alert_btn_no), new DialogInterface.OnClickListener() {
 
             @Override
             public void onClick(DialogInterface dialog, int which) {

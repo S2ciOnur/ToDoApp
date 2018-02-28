@@ -19,7 +19,7 @@ import com.example.mesut.todolist.util.CatListAdapter;
 import java.util.ArrayList;
 
 /**
- * Diese Klasse steuert die Kategorien erstellung und Löschung in der App
+ * Diese Klasse steuert die Kategorien erstellung, bearbeitung und Löschung in der App
  * Listet die Daten aus der Datenbank
  */
 public class CategoryActivity extends AppCompatActivity {

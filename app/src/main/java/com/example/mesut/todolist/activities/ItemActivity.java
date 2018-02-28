@@ -28,6 +28,11 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
+/**
+ * Diese Klasse steuert die Activity, welche zum erstellen neuer "Todo-items"
+ * verantwortlich ist
+ */
+
 public class ItemActivity extends AppCompatActivity {
     private static final String TAG = "ItemActivity";
 
@@ -46,6 +51,11 @@ public class ItemActivity extends AppCompatActivity {
     private int[] selectedIdDb = new int[50];
 
 
+    /**
+     * initialisiert und füllt den Spinner
+     *
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -64,10 +74,10 @@ public class ItemActivity extends AppCompatActivity {
         Intent intent = getIntent();
         // Receiving the Data
 
-        update = intent.getBooleanExtra("update" , false);
-        String intentTitle = intent.getStringExtra("title");
-        String intentDesc = intent.getStringExtra("desc");
-        String intentDate = intent.getStringExtra("date");
+        update = intent.getBooleanExtra(getString(R.string.activity_update) , false);
+        String intentTitle = intent.getStringExtra(getString(R.string.activity_title));
+        String intentDesc = intent.getStringExtra(getString(R.string.activity_desc));
+        String intentDate = intent.getStringExtra(getString(R.string.activity_date));
         //int intentPrio_id = Integer.getInteger(intent.getStringExtra("prio_id"));
         //ArrayList<Category> cats = intent.getStringExtra("cats");
 
@@ -98,6 +108,7 @@ public class ItemActivity extends AppCompatActivity {
                 showCatDialog();
                 break;
             default:
+                //TODO lösch das ma
                 Toast.makeText(getApplicationContext(), "ERROR", Toast.LENGTH_SHORT).show();
         }
     }
@@ -118,7 +129,7 @@ public class ItemActivity extends AppCompatActivity {
         final String[] items = itemsList.toArray(new String[itemsList.size()]);
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Select Categories");
+        builder.setTitle(getString(R.string.builder_categorie_title));
         builder.setMultiChoiceItems(items, null,
                 new DialogInterface.OnMultiChoiceClickListener() {
                     @Override
@@ -183,7 +194,7 @@ public class ItemActivity extends AppCompatActivity {
 
     private void openDatePicker() {
         DialogFragment newFragment = new DatePickerFragment();
-        newFragment.show(getFragmentManager(), "Date Picker");
+        newFragment.show(getFragmentManager(), getString(R.string.datepicker));
     }
 
     private void saveItem() {
@@ -197,6 +208,7 @@ public class ItemActivity extends AppCompatActivity {
             //dbh.updateTodo()
         }else {
             dbh.createTodo(newTitle, newDesc, newDate, newPrio_id, newCat_ids);
+            //TODO mach ma den Toast weg
             Toast.makeText(getApplicationContext(), newTitle + " erstellt!", Toast.LENGTH_SHORT).show();
         }
         startMainActivity();
@@ -229,6 +241,7 @@ public class ItemActivity extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
                 prio_id = prioritys.get(position).getId();
+                //TODO
                 Toast.makeText(getApplicationContext(), "id: " + prioritys.get(position).getId() + " Weigth: " + prioritys.get(position).getWeight(), Toast.LENGTH_SHORT).show();
             }
 

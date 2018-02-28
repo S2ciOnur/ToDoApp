@@ -19,6 +19,12 @@ import com.example.mesut.todolist.util.PrioListAdapter;
 
 import java.util.ArrayList;
 
+/**
+ * Diese Klasse steuert die Priority aktivität in welcher
+ * neue Prioritäten erstellt, bearbeitet oder gelöscht werden
+ * <p>
+ * Listen die Daten aus der DB
+ */
 public class PriorityActivity extends AppCompatActivity {
     private static final String TAG = "PriorityActivity";
 
@@ -71,7 +77,6 @@ public class PriorityActivity extends AppCompatActivity {
             public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
                 Priority clickedPrio = prios.get((int) l);
                 priorityId = new Integer(clickedPrio.getId());
-                Toast.makeText(PriorityActivity.this, "LÖSCHE " + prios.get((int) l).getName() + "???", Toast.LENGTH_SHORT).show();
                 deleteAlert(priorityId);
                 return true;
             }
