@@ -68,15 +68,18 @@ public class ItemActivity extends AppCompatActivity {
         String intentTitle = intent.getStringExtra("title");
         String intentDesc = intent.getStringExtra("desc");
         String intentDate = intent.getStringExtra("date");
-        //int intentPrio_id = Integer.getInteger(intent.getStringExtra("prio_id"));
-        //ArrayList<Category> cats = intent.getStringExtra("cats");
+        int intentPrio_id = intent.getIntExtra("prio_id" , 0);
+        int [] intentCat_ids = new int[50];
+        intentCat_ids = intent.getIntArrayExtra("cats");
 
-        Log.e("Second Screen", intentTitle + "." + intentDesc + "." + intentDate  + "." + prio_id);
+        Log.e("Second Screen", intentTitle + "." + intentDesc + "." + intentDate  + "." + intentPrio_id);
 
         // Displaying Received data
         txtTitle.setText(intentTitle);
         txtDesc.setText(intentDesc);
         buttonDate.setText(intentDate);
+        prio_id = intentPrio_id;
+        cat_ids = intentCat_ids;
     }
 
     public void onClick(View v) {
@@ -229,7 +232,7 @@ public class ItemActivity extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
                 prio_id = prioritys.get(position).getId();
-                Toast.makeText(getApplicationContext(), "id: " + prioritys.get(position).getId() + " Weigth: " + prioritys.get(position).getWeight(), Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getApplicationContext(), "id: " + prioritys.get(position).getId() + " Weigth: " + prioritys.get(position).getWeight(), Toast.LENGTH_SHORT).show();
             }
 
             @Override

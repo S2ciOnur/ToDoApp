@@ -15,6 +15,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.example.mesut.todolist.R;
+import com.example.mesut.todolist.core.Category;
 import com.example.mesut.todolist.core.Priority;
 import com.example.mesut.todolist.core.Todo;
 import com.example.mesut.todolist.db.DatabaseHelper;
@@ -51,9 +52,6 @@ public class MainActivity extends AppCompatActivity {
 
                 Todo clickedTodo = todos.get((int) l);
 
-                String todoText = "ArrayID: " + l + " Todo: " + clickedTodo.toString();
-                Toast.makeText(MainActivity.this, todoText, Toast.LENGTH_SHORT).show();
-
                 Intent intent = new Intent(getApplicationContext(), ItemActivity.class);
 
                 //Sending data to another Activity
@@ -61,11 +59,14 @@ public class MainActivity extends AppCompatActivity {
                 intent.putExtra("title", clickedTodo.getTitle());
                 intent.putExtra("desc", clickedTodo.getDesc());
                 intent.putExtra("date", clickedTodo.getDate());
-                //intent.putExtra("prio_id", clickedTodo.getPrio_id());
-                //intent.putExtra("cats" , clickedTodo.getCats());
+                intent.putExtra("prio_id", clickedTodo.getPrio_id());
 
-
-                //Log.e("n", inputName.getText()+"."+ inputEmail.getText());
+                int [] cat_ids = new int [50];
+                ArrayList<Category> cats = clickedTodo.getCats();
+                for(int z = 0; z <= cats.size(); z++){
+                    cat_ids[i] = cats.get(i).getId();
+                }
+                intent.putExtra("cats" , cat_ids);
 
                 startActivity(intent);
             }
@@ -167,5 +168,3 @@ public class MainActivity extends AppCompatActivity {
 
     }
 }
-
-

@@ -10,6 +10,7 @@ import android.util.Log;
 
 import com.example.mesut.todolist.core.Category;
 import com.example.mesut.todolist.core.Priority;
+import com.example.mesut.todolist.core.Textsize;
 import com.example.mesut.todolist.core.Todo;
 
 import java.util.ArrayList;
@@ -22,7 +23,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String TAG = "DatabaseHelper";
 
     private static final String DATABASE_NAME  = "todoapp.db";
-    private static final int DATABASE_VERSION = 2;
+    private static final int DATABASE_VERSION = 4;
 
     //Tabelle für Todo
     private static final String TODO_TABLE_NAME = "todo";
@@ -72,6 +73,18 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String CAT_ID_TODOCAT_NAME  = "cat_id";
     private static final String CAT_ID_TODOCAT_TYPE  = "INTEGER";
 
+    //Tabelle für TextSize
+    private static final String TEXTSIZE_TABLE_NAME   = "textsize";
+
+    private static final String ID_TEXTSIZE_NAME = "id";
+    private static final String ID_TEXTSIZE_TYPE = "INTEGER";
+
+    private static final String DIGIT_TEXTSIZE_NAME = "digit";
+    private static final String DIGIT_TEXTSIZE_TYPE = "FLOAT";
+
+    private static final String UNIT_TEXTSIZE_NAME  = "unit";
+    private static final String UNIT_TEXTSIZE_TYPE  = "TEXT";
+
     // SQL statement zum Erstellen der Tabelle
     private static final String TODO_TABLE_CREATE =
             "CREATE TABLE " + TODO_TABLE_NAME + "(" +
@@ -96,6 +109,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             "CREATE TABLE "      + TODO_CAT_TABLE_NAME   + "(" +
             TODO_ID_TODOCAT_NAME + " " + TODO_ID_TODOCAT_TYPE + ", " +
             CAT_ID_TODOCAT_NAME  + " " + CAT_ID_TODOCAT_TYPE  + ")";
+
+    private static final String TEXTSIZE_TABLE_CREATE =
+            "CREATE TABLE " + TEXTSIZE_TABLE_NAME + "(" +
+            ID_TEXTSIZE_NAME + " " + ID_TEXTSIZE_TYPE + ", " +
+            DIGIT_TEXTSIZE_NAME + " " + DIGIT_TEXTSIZE_TYPE + ", " +
+            UNIT_TEXTSIZE_NAME + " " + UNIT_TEXTSIZE_TYPE + ")";
 
     // Konstruktor
     public DatabaseHelper(Context context) {
@@ -126,6 +145,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             db.execSQL(TODO_CAT_TABLE_CREATE);
         } catch(SQLException ex) {
             Log.e(TAG,"Error creating table: todocat!", ex);
+        }
+
+        try {
+            db.execSQL(TEXTSIZE_TABLE_CREATE);
+        } catch(SQLException ex) {
+            Log.e(TAG,"Error creating table: textsize!", ex);
         }
     }
 
@@ -307,7 +332,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             Log.e(TAG,"ID: " + todo_id + " " +  cats.toString());
             return cats;
         }catch (SQLException ex){
-            Log.e(TAG, "Couldn't update CATS from todo with id = " + todo_id + ".\n" + ex);
+            Log.e(TAG, "Couldn't get CATS from todo with id = " + todo_id + ".\n" + ex);
             return null;
         }
     }
@@ -371,7 +396,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
     }
 
-    public  String getPrioNameById(int id){
+    public String getPrioNameById(int id){
         try {
             SQLiteDatabase db = this.getReadableDatabase();
 
@@ -391,6 +416,32 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             return s;
         }catch (SQLException ex){
             Log.e(TAG, "Couldn't get PRIO with id = " + id + ".\n" + ex);
+            return null;
+        }
+    }
+
+    public Textsize getTextsze(){
+        try {
+            SQLiteDatabase db = this.getReadableDatabase();
+
+            String selectQuery = "SELECT *" +
+                    " FROM " + TEXTSIZE_TABLE_NAME +
+                    " WHERE " + ID_TEXTSIZE_NAME + " = " + 0;
+
+            Log.e(TAG, selectQuery);
+
+            Cursor c = db.rawQuery(selectQuery, null);
+
+            if (c != null)
+                c.moveToFirst();
+
+            Textsize textsize = new Textsize();
+            textsize.setDigit(c.getFloat(c.getColumnIndex(DIGIT_TEXTSIZE_NAME)));
+            textsize.setUnit(c.getString(c.getColumnIndex(UNIT_TEXTSIZE_NAME)));
+
+            return textsize;
+        }catch (SQLException ex){
+            Log.e(TAG, "Couldn't get textsize.\n" + ex);
             return null;
         }
     }
@@ -459,6 +510,22 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
     }
 
+    public boolean updateTextsize(int digit, String unit){
+        try {
+            SQLiteDatabase db = this.getWritableDatabase();
+            ContentValues values = new ContentValues();
+
+            db.delete(TEXTSIZE_TABLE_NAME, "id = ? ", new String[]{Integer.toString(0)});
+            values.put(ID_TEXTSIZE_NAME, 0);
+            values.put(DIGIT_TEXTSIZE_NAME, digit);
+            values.put(UNIT_TEXTSIZE_NAME, unit);
+            return true;
+        }catch (SQLException ex){
+            Log.e(TAG, "Couldn't update Textsize!");
+            return false;
+        }
+    }
+
     /**
      * Deletes
      */
@@ -519,25 +586,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
     }
 
-    public Integer deletePrioGay(Integer id) {
-        SQLiteDatabase db = this.getWritableDatabase();
-        return db.delete(PRIO_TABLE_NAME, "id = ? ", new String[]{Integer.toString(id)});
-    }
-
-    public Integer deleteTodoGay(Integer id) {
-        SQLiteDatabase db = this.getWritableDatabase();
-        return db.delete(TODO_TABLE_NAME,
-                "id = ? ",
-                new String[]{Integer.toString(id)});
-    }
-
-    public Integer deleteCatGay(Integer id) {
-        SQLiteDatabase db = this.getWritableDatabase();
-        return db.delete(CAT_TABLE_NAME,
-                "id = ? ",
-                new String[]{Integer.toString(id)});
-    }
-
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
@@ -546,6 +594,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS " + CAT_TABLE_NAME);
         db.execSQL("DROP TABLE IF EXISTS " + PRIO_TABLE_NAME);
         db.execSQL("DROP TABLE IF EXISTS " + TODO_CAT_TABLE_NAME);
+        db.execSQL("DROP TABLE IF EXISTS " + TEXTSIZE_TABLE_NAME);
 
         // create new tables
         onCreate(db);
@@ -559,6 +608,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS " + CAT_TABLE_NAME);
         db.execSQL("DROP TABLE IF EXISTS " + PRIO_TABLE_NAME);
         db.execSQL("DROP TABLE IF EXISTS " + TODO_CAT_TABLE_NAME);
+        db.execSQL("DROP TABLE IF EXISTS " + TEXTSIZE_TABLE_NAME);
 
         // create new tables
         onCreate(db);
