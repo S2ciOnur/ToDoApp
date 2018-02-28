@@ -42,11 +42,13 @@ public class ItemActivity extends AppCompatActivity {
     private Button buttonCat;
     private Button buttonDate;
 
+    private DatePickerDialog datePicker;
     private DatabaseHelper dbh;
     private boolean update = false;
 
     private int prio_id;
     private int[] cat_ids = new int[50];
+    private int[] selectedIdDb = new int[50];
 
 
     /**
@@ -72,19 +74,22 @@ public class ItemActivity extends AppCompatActivity {
         Intent intent = getIntent();
         // Receiving the Data
 
-        update = intent.getBooleanExtra(getString(R.string.activity_update), false);
-        String intentTitle = intent.getStringExtra(getString(R.string.activity_title));
-        String intentDesc = intent.getStringExtra(getString(R.string.activity_desc));
-        String intentDate = intent.getStringExtra(getString(R.string.activity_date));
-        //int intentPrio_id = Integer.getInteger(intent.getStringExtra("prio_id"));
-        //ArrayList<Category> cats = intent.getStringExtra("cats");
+        update = intent.getBooleanExtra("update" , false);
+        String intentTitle = intent.getStringExtra("title");
+        String intentDesc = intent.getStringExtra("desc");
+        String intentDate = intent.getStringExtra("date");
+        int intentPrio_id = intent.getIntExtra("prio_id" , 0);
+        int [] intentCat_ids = new int[50];
+        intentCat_ids = intent.getIntArrayExtra("cats");
 
-        Log.e("Second Screen", intentTitle + "." + intentDesc + "." + intentDate + "." + prio_id);
+        Log.e("Second Screen", intentTitle + "." + intentDesc + "." + intentDate  + "." + prio_id);
 
         // Displaying Received data
         txtTitle.setText(intentTitle);
         txtDesc.setText(intentDesc);
         buttonDate.setText(intentDate);
+        prio_id = intentPrio_id;
+        cat_ids = intentCat_ids;
     }
 
     public void onClick(View v) {
@@ -201,11 +206,11 @@ public class ItemActivity extends AppCompatActivity {
         int newPrio_id = prio_id;
         int[] newCat_ids = cat_ids;
 
-        if (update) {
+        if(update){
             //dbh.updateTodo()
-        } else {
+        }else {
             dbh.createTodo(newTitle, newDesc, newDate, newPrio_id, newCat_ids);
-            //TODO mach ma den Toast weg
+
             Toast.makeText(getApplicationContext(), newTitle + " erstellt!", Toast.LENGTH_SHORT).show();
         }
         startMainActivity();
@@ -238,8 +243,7 @@ public class ItemActivity extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
                 prio_id = prioritys.get(position).getId();
-                //TODO
-                Toast.makeText(getApplicationContext(), "id: " + prioritys.get(position).getId() + " Weigth: " + prioritys.get(position).getWeight(), Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getApplicationContext(), "id: " + prioritys.get(position).getId() + " Weigth: " + prioritys.get(position).getWeight(), Toast.LENGTH_SHORT).show();
             }
 
             @Override
