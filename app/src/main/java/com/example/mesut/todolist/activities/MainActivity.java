@@ -40,17 +40,8 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         dbh = new DatabaseHelper(this);
 
-        todos = dbh.getAllTodos();
-        prios = dbh.getAllPriorities();
-        if(prios.isEmpty()){
-            dbh.createPriority("Wichtig" , 100);
-            prios = dbh.getAllPriorities();
-        }
-
-        todoListAdapter = new TodoListAdapter(this, R.layout.layout_todolist, todos, prios);
-
         listView = (ListView) findViewById(R.id.simpleListView);
-        updateListView(todoListAdapter);
+        updateListView();
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -71,14 +62,14 @@ public class MainActivity extends AppCompatActivity {
                 intent.putExtra(getString(R.string.activity_date), clickedTodo.getDate());
                 intent.putExtra(getString(R.string.activity_prio_id), clickedTodo.getPrio_id());
 
-                int [] cat_ids = new int [50];
+                int[] cat_ids = new int[50];
                 ArrayList<Category> cats = clickedTodo.getCats();
-                if(!cats.isEmpty()) {
+                if (!cats.isEmpty()) {
                     for (int z = 0; z <= cats.size(); z++) {
                         cat_ids[i] = cats.get(i).getId();
                     }
                 }
-                intent.putExtra(getString(R.string.activity_cats) , cat_ids);
+                intent.putExtra(getString(R.string.activity_cats), cat_ids);
 
                 startActivity(intent);
             }
@@ -92,18 +83,33 @@ public class MainActivity extends AppCompatActivity {
                 return true;
             }
         });
-
-        //TODO ENDINITLIST
-
     }
 
-    private void updateListView(TodoListAdapter listAdapter) {
-        //TODO INITLIST
-        listView = (ListView) findViewById(R.id.simpleListView);
+    private void updateListView() {
+        todos = dbh.getAllTodos();
+        prios = dbh.getAllPriorities();
+        if (prios.isEmpty()) {
+            dbh.createPriority("Wichtig", 100);
+            prios = dbh.getAllPriorities();
+        }
+
+        todoListAdapter = new TodoListAdapter(this, R.layout.layout_todolist, todos, prios);
+        listView = findViewById(R.id.simpleListView);
+        updateAdapter(todoListAdapter);
+        setTextSize();
+    }
+
+    private void updateAdapter(TodoListAdapter todoListAdapter) {
         listView.setAdapter(todoListAdapter);
     }
+
     @Override
     public void onResume() {
+        setTextSize();
+        super.onResume();
+    }
+
+    private void setTextSize() {
         dbh = new DatabaseHelper(this);
         int unit;
         float textSize;
@@ -121,8 +127,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         todoListAdapter.setTextSize(unit, textSize);
-        updateListView(todoListAdapter);
-        super.onResume();
+        updateAdapter(todoListAdapter);
     }
 
     @Override
@@ -188,7 +193,7 @@ public class MainActivity extends AppCompatActivity {
 
             public void onClick(DialogInterface dialog, int which) {
                 dbh.deleteTodo(todoId);
-                updateScreen();
+                updateListView();
             }
         });
 
@@ -205,20 +210,6 @@ public class MainActivity extends AppCompatActivity {
         alert.show();
 
     }
-
-    /**
-     * Refresht den Priority Screen
-     */
-    private void updateScreen() {
-
-        Intent intent = getIntent();
-
-        finish();
-
-        startActivity(intent);
-
-    }
-
 }
 
 

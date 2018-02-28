@@ -2,7 +2,6 @@ package com.example.mesut.todolist.activities;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.TypedValue;
@@ -49,12 +48,8 @@ public class PriorityActivity extends AppCompatActivity {
         setContentView(R.layout.activity_category);
 
         dbh = new DatabaseHelper(this);
-
-        prios = dbh.getAllPriorities();
-        prioListAdapter = new PrioListAdapter(this, R.layout.layout_priority_settings, prios);
-        listView = (ListView) findViewById(R.id.simpleListView);
-        updateListView(prioListAdapter);
-
+        listView = findViewById(R.id.simpleListView);
+        updateListView();
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -82,17 +77,27 @@ public class PriorityActivity extends AppCompatActivity {
                 return true;
             }
         });
-
-
     }
 
-    private void updateListView(PrioListAdapter prioListAdapter) {
-        listView = (ListView) findViewById(R.id.simpleListView);
+    private void updateListView() {
+        prios = dbh.getAllPriorities();
+        prioListAdapter = new PrioListAdapter(this, R.layout.layout_priority_settings, prios);
+        listView = findViewById(R.id.simpleListView);
+        updateAdapter(prioListAdapter);
+        setTextSize();
+    }
+
+    private void updateAdapter(PrioListAdapter prioListAdapter) {
         listView.setAdapter(prioListAdapter);
     }
 
     @Override
     public void onResume() {
+        setTextSize();
+        super.onResume();
+    }
+
+    private void setTextSize() {
         int textUnit;
         float textSize;
 
@@ -109,8 +114,7 @@ public class PriorityActivity extends AppCompatActivity {
         }
 
         prioListAdapter.setTextSize(textUnit, textSize);
-        updateListView(prioListAdapter);
-        super.onResume();
+        updateAdapter(prioListAdapter);
     }
 
     /**
@@ -128,7 +132,7 @@ public class PriorityActivity extends AppCompatActivity {
 
             public void onClick(DialogInterface dialog, int which) {
                 dbh.deletePrio(priorityId);
-                updateScreen();
+                updateListView();
                 dialog.dismiss();
             }
         });
@@ -144,19 +148,6 @@ public class PriorityActivity extends AppCompatActivity {
 
         AlertDialog alert = builder.create();
         alert.show();
-
-    }
-
-    /**
-     * Refresht den Priority Screen
-     */
-    private void updateScreen() {
-
-        Intent intent = getIntent();
-
-        finish();
-
-        startActivity(intent);
 
     }
 
@@ -204,7 +195,7 @@ public class PriorityActivity extends AppCompatActivity {
                 try {
                     Integer priorityWeight = Integer.parseInt(usersPrioWeight);
                     dbh.updatePrio(priorityId, usersNewCategory, priorityWeight);
-                    updateScreen();
+                    updateListView();
                 } catch (RuntimeException e) {
                     // Toast muss bleiben, Info an User
                     Toast.makeText(getApplicationContext(), getString(R.string.toast_message), Toast.LENGTH_SHORT).show();
@@ -247,7 +238,7 @@ public class PriorityActivity extends AppCompatActivity {
                     Integer priorityWeight = Integer.parseInt(usersPrioWeight);
                     dbh.createPriority(usersNewCategory, priorityWeight);
 
-                    updateScreen();
+                    updateListView();
 
                 } catch (RuntimeException e) {
                     // Toast muss bleiben, Info an User
@@ -265,6 +256,4 @@ public class PriorityActivity extends AppCompatActivity {
         AlertDialog b = dialogBuilder.create();
         b.show();
     }
-
-
 }

@@ -2,7 +2,6 @@ package com.example.mesut.todolist.activities;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.TypedValue;
@@ -26,20 +25,17 @@ import java.util.ArrayList;
  * Listet die Daten aus der Datenbank
  */
 public class CategoryActivity extends AppCompatActivity {
-
     private DatabaseHelper dbh;
     private ArrayList<Category> cats;
     private CatListAdapter catListAdapter;
     private ListView listView;
-
-    private static final String TAG = "CategoryActivity";
 
     /**
      * Entschiedet ob ein neues Item erstellt wird oder ein Bestehendes geändert wird
      * initialisiert die Click Listener auf die Listview (on Click; On Long Click),
      * Sellt die Listview aus der Datenbank her
      *
-     * @param savedInstanceState
+     * @param savedInstanceState savedInstanceState
      */
 
     @Override
@@ -48,49 +44,59 @@ public class CategoryActivity extends AppCompatActivity {
         setContentView(R.layout.activity_category);
         dbh = new DatabaseHelper(this);
 
-        //Datenbank wird ausgelesen
-        cats = dbh.getAllCategories();
-        //Cats werden aus der DB extrahiert
-        catListAdapter = new CatListAdapter(this, R.layout.layout_category_settings, cats);
-        //Cats weden in die ListView gepackt
-        listView = (ListView) findViewById(R.id.simpleListView);
-        updateListView(catListAdapter);
+        //Cats werden in die ListView gepackt
+        updateListView();
+
+        listView = findViewById(R.id.simpleListView);
 
         //OnClick Listener witrd initialisiert
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                int catId;
 
                 Category clickedCat = cats.get((int) l); //geclickte Kategorie wird
-
-
                 String catName = clickedCat.getName();          //Speichere den Namen der Kategorie
 
-                Integer catId = new Integer(clickedCat.getId()); // Speichere Id der Kategorie
+                catId = clickedCat.getId(); // Speichere Id der Kategorie
                 editCategory(catId, catName);
             }
         });
+
         //OnLongClick Listener wird initalisiert
         listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
+                int catId;
                 Category clickedCat = cats.get((int) l);
-                Integer catId = new Integer(clickedCat.getId());
+                catId = clickedCat.getId();
                 deleteAlert(catId);
                 return true;
             }
         });
-
-
     }
 
-    private void updateListView(CatListAdapter catListAdapter) {
-        listView = (ListView) findViewById(R.id.simpleListView);
+    private void updateListView() {
+        //Datenbank wird ausgelesen
+        cats = dbh.getAllCategories();
+        //Cats werden aus der DB extrahiert
+        catListAdapter = new CatListAdapter(this, R.layout.layout_category_settings, cats);
+        listView = findViewById(R.id.simpleListView);
+        updateAdapter(catListAdapter);
+        setTextSize();
+    }
+
+    private void updateAdapter(CatListAdapter catListAdapter) {
         listView.setAdapter(catListAdapter);
     }
 
     @Override
     public void onResume() {
+        setTextSize();
+        super.onResume();
+    }
+
+    private void setTextSize() {
         int textUnit;
         float textSize;
 
@@ -107,8 +113,7 @@ public class CategoryActivity extends AppCompatActivity {
         }
 
         catListAdapter.setTextSize(textUnit, textSize);
-
-        super.onResume();
+        updateAdapter(catListAdapter);
     }
 
     /**
@@ -126,7 +131,7 @@ public class CategoryActivity extends AppCompatActivity {
 
             public void onClick(DialogInterface dialog, int which) {
                 dbh.deleteCat(catId); //Kategorie wird aus der DB entfernt
-                updateScreen();       //das Activity Screen wird refresht
+                updateListView();       //das Activity Screen wird refresht
                 dialog.dismiss();     // Alert verschwindet
             }
         });
@@ -142,7 +147,6 @@ public class CategoryActivity extends AppCompatActivity {
 
         AlertDialog alert = builder.create();
         alert.show();
-
     }
 
     /**
@@ -162,20 +166,6 @@ public class CategoryActivity extends AppCompatActivity {
     }
 
     /**
-     * Refresht den Activity Screen
-     */
-    private void updateScreen() {
-
-        Intent intent = getIntent();
-
-        finish();
-
-        startActivity(intent);
-
-    }
-
-
-    /**
      * startet ein Alert zum bearbeiten einer Vorhaneden Kategorie
      * aktualisiert den namen der gewählten kategorie in der DB
      *
@@ -190,7 +180,7 @@ public class CategoryActivity extends AppCompatActivity {
 
 
         //Setzt den Kategorie Namen in die Textbox des Alert
-        final EditText userInput = (EditText) dialogView.findViewById(R.id.userInputnewCat);
+        final EditText userInput = dialogView.findViewById(R.id.userInputnewCat);
         userInput.setText(catName);
 
         dialogBuilder.setTitle(getString(R.string.dialog_title_category));
@@ -200,7 +190,7 @@ public class CategoryActivity extends AppCompatActivity {
                 String usersNewCategory = userInput.getText().toString();
 
                 dbh.updateCat(catId, usersNewCategory);
-                updateScreen();
+                updateListView();
 
 
             }
@@ -225,8 +215,7 @@ public class CategoryActivity extends AppCompatActivity {
         final View dialogView = inflater.inflate(R.layout.category_alert, null);
         dialogBuilder.setView(dialogView);
 
-        final EditText userInput = (EditText) dialogView.findViewById(R.id.userInputnewCat);
-
+        final EditText userInput = dialogView.findViewById(R.id.userInputnewCat);
 
         dialogBuilder.setTitle(getString(R.string.dialog_title_category));
 
@@ -234,18 +223,17 @@ public class CategoryActivity extends AppCompatActivity {
             public void onClick(DialogInterface dialog, int whichButton) {
                 String usersNewCategory = userInput.getText().toString();
 
-
                 dbh.createCategory(usersNewCategory);
-                updateScreen();
-
-
+                updateListView();
             }
         });
+
         dialogBuilder.setNegativeButton(getString(R.string.dialog_cancel_btn), new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int whichButton) {
                 dialog.dismiss();
             }
         });
+
         AlertDialog b = dialogBuilder.create();
         b.show();
     }

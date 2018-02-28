@@ -100,7 +100,7 @@ public class ItemActivity extends AppCompatActivity {
         switch (v.getId()) {
             case R.id.cancel_button:
                 Log.d(TAG, "Abbrechen");
-                startMainActivity();
+                finish();
                 break;
             case R.id.save_button:
                 Log.d(TAG, "Speichern");
@@ -217,12 +217,7 @@ public class ItemActivity extends AppCompatActivity {
 
             Toast.makeText(getApplicationContext(), newTitle + " erstellt!", Toast.LENGTH_SHORT).show();
         }
-        startMainActivity();
-    }
-
-    private void startMainActivity() {
-        Intent intent = new Intent(this, MainActivity.class);
-        startActivity(intent);
+        finish();
     }
 
     private void initPrioSpinner() {
