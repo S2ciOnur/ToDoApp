@@ -23,8 +23,11 @@ import com.example.mesut.todolist.core.Priority;
 import com.example.mesut.todolist.db.DatabaseHelper;
 import com.example.mesut.todolist.util.DatePickerFragment;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.GregorianCalendar;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -50,9 +53,8 @@ public class ItemActivity extends AppCompatActivity {
     private int[] cat_ids = new int[50];
     private int[] selectedIdDb = new int[50];
 
-
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_item);
 
@@ -65,7 +67,6 @@ public class ItemActivity extends AppCompatActivity {
         dbh = new DatabaseHelper(this);
 
         initPrioSpinner();
-
         extractIntent();
     }
 
@@ -90,9 +91,16 @@ public class ItemActivity extends AppCompatActivity {
             txtTitle.setText(intentTitle);
             txtDesc.setText(intentDesc);
             buttonDate.setText(intentDate);
+
             id = intentId;
             prio_id = intentPrio_id;
             cat_ids = intentCat_ids;
+        }
+
+        if (buttonDate.getText().toString().contains("DD.MM.YYYY")) {
+            GregorianCalendar now = new GregorianCalendar();
+            DateFormat df = DateFormat.getDateInstance(DateFormat.MEDIUM);
+            buttonDate.setText(df.format(now.getTime()));
         }
     }
 

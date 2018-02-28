@@ -105,7 +105,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public void onResume() {
-        setTextSize();
+        updateListView();
         super.onResume();
     }
 
