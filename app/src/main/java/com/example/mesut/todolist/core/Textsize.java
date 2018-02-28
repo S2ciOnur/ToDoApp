@@ -6,7 +6,7 @@ package com.example.mesut.todolist.core;
 
 public class Textsize {
     private float digit;
-    private String unit;
+    private int unit;
 
     public Textsize(){}
 
@@ -19,11 +19,11 @@ public class Textsize {
         this.digit = digit;
     }
 
-    public String getUnit() {
+    public int getUnit() {
         return unit;
     }
 
-    public void setUnit(String unit) {
+    public void setUnit(int unit) {
         this.unit = unit;
     }
 }

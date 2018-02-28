@@ -15,6 +15,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.example.mesut.todolist.R;
+import com.example.mesut.todolist.core.Category;
 import com.example.mesut.todolist.core.Priority;
 import com.example.mesut.todolist.core.Todo;
 import com.example.mesut.todolist.db.DatabaseHelper;

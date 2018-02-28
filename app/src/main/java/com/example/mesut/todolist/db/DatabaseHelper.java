@@ -23,7 +23,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String TAG = "DatabaseHelper";
 
     private static final String DATABASE_NAME  = "todoapp.db";
-    private static final int DATABASE_VERSION = 4;
+    private static final int DATABASE_VERSION = 5;
 
     //Tabelle für Todo
     private static final String TODO_TABLE_NAME = "todo";
@@ -83,7 +83,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String DIGIT_TEXTSIZE_TYPE = "FLOAT";
 
     private static final String UNIT_TEXTSIZE_NAME  = "unit";
-    private static final String UNIT_TEXTSIZE_TYPE  = "TEXT";
+    private static final String UNIT_TEXTSIZE_TYPE  = "INTEGER";
 
     // SQL statement zum Erstellen der Tabelle
     private static final String TODO_TABLE_CREATE =
@@ -420,7 +420,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
     }
 
-    public Textsize getTextsze(){
+    public Textsize getTextsize(){
         try {
             SQLiteDatabase db = this.getReadableDatabase();
 
@@ -437,7 +437,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
             Textsize textsize = new Textsize();
             textsize.setDigit(c.getFloat(c.getColumnIndex(DIGIT_TEXTSIZE_NAME)));
-            textsize.setUnit(c.getString(c.getColumnIndex(UNIT_TEXTSIZE_NAME)));
+            textsize.setUnit(c.getColumnIndex(UNIT_TEXTSIZE_NAME));
 
             return textsize;
         }catch (SQLException ex){
@@ -510,7 +510,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
     }
 
-    public boolean updateTextsize(int digit, String unit){
+    public boolean updateTextsize(float digit, int unit){
         try {
             SQLiteDatabase db = this.getWritableDatabase();
             ContentValues values = new ContentValues();
