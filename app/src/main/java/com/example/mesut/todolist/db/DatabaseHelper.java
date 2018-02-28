@@ -138,12 +138,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         try {
             db.execSQL(PRIO_TABLE_CREATE);
+            createPriority("Wichtig" , 10);
         } catch(SQLException ex) {
             Log.e(TAG,"Error creating table: priority!", ex);
         }
 
         try {
             db.execSQL(TODO_CAT_TABLE_CREATE);
+            createCategory("Zu Hause");
         } catch(SQLException ex) {
             Log.e(TAG,"Error creating table: todocat!", ex);
         }
