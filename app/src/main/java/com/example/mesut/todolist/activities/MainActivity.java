@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -17,6 +18,7 @@ import android.widget.Toast;
 import com.example.mesut.todolist.R;
 import com.example.mesut.todolist.core.Category;
 import com.example.mesut.todolist.core.Priority;
+import com.example.mesut.todolist.core.Textsize;
 import com.example.mesut.todolist.core.Todo;
 import com.example.mesut.todolist.db.DatabaseHelper;
 import com.example.mesut.todolist.util.TodoListAdapter;
@@ -40,7 +42,7 @@ public class MainActivity extends AppCompatActivity {
 
         todos = dbh.getAllTodos();
         prios = dbh.getAllPriorities();
-        todoListAdapter = new TodoListAdapter(this, R.layout.layout_todolist, todos , prios);
+        todoListAdapter = new TodoListAdapter(this, R.layout.layout_todolist, todos, prios);
 
         //TODO INITLIST
         listView = (ListView) findViewById(R.id.simpleListView);
@@ -88,6 +90,29 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    public void onResume() {
+        dbh = new DatabaseHelper(this);
+        int unit;
+        float textSize;
+
+        Textsize textSizeObj = dbh.getTextsize();
+        unit = textSizeObj.getUnit();
+        textSize = textSizeObj.getDigit();
+
+        if (unit == 0) {
+            unit = TypedValue.COMPLEX_UNIT_SP;
+        }
+
+        if (textSize == 0) {
+            textSize = 12;
+        }
+
+        Log.d("bla", textSize + " , " + unit);
+        todoListAdapter.setTextSize(unit, textSize);
+
+        super.onResume();
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -129,7 +154,6 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(), getString(R.string.toast_error_message), Toast.LENGTH_SHORT).show();
         }
     }
-
 
     private void startSettingsActivity() {
         Log.d(TAG, "Start new Activity: SettingsActivity");

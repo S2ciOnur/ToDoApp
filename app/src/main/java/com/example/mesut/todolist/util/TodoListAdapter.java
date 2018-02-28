@@ -1,6 +1,7 @@
 package com.example.mesut.todolist.util;
 
 import android.content.Context;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,6 +25,8 @@ public class TodoListAdapter extends ArrayAdapter{
     private ArrayList<Todo> todos;
     private ArrayList<Priority> prios;
     private DatabaseHelper dbh;
+    private int textUnit;
+    private float textSize;
 
     public TodoListAdapter(Context context, int textViewResourceId, ArrayList todos , ArrayList<Priority> prios) {
         super(context,textViewResourceId, todos);
@@ -31,6 +34,9 @@ public class TodoListAdapter extends ArrayAdapter{
         this.context = context;
         this.todos = todos;
         this.prios = prios;
+
+        this.textSize = 12;
+        this.textUnit = TypedValue.COMPLEX_UNIT_SP;
     }
 
     private class ViewHolder {
@@ -74,11 +80,21 @@ public class TodoListAdapter extends ArrayAdapter{
         }
 
         holder.txtTitle.setText(todo.getTitle());
+        holder.txtTitle.setTextSize(textUnit, textSize);
         holder.txtDesc.setText(todo.getDesc());
+        holder.txtDesc.setTextSize(textUnit, textSize);
         holder.txtPrio.setText(prioName);
+        holder.txtPrio.setTextSize(textUnit, textSize);
         holder.txtDate.setText(todo.getDate());
+        holder.txtDate.setTextSize(textUnit, textSize);
         holder.txtCats.setText(todo.catString());
+        holder.txtCats.setTextSize(textUnit, textSize);
 
         return convertView;
+    }
+
+    public void setTextSize(int textUnit, float textSize) {
+        this.textSize = textSize;
+        this.textUnit = textUnit;
     }
 }
