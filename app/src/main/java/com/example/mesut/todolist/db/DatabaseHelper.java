@@ -440,7 +440,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
                 if (c.getCount() != 0) {
                     textsize.setDigit(c.getFloat(c.getColumnIndex(DIGIT_TEXTSIZE_NAME)));
-                    textsize.setUnit(c.getColumnIndex(UNIT_TEXTSIZE_NAME));
+                    textsize.setUnit(c.getInt(c.getColumnIndex(UNIT_TEXTSIZE_NAME)));
                 } else {
                     textsize.setDigit(12);
                     textsize.setUnit(TypedValue.COMPLEX_UNIT_SP);
@@ -527,9 +527,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             ContentValues values = new ContentValues();
 
             db.delete(TEXTSIZE_TABLE_NAME, "id = ? ", new String[]{Integer.toString(0)});
+
             values.put(ID_TEXTSIZE_NAME, 0);
             values.put(DIGIT_TEXTSIZE_NAME, digit);
             values.put(UNIT_TEXTSIZE_NAME, unit);
+
             db.insert(TEXTSIZE_TABLE_NAME, null, values);
             return true;
         }catch (SQLException ex){
