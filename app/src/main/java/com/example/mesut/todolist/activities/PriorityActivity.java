@@ -147,7 +147,7 @@ public class PriorityActivity extends AppCompatActivity {
                 newPriority();
                 break;
             default:
-                Toast.makeText(getApplicationContext(), "ERROR", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), getString(R.string.toast_error_message), Toast.LENGTH_SHORT).show();
         }
     }
 

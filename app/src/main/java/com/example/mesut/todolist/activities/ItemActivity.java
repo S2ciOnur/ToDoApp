@@ -108,8 +108,7 @@ public class ItemActivity extends AppCompatActivity {
                 showCatDialog();
                 break;
             default:
-                //TODO lösch das ma
-                Toast.makeText(getApplicationContext(), "ERROR", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), getString(R.string.toast_error_message), Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -144,7 +143,7 @@ public class ItemActivity extends AppCompatActivity {
                         }
                     }
                 })
-                .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                .setPositiveButton(getString(R.string.alert_btn_ok), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int id) {
                         // Log.e(TAG, "Selected Items: " + itemsSelected.toString());
