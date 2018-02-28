@@ -57,11 +57,11 @@ public class TodoListAdapter extends ArrayAdapter{
             convertView = vi.inflate(R.layout.layout_todolist, null);
 
             holder = new ViewHolder();
-            holder.txtTitle = (TextView) convertView.findViewById(R.id.titleTextView);
-            holder.txtDesc = (TextView) convertView.findViewById(R.id.descTextView);
-            holder.txtPrio =(TextView) convertView.findViewById(R.id.prioTextView);
-            holder.txtDate =(TextView) convertView.findViewById(R.id.dateTextView);
-            holder.txtCats = (TextView) convertView.findViewById(R.id.catsTextView);
+            holder.txtTitle = convertView.findViewById(R.id.titleTextView);
+            holder.txtDesc = convertView.findViewById(R.id.descTextView);
+            holder.txtPrio = convertView.findViewById(R.id.prioTextView);
+            holder.txtDate = convertView.findViewById(R.id.dateTextView);
+            holder.txtCats = convertView.findViewById(R.id.catsTextView);
             convertView.setTag(holder);
 
         }

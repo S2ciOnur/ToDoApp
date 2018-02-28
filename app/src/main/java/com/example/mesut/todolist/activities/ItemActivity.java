@@ -29,10 +29,9 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- * Diese Klasse steuert die Activity, welche zum erstellen neuer "Todo-items"
+ * Diese Klasse steuert die Activity, welche zum Erstellen und Updaten neuer "Todo-items"
  * verantwortlich ist
  */
-
 public class ItemActivity extends AppCompatActivity {
     private static final String TAG = "ItemActivity";
 
@@ -52,11 +51,6 @@ public class ItemActivity extends AppCompatActivity {
     private int[] selectedIdDb = new int[50];
 
 
-    /**
-     * initialisiert und füllt den Spinner
-     *
-     * @param savedInstanceState
-     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -72,30 +66,40 @@ public class ItemActivity extends AppCompatActivity {
 
         initPrioSpinner();
 
-        Intent intent = getIntent();
-        // Receiving the Data
-
-        update = intent.getBooleanExtra("update" , false);
-        int intentId = intent.getIntExtra("id", 0);
-        String intentTitle = intent.getStringExtra("title");
-        String intentDesc = intent.getStringExtra("desc");
-        String intentDate = intent.getStringExtra("date");
-        int intentPrio_id = intent.getIntExtra("prio_id" , 0);
-        int [] intentCat_ids = new int[50];
-        intentCat_ids = intent.getIntArrayExtra("cats");
-
-        Log.e("Second Screen", intentTitle + "." + intentDesc + "." + intentDate  + "." + prio_id);
-
-        // Displaying Received data
-        txtTitle.setText(intentTitle);
-        txtDesc.setText(intentDesc);
-        buttonDate.setText(intentDate);
-
-        id = intentId;
-        prio_id = intentPrio_id;
-        cat_ids = intentCat_ids;
+        extractIntent();
     }
 
+    /**
+     * Bearbeitet die Übergebenen Intents
+     */
+    private void extractIntent(){
+        Intent intent = getIntent();
+        // Receiving the Data
+        update = intent.getBooleanExtra("update" , false);
+        if(update){
+            int intentId = intent.getIntExtra("id", 0);
+            String intentTitle = intent.getStringExtra("title");
+            String intentDesc = intent.getStringExtra("desc");
+            String intentDate = intent.getStringExtra("date");
+            int intentPrio_id = intent.getIntExtra("prio_id", 0);
+            int[] intentCat_ids = intent.getIntArrayExtra("cats");
+
+            Log.e("Second Screen", intentTitle + "." + intentDesc + "." + intentDate + "." + prio_id);
+
+            // Displaying Received data
+            txtTitle.setText(intentTitle);
+            txtDesc.setText(intentDesc);
+            buttonDate.setText(intentDate);
+            id = intentId;
+            prio_id = intentPrio_id;
+            cat_ids = intentCat_ids;
+        }
+    }
+
+    /**
+     * Behandelt alle Buttons in der ItemActivity
+     * @param v Angeklickter Button
+     */
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.cancel_button:
@@ -119,6 +123,10 @@ public class ItemActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Wird aufgerufen, wenn der KategorieButton geklickt wird
+     * Behandelt das Checkboxen-Fenster der Kategorien
+     */
     private void showCatDialog() {
 
         Dialog dialog;
@@ -128,8 +136,6 @@ public class ItemActivity extends AppCompatActivity {
 
         for (Category cat : categories) {
             itemsList.add(cat.getName());
-
-            //  Toast.makeText(getApplicationContext(),  itemsSelected.remove(Integer.valueOf(selectedItemId)), Toast.LENGTH_SHORT).show();
         }
 
         final String[] items = itemsList.toArray(new String[itemsList.size()]);
@@ -198,11 +204,19 @@ public class ItemActivity extends AppCompatActivity {
         cat_ids = ids;
     }
 
+    /**
+     * Wird aufgerufen wenn der Date-Button geklickt wird.
+     * Speichert das ausgewählte Datum als String in den Button
+     */
     private void openDatePicker() {
         DialogFragment newFragment = new DatePickerFragment();
         newFragment.show(getFragmentManager(), getString(R.string.datepicker));
     }
 
+    /**
+     * Wird aufgerufen wenn der grüne Speicher-Button geklickt wird
+     * Nimmt sich alle Relevanten Informationen und speichert das neue TODO bzw updated es.
+     */
     private void saveItem() {
         String newTitle = txtTitle.getText().toString();
         String newDesc = txtDesc.getText().toString();
@@ -220,6 +234,9 @@ public class ItemActivity extends AppCompatActivity {
         finish();
     }
 
+    /**
+     * Initialisiert den Priority-Spinner
+     */
     private void initPrioSpinner() {
         final ArrayList<Priority> prioritys = dbh.getAllPriorities();
         ArrayList<String> names = new ArrayList<String>();
@@ -249,8 +266,6 @@ public class ItemActivity extends AppCompatActivity {
             public void onNothingSelected(AdapterView<?> parentView) {
                 // your code here
             }
-
         });
-
     }
 }

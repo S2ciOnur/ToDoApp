@@ -171,18 +171,29 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Startet die Settings-Activity (Zahnrad)
+     */
     private void startSettingsActivity() {
         Log.d(TAG, "Start new Activity: SettingsActivity");
         Intent intent = new Intent(this, SettingsActivity.class);
         startActivity(intent);
     }
 
+    /**
+     * Startet die ItemActivity, wenn ein neues TODO erstellt wird
+     */
     private void startItemActivity() {
         Log.d(TAG, "Start new Activity: ItemActivity");
         Intent intent = new Intent(this, ItemActivity.class);
         startActivity(intent);
     }
 
+    /**
+     * Wird aufgerufen, wenn ein TODO lange angeklickt wird
+     * Initialisiert das Löschen-Fenster
+     * @param todoId
+     */
     private void deleteAlert(final int todoId) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
