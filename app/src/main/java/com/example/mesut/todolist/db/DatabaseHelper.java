@@ -631,27 +631,4 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     /**
      * Counts
      */
-
-
-    /**
-     * Debug
-     */
-    public void insertTestDataForDebug() {
-
-        createPriority("WICHTIG!" , 20);
-        createPriority("Normal" , 10);
-        createPriority("Kann warten..." , 5);
-
-        createCategory("Haus");
-        createCategory("Uni");
-        createCategory("Auto");
-
-        int [] cats1 = {1,2};
-        createTodo("MPT Lernen", "Treffpunkt in der Fachschaft", "Jeden Tag um 10" , 2, cats1);
-        int [] cats2 = {3};
-        createTodo("Ölwechsel", "Beim ATU", "14.02.2018 9:00Uhr" , 1, cats2);
-        int [] cats3 = {1};
-        createTodo("Staubsaugen", "", "" , 3, cats3);
-
-    }
 }
