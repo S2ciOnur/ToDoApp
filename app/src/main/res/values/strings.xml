@@ -24,9 +24,12 @@
     <string name="dialog_cancel_btn">Cancel</string>
 
     <string name="activity_update">update</string>
+    <string name="activity_id">id</string>
     <string name="activity_title">title</string>
     <string name="activity_desc">desc</string>
     <string name="activity_date">date</string>
+    <string name="activity_prio_id">prio_id</string>
+    <string name="activity_cats">cats</string>
 
     <string name="toast_message">Weight should be Integer</string>
     <string name="toast_integer_message">Size should be Integer</string>
