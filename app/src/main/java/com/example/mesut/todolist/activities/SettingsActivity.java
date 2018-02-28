@@ -15,6 +15,7 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.example.mesut.todolist.R;
+import com.example.mesut.todolist.core.Textsize;
 import com.example.mesut.todolist.db.DatabaseHelper;
 
 import java.lang.reflect.Type;
@@ -95,6 +96,9 @@ public class SettingsActivity extends AppCompatActivity {
         final EditText userInput = (EditText) dialogView.findViewById(R.id.userInput);
         final Spinner choosenTextSize = (Spinner) dialogView.findViewById(R.id.choosenTextSize);
 
+        Textsize textsize = dbh.getTextsize();
+
+
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
                 R.array.string_size_Array, android.R.layout.simple_spinner_item);
         // Specify the layout to use when the list of choices appears
@@ -103,6 +107,9 @@ public class SettingsActivity extends AppCompatActivity {
         choosenTextSize.setAdapter(adapter);
 
         dialogBuilder.setTitle(getString(R.string.dialog_title_textsize));
+
+        userInput.setText(String.valueOf(textsize.getDigit()));
+        choosenTextSize.setSelection(textsize.getUnit());
 
         dialogBuilder.setPositiveButton(getString(R.string.dialog_done_btn), new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int whichButton) {
