@@ -60,6 +60,7 @@ public class MainActivity extends AppCompatActivity {
 
                 //Sending data to another Activity
                 intent.putExtra("update", true);
+                intent.putExtra("id", clickedTodo.getId());
                 intent.putExtra("title", clickedTodo.getTitle());
                 intent.putExtra("desc", clickedTodo.getDesc());
                 intent.putExtra("date", clickedTodo.getDate());
