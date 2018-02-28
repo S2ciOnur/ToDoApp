@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
@@ -14,6 +15,7 @@ import android.widget.Toast;
 
 import com.example.mesut.todolist.R;
 import com.example.mesut.todolist.core.Priority;
+import com.example.mesut.todolist.core.Textsize;
 import com.example.mesut.todolist.db.DatabaseHelper;
 import com.example.mesut.todolist.util.PrioListAdapter;
 
@@ -51,7 +53,7 @@ public class PriorityActivity extends AppCompatActivity {
         prios = dbh.getAllPriorities();
         prioListAdapter = new PrioListAdapter(this, R.layout.layout_priority_settings, prios);
         listView = (ListView) findViewById(R.id.simpleListView);
-        listView.setAdapter(prioListAdapter);
+        updateListView(prioListAdapter);
 
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -82,6 +84,33 @@ public class PriorityActivity extends AppCompatActivity {
         });
 
 
+    }
+
+    private void updateListView(PrioListAdapter prioListAdapter) {
+        listView = (ListView) findViewById(R.id.simpleListView);
+        listView.setAdapter(prioListAdapter);
+    }
+
+    @Override
+    public void onResume() {
+        int textUnit;
+        float textSize;
+
+        Textsize textSizeObj = dbh.getTextsize();
+        textUnit = textSizeObj.getUnit();
+        textSize = textSizeObj.getDigit();
+
+        if (textUnit == 0) {
+            textUnit = TypedValue.COMPLEX_UNIT_SP;
+        }
+
+        if (textSize == 0) {
+            textSize = 12;
+        }
+
+        prioListAdapter.setTextSize(textUnit, textSize);
+        updateListView(prioListAdapter);
+        super.onResume();
     }
 
     /**
