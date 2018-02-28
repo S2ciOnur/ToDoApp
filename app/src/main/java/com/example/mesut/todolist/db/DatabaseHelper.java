@@ -535,7 +535,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             db.insert(TEXTSIZE_TABLE_NAME, null, values);
             return true;
         }catch (SQLException ex){
-            Log.e(TAG, "Couldn't update Textsize!");
+            Log.e(TAG, "Couldn't update Textsize!\n" + ex);
             return false;
         }
     }

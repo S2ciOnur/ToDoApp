@@ -72,7 +72,7 @@ public class TodoListAdapter extends ArrayAdapter{
         Todo todo = todos.get(position);
 
         int prio_id = todo.getPrio_id();
-        String prioName = "404 Priority not found";
+        String prioName = "0";
         for(Priority prio : prios){
             if(prio.getId() == prio_id){
                 prioName = prio.getName();
