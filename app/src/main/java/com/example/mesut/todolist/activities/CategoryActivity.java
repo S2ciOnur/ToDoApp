@@ -10,7 +10,6 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import com.example.mesut.todolist.R;
 import com.example.mesut.todolist.core.Category;
@@ -21,6 +20,7 @@ import java.util.ArrayList;
 
 /**
  * Diese Klasse steuert die Kategorien erstellung und Löschung in der App
+ * Listet die Daten aus der Datenbank
  */
 public class CategoryActivity extends AppCompatActivity {
 
@@ -28,12 +28,15 @@ public class CategoryActivity extends AppCompatActivity {
     private ArrayList<Category> cats;
     private CatListAdapter catListAdapter;
     private ListView listView;
-    private String catName = "";
-    private Integer catId;
-    private boolean newElement = true;
 
     private static final String TAG = "CategoryActivity";
 
+    /**
+     * Entschiedet ob ein neues Item erstellt wird oder ein Bestehendes geändert wird
+     *
+     * @param savedInstanceState; initialisiert die Click Listener auf die Listview (on Click; On Long Click),
+     *                            Sellt die Listview aus der Datenbank her
+     */
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,35 +44,34 @@ public class CategoryActivity extends AppCompatActivity {
         setContentView(R.layout.activity_category);
         dbh = new DatabaseHelper(this);
 
+        //Datenbank wird ausgelesen
         cats = dbh.getAllCategories();
+        //Cats werden aus der DB extrahiert
         catListAdapter = new CatListAdapter(this, R.layout.layout_category_settings, cats);
+        //Cats weden in die ListView gepackt
         listView = (ListView) findViewById(R.id.simpleListView);
         listView.setAdapter(catListAdapter);
 
+        //OnClick Listener witrd initialisiert
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
 
-                Category clickedCat = cats.get((int) l);
-
-                String todoText = "ArrayID: " + l + " Prio: " + clickedCat.toString();
-                Toast.makeText(CategoryActivity.this, todoText, Toast.LENGTH_SHORT).show();
+                Category clickedCat = cats.get((int) l); //geclickte Kategorie wird
 
 
-                catName = clickedCat.getName();
+                String catName = clickedCat.getName();          //Speichere den Namen der Kategorie
 
-                catId = new Integer(clickedCat.getId());
-                newElement = false;
-
-                newCategory(catId, catName);
+                Integer catId = new Integer(clickedCat.getId()); // Speichere Id der Kategorie
+                editCategory(catId, catName);
             }
         });
+        //OnLongClick Listener wird initalisiert
         listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
                 Category clickedCat = cats.get((int) l);
-                catId = new Integer(clickedCat.getId());
-                Toast.makeText(CategoryActivity.this, "LÖSCHE " + cats.get((int) l).getName() + "???", Toast.LENGTH_SHORT).show();
+                Integer catId = new Integer(clickedCat.getId());
                 deleteAlert(catId);
                 return true;
             }
@@ -78,22 +80,27 @@ public class CategoryActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * startet ein Alert Fenster --> "Yes" Löscht die gewählte Kategorie
+     *
+     * @param catId enthält die Id der Kategorie, die geclickt wurde --> OnCreate OnLongClick
+     */
     private void deleteAlert(final Integer catId) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
-        builder.setTitle("Confirm");
-        builder.setMessage("Are you sure to delete?");
+        builder.setTitle(getString(R.string.alert_title_confirm));
+        builder.setMessage(getString(R.string.alert_message));
 
-        builder.setPositiveButton("YES", new DialogInterface.OnClickListener() {
+        builder.setPositiveButton(getString(R.string.alert_btn_yes), new DialogInterface.OnClickListener() {
 
             public void onClick(DialogInterface dialog, int which) {
-                dbh.deleteCat(catId);
-                updateScreen();
-                dialog.dismiss();
+                dbh.deleteCat(catId); //Kategorie wird aus der DB entfernt
+                updateScreen();       //das Activity Screen wird refresht
+                dialog.dismiss();     // Alert verschwindet
             }
         });
 
-        builder.setNegativeButton("NO", new DialogInterface.OnClickListener() {
+        builder.setNegativeButton(getString(R.string.alert_btn_no), new DialogInterface.OnClickListener() {
 
             @Override
             public void onClick(DialogInterface dialog, int which) {
@@ -107,16 +114,23 @@ public class CategoryActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * Reagiert auf den Klick des FAB Button "+"
+     * Startet newCategory()
+     *
+     * @param v enthält die View des FAB Button --> XML
+     */
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.add_fab:
-                newCategory(catId, catName);
+                newCategory();
                 break;
-            default:
-                Toast.makeText(getApplicationContext(), "ERROR", Toast.LENGTH_SHORT).show();
         }
     }
 
+    /**
+     * Refresht den Activity Screen
+     */
     private void updateScreen() {
 
         Intent intent = getIntent();
@@ -127,7 +141,51 @@ public class CategoryActivity extends AppCompatActivity {
 
     }
 
-    private void newCategory(final Integer catId, final String iva_catName) {
+
+    /**
+     * startet ein Alert zum bearbeiten einer Vorhaneden Kategorie
+     * aktualisiert den namen der gewählten kategorie in der DB
+     *
+     * @param catId   Enthält die Id der Kategorie, welche verändert werden soll.
+     * @param catName Enthält den Namen der Kategorie
+     */
+    private void editCategory(final Integer catId, final String catName) {
+        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
+        LayoutInflater inflater = this.getLayoutInflater();
+        final View dialogView = inflater.inflate(R.layout.category_alert, null);
+        dialogBuilder.setView(dialogView);
+
+
+        //Setzt den Kategorie Namen in die Textbox des Alert
+        final EditText userInput = (EditText) dialogView.findViewById(R.id.userInputnewCat);
+        userInput.setText(catName);
+
+        dialogBuilder.setTitle(getString(R.string.dialog_title_category));
+
+        dialogBuilder.setPositiveButton(getString(R.string.dialog_done_btn), new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int whichButton) {
+                String usersNewCategory = userInput.getText().toString();
+
+                dbh.updateCat(catId, usersNewCategory);
+                updateScreen();
+
+
+            }
+        });
+        dialogBuilder.setNegativeButton(getString(R.string.dialog_cancel_btn), new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int whichButton) {
+                dialog.dismiss();
+            }
+        });
+        AlertDialog b = dialogBuilder.create();
+        b.show();
+    }
+
+
+    /**
+     * startet ein Alert zum erstellen einer neuen Kategorie
+     */
+    private void newCategory() {
         AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
         LayoutInflater inflater = this.getLayoutInflater();
         final View dialogView = inflater.inflate(R.layout.category_alert, null);
@@ -135,38 +193,26 @@ public class CategoryActivity extends AppCompatActivity {
 
         final EditText userInput = (EditText) dialogView.findViewById(R.id.userInputnewCat);
 
-        if (newElement != true) {
-            userInput.setText(iva_catName);
-        }
 
-        dialogBuilder.setTitle("Add Category");
+        dialogBuilder.setTitle(getString(R.string.dialog_title_category));
 
-        dialogBuilder.setPositiveButton("Done", new DialogInterface.OnClickListener() {
+        dialogBuilder.setPositiveButton(getString(R.string.dialog_done_btn), new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int whichButton) {
                 String usersNewCategory = userInput.getText().toString();
-                if (newElement != true) {
 
-                    dbh.updateCat(catId, usersNewCategory);
-                    updateScreen();
-                } else {
 
-                    getInputValue(usersNewCategory);
-                }
-                newElement = true;
+                dbh.createCategory(usersNewCategory);
+                updateScreen();
+
+
             }
         });
-        dialogBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+        dialogBuilder.setNegativeButton(getString(R.string.dialog_cancel_btn), new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int whichButton) {
-                //pass
+                dialog.dismiss();
             }
         });
         AlertDialog b = dialogBuilder.create();
         b.show();
-    }
-
-    private void getInputValue(String usersNewCategory) {
-        Toast.makeText(getApplicationContext(), usersNewCategory, Toast.LENGTH_SHORT).show();
-        dbh.createCategory(usersNewCategory);
-        updateScreen();
     }
 }
