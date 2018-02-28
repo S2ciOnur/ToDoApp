@@ -46,6 +46,7 @@ public class MainActivity extends AppCompatActivity {
             dbh.createPriority("Wichtig" , 100);
             prios = dbh.getAllPriorities();
         }
+
         todoListAdapter = new TodoListAdapter(this, R.layout.layout_todolist, todos, prios);
 
         listView = (ListView) findViewById(R.id.simpleListView);
@@ -72,8 +73,10 @@ public class MainActivity extends AppCompatActivity {
 
                 int [] cat_ids = new int [50];
                 ArrayList<Category> cats = clickedTodo.getCats();
-                for(int z = 0; z <= cats.size(); z++){
-                    cat_ids[i] = cats.get(i).getId();
+                if(!cats.isEmpty()) {
+                    for (int z = 0; z <= cats.size(); z++) {
+                        cat_ids[i] = cats.get(i).getId();
+                    }
                 }
                 intent.putExtra(getString(R.string.activity_cats) , cat_ids);
 
