@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
@@ -14,6 +15,7 @@ import android.widget.Toast;
 
 import com.example.mesut.todolist.R;
 import com.example.mesut.todolist.core.Category;
+import com.example.mesut.todolist.core.Textsize;
 import com.example.mesut.todolist.db.DatabaseHelper;
 import com.example.mesut.todolist.util.CatListAdapter;
 
@@ -52,7 +54,7 @@ public class CategoryActivity extends AppCompatActivity {
         catListAdapter = new CatListAdapter(this, R.layout.layout_category_settings, cats);
         //Cats weden in die ListView gepackt
         listView = (ListView) findViewById(R.id.simpleListView);
-        listView.setAdapter(catListAdapter);
+        updateListView(catListAdapter);
 
         //OnClick Listener witrd initialisiert
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -80,6 +82,33 @@ public class CategoryActivity extends AppCompatActivity {
         });
 
 
+    }
+
+    private void updateListView(CatListAdapter catListAdapter) {
+        listView = (ListView) findViewById(R.id.simpleListView);
+        listView.setAdapter(catListAdapter);
+    }
+
+    @Override
+    public void onResume() {
+        int textUnit;
+        float textSize;
+
+        Textsize textSizeObj = dbh.getTextsize();
+        textUnit = textSizeObj.getUnit();
+        textSize = textSizeObj.getDigit();
+
+        if (textUnit == 0) {
+            textUnit = TypedValue.COMPLEX_UNIT_SP;
+        }
+
+        if (textSize == 0) {
+            textSize = 12;
+        }
+
+        catListAdapter.setTextSize(textUnit, textSize);
+
+        super.onResume();
     }
 
     /**

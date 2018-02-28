@@ -1,6 +1,7 @@
 package com.example.mesut.todolist.util;
 
 import android.content.Context;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,13 +20,17 @@ import java.util.ArrayList;
 public class CatListAdapter extends ArrayAdapter {
     private Context context;
     private ArrayList<Category> cats;
+    private int textUnit;
+    private float textSize;
 
     public CatListAdapter(Context context, int textViewResourceId, ArrayList objects) {
         super(context,textViewResourceId, objects);
 
+        textUnit = TypedValue.COMPLEX_UNIT_SP;
+        textSize = 12;
+
         this.context = context;
         cats = objects;
-
     }
 
     private class ViewHolder {
@@ -52,7 +57,13 @@ public class CatListAdapter extends ArrayAdapter {
 
         Category cat = cats.get(position);
         holder.txtName.setText(cat.getName());
+        holder.txtName.setTextSize(textUnit, textSize);
         return convertView;
 
+    }
+
+    public void setTextSize(int textUnit, float textSize) {
+        this.textSize = textSize;
+        this.textUnit = textUnit;
     }
 }
