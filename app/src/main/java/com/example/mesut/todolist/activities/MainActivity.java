@@ -181,6 +181,7 @@ public class MainActivity extends AppCompatActivity {
 
             public void onClick(DialogInterface dialog, int which) {
                 dbh.deleteTodo(todoId);
+                updateScreen();
             }
         });
 
@@ -197,6 +198,20 @@ public class MainActivity extends AppCompatActivity {
         alert.show();
 
     }
+
+    /**
+     * Refresht den Priority Screen
+     */
+    private void updateScreen() {
+
+        Intent intent = getIntent();
+
+        finish();
+
+        startActivity(intent);
+
+    }
+
 }
 
 
