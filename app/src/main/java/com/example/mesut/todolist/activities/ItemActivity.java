@@ -46,6 +46,7 @@ public class ItemActivity extends AppCompatActivity {
     private DatabaseHelper dbh;
     private boolean update = false;
 
+    private int id;
     private int prio_id;
     private int[] cat_ids = new int[50];
     private int[] selectedIdDb = new int[50];
@@ -75,6 +76,7 @@ public class ItemActivity extends AppCompatActivity {
         // Receiving the Data
 
         update = intent.getBooleanExtra("update" , false);
+        int intentId = intent.getIntExtra("id", 0);
         String intentTitle = intent.getStringExtra("title");
         String intentDesc = intent.getStringExtra("desc");
         String intentDate = intent.getStringExtra("date");
@@ -88,6 +90,8 @@ public class ItemActivity extends AppCompatActivity {
         txtTitle.setText(intentTitle);
         txtDesc.setText(intentDesc);
         buttonDate.setText(intentDate);
+
+        id = intentId;
         prio_id = intentPrio_id;
         cat_ids = intentCat_ids;
     }
@@ -207,7 +211,7 @@ public class ItemActivity extends AppCompatActivity {
         int[] newCat_ids = cat_ids;
 
         if(update){
-            //dbh.updateTodo()
+            dbh.updateTodo(id, newTitle, newDesc, newDate, newPrio_id, newCat_ids);
         }else {
             dbh.createTodo(newTitle, newDesc, newDate, newPrio_id, newCat_ids);
 
