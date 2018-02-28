@@ -52,11 +52,6 @@ public class ItemActivity extends AppCompatActivity {
     private int[] selectedIdDb = new int[50];
 
 
-    /**
-     * initialisiert und füllt den Spinner
-     *
-     * @param savedInstanceState
-     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -72,28 +67,36 @@ public class ItemActivity extends AppCompatActivity {
 
         initPrioSpinner();
 
+        extractIntent();
+    }
+
+    /**
+     * Bearbeitet die Übergebenen Intents
+     */
+    private void extractIntent(){
         Intent intent = getIntent();
         // Receiving the Data
 
         update = intent.getBooleanExtra("update" , false);
-        int intentId = intent.getIntExtra("id", 0);
-        String intentTitle = intent.getStringExtra("title");
-        String intentDesc = intent.getStringExtra("desc");
-        String intentDate = intent.getStringExtra("date");
-        int intentPrio_id = intent.getIntExtra("prio_id" , 0);
-        int [] intentCat_ids = new int[50];
-        intentCat_ids = intent.getIntArrayExtra("cats");
+        if(update) {
+            int intentId = intent.getIntExtra("id", 0);
+            String intentTitle = intent.getStringExtra("title");
+            String intentDesc = intent.getStringExtra("desc");
+            String intentDate = intent.getStringExtra("date");
+            int intentPrio_id = intent.getIntExtra("prio_id", 0);
+            int[] intentCat_ids = new int[50];
+            intentCat_ids = intent.getIntArrayExtra("cats");
 
-        Log.e("Second Screen", intentTitle + "." + intentDesc + "." + intentDate  + "." + prio_id);
+            Log.e("Second Screen", intentTitle + "." + intentDesc + "." + intentDate + "." + prio_id);
 
-        // Displaying Received data
-        txtTitle.setText(intentTitle);
-        txtDesc.setText(intentDesc);
-        buttonDate.setText(intentDate);
-
-        id = intentId;
-        prio_id = intentPrio_id;
-        cat_ids = intentCat_ids;
+            // Displaying Received data
+            txtTitle.setText(intentTitle);
+            txtDesc.setText(intentDesc);
+            buttonDate.setText(intentDate);
+            id = intentId;
+            prio_id = intentPrio_id;
+            cat_ids = intentCat_ids;
+        }
     }
 
     public void onClick(View v) {
@@ -128,8 +131,6 @@ public class ItemActivity extends AppCompatActivity {
 
         for (Category cat : categories) {
             itemsList.add(cat.getName());
-
-            //  Toast.makeText(getApplicationContext(),  itemsSelected.remove(Integer.valueOf(selectedItemId)), Toast.LENGTH_SHORT).show();
         }
 
         final String[] items = itemsList.toArray(new String[itemsList.size()]);
