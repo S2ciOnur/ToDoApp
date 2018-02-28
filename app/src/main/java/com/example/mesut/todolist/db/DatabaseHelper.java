@@ -24,7 +24,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String TAG = "DatabaseHelper";
 
     private static final String DATABASE_NAME  = "todoapp.db";
-    private static final int DATABASE_VERSION = 5;
+    private static final int DATABASE_VERSION = 6;
 
     //Tabelle für Todo
     private static final String TODO_TABLE_NAME = "todo";
@@ -535,7 +535,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             db.insert(TEXTSIZE_TABLE_NAME, null, values);
             return true;
         }catch (SQLException ex){
-            Log.e(TAG, "Couldn't update Textsize!");
+            Log.e(TAG, "Couldn't update Textsize!\n" + ex);
             return false;
         }
     }
