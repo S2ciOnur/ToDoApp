@@ -42,6 +42,10 @@ public class MainActivity extends AppCompatActivity {
 
         todos = dbh.getAllTodos();
         prios = dbh.getAllPriorities();
+        if(prios.isEmpty()){
+            dbh.createPriority("Wichtig" , 100);
+            prios = dbh.getAllPriorities();
+        }
         todoListAdapter = new TodoListAdapter(this, R.layout.layout_todolist, todos, prios);
 
         listView = (ListView) findViewById(R.id.simpleListView);
