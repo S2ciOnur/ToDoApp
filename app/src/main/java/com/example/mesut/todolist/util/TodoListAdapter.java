@@ -16,7 +16,7 @@ import com.example.mesut.todolist.db.DatabaseHelper;
 import java.util.ArrayList;
 
 /**
- * Created by Nihal on 1/24/2017.
+ * Created by Mesut
  */
 
 public class TodoListAdapter extends ArrayAdapter{

@@ -29,6 +29,7 @@
     <string name="activity_date">date</string>
 
     <string name="toast_message">Weight should be Integer</string>
+    <string name="toast_integer_message">Size should be Integer</string>
     <string name="toast_error_message">ERROR</string>
 
     <string name="builder_categorie_title">Select Categories</string>

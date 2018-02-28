@@ -42,13 +42,11 @@ public class ItemActivity extends AppCompatActivity {
     private Button buttonCat;
     private Button buttonDate;
 
-    private DatePickerDialog datePicker;
     private DatabaseHelper dbh;
     private boolean update = false;
 
     private int prio_id;
     private int[] cat_ids = new int[50];
-    private int[] selectedIdDb = new int[50];
 
 
     /**
@@ -61,11 +59,11 @@ public class ItemActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_item);
 
-        this.txtTitle = (EditText) findViewById(R.id.title_editText);
-        this.txtDesc = (EditText) findViewById(R.id.desc_editText);
-        this.spinnerPrio = (Spinner) findViewById(R.id.prio_spinner);
-        this.buttonCat = (Button) findViewById(R.id.cat_button);
-        this.buttonDate = (Button) findViewById(R.id.date_button);
+        this.txtTitle = findViewById(R.id.title_editText);
+        this.txtDesc = findViewById(R.id.desc_editText);
+        this.spinnerPrio = findViewById(R.id.prio_spinner);
+        this.buttonCat = findViewById(R.id.cat_button);
+        this.buttonDate = findViewById(R.id.date_button);
 
         dbh = new DatabaseHelper(this);
 
@@ -74,14 +72,14 @@ public class ItemActivity extends AppCompatActivity {
         Intent intent = getIntent();
         // Receiving the Data
 
-        update = intent.getBooleanExtra(getString(R.string.activity_update) , false);
+        update = intent.getBooleanExtra(getString(R.string.activity_update), false);
         String intentTitle = intent.getStringExtra(getString(R.string.activity_title));
         String intentDesc = intent.getStringExtra(getString(R.string.activity_desc));
         String intentDate = intent.getStringExtra(getString(R.string.activity_date));
         //int intentPrio_id = Integer.getInteger(intent.getStringExtra("prio_id"));
         //ArrayList<Category> cats = intent.getStringExtra("cats");
 
-        Log.e("Second Screen", intentTitle + "." + intentDesc + "." + intentDate  + "." + prio_id);
+        Log.e("Second Screen", intentTitle + "." + intentDesc + "." + intentDate + "." + prio_id);
 
         // Displaying Received data
         txtTitle.setText(intentTitle);
@@ -203,9 +201,9 @@ public class ItemActivity extends AppCompatActivity {
         int newPrio_id = prio_id;
         int[] newCat_ids = cat_ids;
 
-        if(update){
+        if (update) {
             //dbh.updateTodo()
-        }else {
+        } else {
             dbh.createTodo(newTitle, newDesc, newDate, newPrio_id, newCat_ids);
             //TODO mach ma den Toast weg
             Toast.makeText(getApplicationContext(), newTitle + " erstellt!", Toast.LENGTH_SHORT).show();

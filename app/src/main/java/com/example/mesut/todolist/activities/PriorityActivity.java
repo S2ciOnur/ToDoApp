@@ -32,10 +32,6 @@ public class PriorityActivity extends AppCompatActivity {
     private ArrayList<Priority> prios;
     private PrioListAdapter prioListAdapter;
     private ListView listView;
-    private String prioName = "";
-    private String prioWeight = "";
-    private Integer priorityId;
-    private boolean newElement = true;
 
 
     /**
@@ -65,11 +61,11 @@ public class PriorityActivity extends AppCompatActivity {
                 Priority clickedPrio = prios.get((int) l);
 
 
-                prioName = clickedPrio.getName();
+                String prioName = clickedPrio.getName();
                 int prioGewicht = clickedPrio.getWeight();
-                prioWeight = prioGewicht + "";
+                String prioWeight = prioGewicht + "";
 
-                priorityId = new Integer(clickedPrio.getId());
+                Integer priorityId = new Integer(clickedPrio.getId());
 
                 editPriority(priorityId, prioName, prioWeight);
             }
@@ -79,7 +75,7 @@ public class PriorityActivity extends AppCompatActivity {
             @Override
             public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
                 Priority clickedPrio = prios.get((int) l);
-                priorityId = new Integer(clickedPrio.getId());
+                Integer priorityId = new Integer(clickedPrio.getId());
                 deleteAlert(priorityId);
                 return true;
             }

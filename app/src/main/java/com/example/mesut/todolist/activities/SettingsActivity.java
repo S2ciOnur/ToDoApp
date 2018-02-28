@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -14,6 +15,9 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.example.mesut.todolist.R;
+import com.example.mesut.todolist.db.DatabaseHelper;
+
+import java.lang.reflect.Type;
 
 /**
  * Diese Klasse ind für die Settings Activity zuständig.
@@ -21,7 +25,7 @@ import com.example.mesut.todolist.R;
  * bzw. das Alert Fenster fuer die TextSize
  */
 public class SettingsActivity extends AppCompatActivity {
-
+    private DatabaseHelper dbh;
     private static final String TAG = "SettingsActivity";
     private Button textSizeBtn;
     private Button priorityBtn;
@@ -29,6 +33,7 @@ public class SettingsActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        dbh = new DatabaseHelper(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
         this.textSizeBtn = (Button) findViewById(R.id.btnTextSize);
@@ -63,9 +68,9 @@ public class SettingsActivity extends AppCompatActivity {
     /**
      * startet die Kategorien Activity
      */
-    private void startCategoryActivity(){
-            Intent intent = new Intent(this, CategoryActivity.class);
-            startActivity(intent);
+    private void startCategoryActivity() {
+        Intent intent = new Intent(this, CategoryActivity.class);
+        startActivity(intent);
     }
 
     /**
@@ -79,6 +84,7 @@ public class SettingsActivity extends AppCompatActivity {
     /**
      * erstellt ein Alert dialog
      * um die Textsize ändern zu können.
+     * initialisiert den Spinenr fuer die Auswahl der Text Groese
      */
     private void showTextSizeDialog() {
         AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
@@ -115,16 +121,36 @@ public class SettingsActivity extends AppCompatActivity {
     }
 
 
-
-
-
     private void getInputValue(String textSize, String sizeType) {
-        Toast.makeText(getApplicationContext(), textSize, Toast.LENGTH_SHORT).show();
-        Toast.makeText(getApplicationContext(), sizeType, Toast.LENGTH_SHORT).show();
-        try {
-            int textSizeInput = Integer.parseInt(textSize);
-        } catch (RuntimeException e) {
-            Toast.makeText(getApplicationContext(), "Bitte nur Integer Werte", Toast.LENGTH_SHORT).show();
+        int unit;
+
+        switch (sizeType) {
+            case "px":
+                unit = TypedValue.COMPLEX_UNIT_PX;
+                break;
+            case "dp":
+                unit = TypedValue.COMPLEX_UNIT_DIP;
+                break;
+            case "sp":
+                unit = TypedValue.COMPLEX_UNIT_SP;
+                break;
+            case "pt":
+                unit = TypedValue.COMPLEX_UNIT_PT;
+                break;
+            case "in":
+                unit = TypedValue.COMPLEX_UNIT_IN;
+                break;
+            case "mm":
+                unit = TypedValue.COMPLEX_UNIT_MM;
+                break;
         }
+
+        try {
+            float textSizeInput = Float.parseFloat(textSize);
+        } catch (RuntimeException e) {
+            Toast.makeText(getApplicationContext(), getString(R.string.toast_integer_message), Toast.LENGTH_SHORT).show();
+        }
+
+        //dbh.
     }
 }
