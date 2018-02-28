@@ -122,7 +122,8 @@ public class SettingsActivity extends AppCompatActivity {
 
 
     private void getInputValue(String textSize, String sizeType) {
-        int unit;
+        int unit = TypedValue.COMPLEX_UNIT_SP;
+        float textSizeInput = 12;
 
         switch (sizeType) {
             case "px":
@@ -146,11 +147,11 @@ public class SettingsActivity extends AppCompatActivity {
         }
 
         try {
-            float textSizeInput = Float.parseFloat(textSize);
+            textSizeInput = Float.parseFloat(textSize);
         } catch (RuntimeException e) {
             Toast.makeText(getApplicationContext(), getString(R.string.toast_integer_message), Toast.LENGTH_SHORT).show();
         }
 
-        //dbh.
+        dbh.updateTextsize(textSizeInput, unit);
     }
 }
