@@ -15,7 +15,6 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.example.mesut.todolist.R;
-import com.example.mesut.todolist.core.Category;
 import com.example.mesut.todolist.core.Priority;
 import com.example.mesut.todolist.core.Todo;
 import com.example.mesut.todolist.db.DatabaseHelper;
@@ -51,6 +50,9 @@ public class MainActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
 
                 Todo clickedTodo = todos.get((int) l);
+
+                String todoText = "ArrayID: " + l + " Todo: " + clickedTodo.toString();
+                Toast.makeText(MainActivity.this, todoText, Toast.LENGTH_SHORT).show();
 
                 Intent intent = new Intent(getApplicationContext(), ItemActivity.class);
 
@@ -123,7 +125,7 @@ public class MainActivity extends AppCompatActivity {
                 startItemActivity();
                 break;
             default:
-                Toast.makeText(getApplicationContext(), "ERROR", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), getString(R.string.toast_error_message), Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -143,10 +145,10 @@ public class MainActivity extends AppCompatActivity {
     private void deleteAlert() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
-        builder.setTitle("Confirm");
-        builder.setMessage("Are you sure to delete?");
+        builder.setTitle(getString(R.string.alert_title_confirm));
+        builder.setMessage(getString(R.string.alert_message));
 
-        builder.setPositiveButton("YES", new DialogInterface.OnClickListener() {
+        builder.setPositiveButton(getString(R.string.alert_btn_yes), new DialogInterface.OnClickListener() {
 
             public void onClick(DialogInterface dialog, int which) {
                 // Do nothing but close the dialog
@@ -154,7 +156,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        builder.setNegativeButton("NO", new DialogInterface.OnClickListener() {
+        builder.setNegativeButton(getString(R.string.alert_btn_no), new DialogInterface.OnClickListener() {
 
             @Override
             public void onClick(DialogInterface dialog, int which) {
@@ -168,3 +170,5 @@ public class MainActivity extends AppCompatActivity {
 
     }
 }
+
+

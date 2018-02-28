@@ -19,6 +19,12 @@ import com.example.mesut.todolist.util.PrioListAdapter;
 
 import java.util.ArrayList;
 
+/**
+ * Diese Klasse steuert die Priority aktivität in welcher
+ * neue Prioritäten erstellt, bearbeitet oder gelöscht werden
+ * <p>
+ * Listen die Daten aus der DB
+ */
 public class PriorityActivity extends AppCompatActivity {
     private static final String TAG = "PriorityActivity";
 
@@ -32,6 +38,13 @@ public class PriorityActivity extends AppCompatActivity {
     private boolean newElement = true;
 
 
+    /**
+     * Entschiedet ob ein neues Item erstellt wird oder ein Bestehendes geändert wird
+     * initialisiert die Click Listener auf die Listview (on Click; On Long Click),
+     * Sellt die Listview aus der Datenbank her
+     *
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,18 +64,14 @@ public class PriorityActivity extends AppCompatActivity {
 
                 Priority clickedPrio = prios.get((int) l);
 
-                String todoText = "ArrayID: " + l + " Prio: " + clickedPrio.toString();
-                Toast.makeText(PriorityActivity.this, todoText, Toast.LENGTH_SHORT).show();
-
 
                 prioName = clickedPrio.getName();
                 int prioGewicht = clickedPrio.getWeight();
                 prioWeight = prioGewicht + "";
 
                 priorityId = new Integer(clickedPrio.getId());
-                newElement = false;
 
-                newPriority(priorityId, prioName, prioWeight);
+                editPriority(priorityId, prioName, prioWeight);
             }
         });
 
@@ -71,7 +80,6 @@ public class PriorityActivity extends AppCompatActivity {
             public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
                 Priority clickedPrio = prios.get((int) l);
                 priorityId = new Integer(clickedPrio.getId());
-                Toast.makeText(PriorityActivity.this, "LÖSCHE " + prios.get((int) l).getName() + "???", Toast.LENGTH_SHORT).show();
                 deleteAlert(priorityId);
                 return true;
             }
@@ -80,13 +88,18 @@ public class PriorityActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * startet ein Alert Fenster --> "Yes" Löscht die gewählte Kategorie
+     *
+     * @param priorityId enthält die Id der Prioritaet, die geclickt wurde --> OnCreate OnLongClick
+     */
     private void deleteAlert(final Integer priorityId) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
-        builder.setTitle("Confirm");
-        builder.setMessage("Are you sure to delete?");
+        builder.setTitle(getString(R.string.alert_title_confirm));
+        builder.setMessage(getString(R.string.alert_message));
 
-        builder.setPositiveButton("YES", new DialogInterface.OnClickListener() {
+        builder.setPositiveButton(getString(R.string.alert_btn_yes), new DialogInterface.OnClickListener() {
 
             public void onClick(DialogInterface dialog, int which) {
                 dbh.deletePrio(priorityId);
@@ -95,7 +108,7 @@ public class PriorityActivity extends AppCompatActivity {
             }
         });
 
-        builder.setNegativeButton("NO", new DialogInterface.OnClickListener() {
+        builder.setNegativeButton(getString(R.string.alert_btn_no), new DialogInterface.OnClickListener() {
 
             @Override
             public void onClick(DialogInterface dialog, int which) {
@@ -109,6 +122,9 @@ public class PriorityActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * Refresht den Priority Screen
+     */
     private void updateScreen() {
 
         Intent intent = getIntent();
@@ -119,17 +135,31 @@ public class PriorityActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * Reagiert auf den Klick des FAB Button "+"
+     * Startet newCategory()
+     *
+     * @param v enthält die View des FAB Button --> XML
+     */
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.add_fab:
-                newPriority(priorityId, prioName, prioWeight);
+                newPriority();
                 break;
             default:
-                Toast.makeText(getApplicationContext(), "ERROR", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), getString(R.string.toast_error_message), Toast.LENGTH_SHORT).show();
         }
     }
 
-    private void newPriority(final Integer priorityId, final String iva_prioName, String iva_prioWeight) {
+    /**
+     * startet ein Alert zum bearbeiten einer Vorhaneden Kategorie
+     * aktualisiert den namen der gewählten kategorie in der DB
+     *
+     * @param priorityId     Enthählt die Id der zu bearbeitenden prioritaet
+     * @param iva_prioName   Enthaelt den Namen der zu bearbeitenden Prio
+     * @param iva_prioWeight Enthält das Gewicht der Prio
+     */
+    private void editPriority(final Integer priorityId, final String iva_prioName, String iva_prioWeight) {
         AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
         LayoutInflater inflater = this.getLayoutInflater();
         final View dialogView = inflater.inflate(R.layout.priority_alert, null);
@@ -138,36 +168,72 @@ public class PriorityActivity extends AppCompatActivity {
         final EditText userInput = (EditText) dialogView.findViewById(R.id.userInputnewPrio);
         final EditText prioWeight = (EditText) dialogView.findViewById(R.id.priorityWeight);
 
-        if (newElement != true) {
-            userInput.setText(iva_prioName);
-            prioWeight.setText(iva_prioWeight);
-        }
+        userInput.setText(iva_prioName);
+        prioWeight.setText(iva_prioWeight);
+        dialogBuilder.setTitle(getString(R.string.dialog_title_priority));
 
-
-        dialogBuilder.setTitle("Add Priority");
-
-        dialogBuilder.setPositiveButton("Done", new DialogInterface.OnClickListener() {
+        dialogBuilder.setPositiveButton(getString(R.string.dialog_done_btn), new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int whichButton) {
                 String usersNewCategory = userInput.getText().toString();
                 String usersPrioWeight = prioWeight.getText().toString();
                 try {
-                    if (newElement != true) {
-                        Integer priorityWeight = Integer.parseInt(usersPrioWeight);
-                        dbh.updatePrio(priorityId, usersNewCategory, priorityWeight);
-                        updateScreen();
-                    } else {
-                        Integer priorityWeight = Integer.parseInt(usersPrioWeight);
-                        getInputValue(usersNewCategory, priorityWeight);
-                    }
+                    Integer priorityWeight = Integer.parseInt(usersPrioWeight);
+                    dbh.updatePrio(priorityId, usersNewCategory, priorityWeight);
+                    updateScreen();
                 } catch (RuntimeException e) {
-                    Toast.makeText(getApplicationContext(), "Weigth schould be Integer", Toast.LENGTH_SHORT).show();
+                    // Toast muss bleiben, Info an User
+                    Toast.makeText(getApplicationContext(), getString(R.string.toast_message), Toast.LENGTH_SHORT).show();
                 }
-                newElement = true;
             }
         });
-        dialogBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+        dialogBuilder.setNegativeButton(getString(R.string.dialog_cancel_btn), new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int whichButton) {
-                //pass
+                dialog.dismiss();
+            }
+        });
+
+        AlertDialog b = dialogBuilder.create();
+        b.show();
+
+    }
+
+    /**
+     * startet ein Alert zum erstellen einer neuen Kategorie
+     * Speichert in der db
+     */
+    private void newPriority() {
+        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
+        LayoutInflater inflater = this.getLayoutInflater();
+        final View dialogView = inflater.inflate(R.layout.priority_alert, null);
+        dialogBuilder.setView(dialogView);
+
+        final EditText userInput = (EditText) dialogView.findViewById(R.id.userInputnewPrio);
+        final EditText prioWeight = (EditText) dialogView.findViewById(R.id.priorityWeight);
+
+
+        dialogBuilder.setTitle(getString(R.string.dialog_title_priority));
+
+        dialogBuilder.setPositiveButton(getString(R.string.dialog_done_btn), new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int whichButton) {
+                String usersNewCategory = userInput.getText().toString();
+                String usersPrioWeight = prioWeight.getText().toString();
+                try {
+
+                    Integer priorityWeight = Integer.parseInt(usersPrioWeight);
+                    dbh.createPriority(usersNewCategory, priorityWeight);
+
+                    updateScreen();
+
+                } catch (RuntimeException e) {
+                    // Toast muss bleiben, Info an User
+                    Toast.makeText(getApplicationContext(), getString(R.string.toast_message), Toast.LENGTH_SHORT).show();
+                }
+
+            }
+        });
+        dialogBuilder.setNegativeButton(getString(R.string.dialog_cancel_btn), new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int whichButton) {
+                dialog.dismiss();
             }
         });
 
@@ -175,10 +241,5 @@ public class PriorityActivity extends AppCompatActivity {
         b.show();
     }
 
-    private void getInputValue(String usersNewCategory, Integer priorityWeight) {
-        Toast.makeText(getApplicationContext(), usersNewCategory, Toast.LENGTH_SHORT).show();
-        Toast.makeText(getApplicationContext(), priorityWeight.toString(), Toast.LENGTH_SHORT).show();
-        dbh.createPriority(usersNewCategory, priorityWeight);
-        updateScreen();
-    }
+
 }

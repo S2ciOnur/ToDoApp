@@ -15,6 +15,11 @@ import android.widget.Toast;
 
 import com.example.mesut.todolist.R;
 
+/**
+ * Diese Klasse ind für die Settings Activity zuständig.
+ * sie satrtet die Jeweiligen Activitys on Click
+ * bzw. das Alert Fenster fuer die TextSize
+ */
 public class SettingsActivity extends AppCompatActivity {
 
     private static final String TAG = "SettingsActivity";
@@ -33,6 +38,12 @@ public class SettingsActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * Reagiert auf die events der einzelnen Buttons
+     * Text Size, Category, Priority
+     *
+     * @param v enthält die View der Button --> XML
+     */
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btnTextSize:
@@ -45,20 +56,30 @@ public class SettingsActivity extends AppCompatActivity {
                 startPriorityActivity();
                 break;
             default:
-                Toast.makeText(getApplicationContext(), "ERROR", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), getString(R.string.toast_error_message), Toast.LENGTH_SHORT).show();
         }
     }
 
+    /**
+     * startet die Kategorien Activity
+     */
     private void startCategoryActivity(){
             Intent intent = new Intent(this, CategoryActivity.class);
             startActivity(intent);
     }
 
+    /**
+     * startet die Prioritäten Activity
+     */
     private void startPriorityActivity() {
         Intent intent = new Intent(this, PriorityActivity.class);
         startActivity(intent);
     }
 
+    /**
+     * erstellt ein Alert dialog
+     * um die Textsize ändern zu können.
+     */
     private void showTextSizeDialog() {
         AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
         LayoutInflater inflater = this.getLayoutInflater();
@@ -75,18 +96,18 @@ public class SettingsActivity extends AppCompatActivity {
         // Apply the adapter to the spinner
         choosenTextSize.setAdapter(adapter);
 
-        dialogBuilder.setTitle("Change Text Size");
+        dialogBuilder.setTitle(getString(R.string.dialog_title_textsize));
 
-        dialogBuilder.setPositiveButton("Done", new DialogInterface.OnClickListener() {
+        dialogBuilder.setPositiveButton(getString(R.string.dialog_done_btn), new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int whichButton) {
                 String textSize = userInput.getText().toString();
                 String sizeType = choosenTextSize.getSelectedItem().toString();
                 getInputValue(textSize, sizeType);
             }
         });
-        dialogBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+        dialogBuilder.setNegativeButton(getString(R.string.dialog_cancel_btn), new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int whichButton) {
-                //pass
+                dialog.dismiss();
             }
         });
         AlertDialog b = dialogBuilder.create();

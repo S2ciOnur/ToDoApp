@@ -10,13 +10,31 @@
     <string name="btn_cancel">Abbrechen</string>
     <string name="btn_done">Done</string>
     <string name="btn_delete">Delete</string>
+
     <string name="alert_btn_yes">YES</string>
     <string name="alert_message">Are you sure to delete?</string>
     <string name="alert_title_confirm">Confirm</string>
     <string name="alert_btn_no">NO</string>
+    <string name="alert_btn_ok">Ok</string>
+
     <string name="dialog_title_category">Add Category</string>
+    <string name="dialog_title_textsize">Change Text Size</string>
+    <string name="dialog_title_priority">Add Priority</string>
     <string name="dialog_done_btn">Done</string>
     <string name="dialog_cancel_btn">Cancel</string>
+
+    <string name="activity_update">update</string>
+    <string name="activity_title">title</string>
+    <string name="activity_desc">desc</string>
+    <string name="activity_date">date</string>
+
+    <string name="toast_message">Weight should be Integer</string>
+    <string name="toast_error_message">ERROR</string>
+
+    <string name="builder_categorie_title">Select Categories</string>
+    <string name="datepicker">Date Picker</string>
+
+
 
 
     <string-array name="string_size_Array">

@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.example.mesut.todolist.R;
 import com.example.mesut.todolist.core.Category;
@@ -19,7 +20,7 @@ import com.example.mesut.todolist.util.CatListAdapter;
 import java.util.ArrayList;
 
 /**
- * Diese Klasse steuert die Kategorien erstellung und Löschung in der App
+ * Diese Klasse steuert die Kategorien erstellung, bearbeitung und Löschung in der App
  * Listet die Daten aus der Datenbank
  */
 public class CategoryActivity extends AppCompatActivity {
@@ -33,9 +34,10 @@ public class CategoryActivity extends AppCompatActivity {
 
     /**
      * Entschiedet ob ein neues Item erstellt wird oder ein Bestehendes geändert wird
+     * initialisiert die Click Listener auf die Listview (on Click; On Long Click),
+     * Sellt die Listview aus der Datenbank her
      *
-     * @param savedInstanceState; initialisiert die Click Listener auf die Listview (on Click; On Long Click),
-     *                            Sellt die Listview aus der Datenbank her
+     * @param savedInstanceState
      */
 
     @Override
@@ -125,6 +127,8 @@ public class CategoryActivity extends AppCompatActivity {
             case R.id.add_fab:
                 newCategory();
                 break;
+            default:
+                Toast.makeText(getApplicationContext(), getString(R.string.toast_error_message), Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -184,6 +188,7 @@ public class CategoryActivity extends AppCompatActivity {
 
     /**
      * startet ein Alert zum erstellen einer neuen Kategorie
+     * speichert in der db
      */
     private void newCategory() {
         AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
