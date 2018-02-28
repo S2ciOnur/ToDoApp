@@ -7,6 +7,7 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
+import android.util.TypedValue;
 
 import com.example.mesut.todolist.core.Category;
 import com.example.mesut.todolist.core.Priority;
@@ -421,6 +422,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     public Textsize getTextsize(){
+        Textsize textsize = new Textsize();
+
         try {
             SQLiteDatabase db = this.getReadableDatabase();
 
@@ -432,12 +435,17 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
             Cursor c = db.rawQuery(selectQuery, null);
 
-            if (c != null)
+            if (c != null) {
                 c.moveToFirst();
 
-            Textsize textsize = new Textsize();
-            textsize.setDigit(c.getFloat(c.getColumnIndex(DIGIT_TEXTSIZE_NAME)));
-            textsize.setUnit(c.getColumnIndex(UNIT_TEXTSIZE_NAME));
+                if (c.getCount() != 0) {
+                    textsize.setDigit(c.getFloat(c.getColumnIndex(DIGIT_TEXTSIZE_NAME)));
+                    textsize.setUnit(c.getColumnIndex(UNIT_TEXTSIZE_NAME));
+                }
+            } else {
+                textsize.setDigit(12);
+                textsize.setUnit(TypedValue.COMPLEX_UNIT_SP);
+            }
 
             return textsize;
         }catch (SQLException ex){
