@@ -53,8 +53,8 @@ public class MainActivity extends AppCompatActivity {
 
                 Todo clickedTodo = todos.get((int) l);
 
-                String todoText = "ArrayID: " + l + " Todo: " + clickedTodo.toString();
-                Toast.makeText(MainActivity.this, todoText, Toast.LENGTH_SHORT).show();
+                //String todoText = "ArrayID: " + l + " Todo: " + clickedTodo.toString();
+                //Toast.makeText(MainActivity.this, todoText, Toast.LENGTH_SHORT).show();
 
                 Intent intent = new Intent(getApplicationContext(), ItemActivity.class);
 
@@ -80,7 +80,8 @@ public class MainActivity extends AppCompatActivity {
         listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
-                deleteAlert();
+                Todo clickedTodo = todos.get((int) l);
+                deleteAlert(clickedTodo.getId());
                 return true;
             }
         });
@@ -170,7 +171,7 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    private void deleteAlert() {
+    private void deleteAlert(final int todoId) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
         builder.setTitle(getString(R.string.alert_title_confirm));
@@ -179,8 +180,7 @@ public class MainActivity extends AppCompatActivity {
         builder.setPositiveButton(getString(R.string.alert_btn_yes), new DialogInterface.OnClickListener() {
 
             public void onClick(DialogInterface dialog, int which) {
-                // Do nothing but close the dialog
-                dialog.dismiss();
+                dbh.deleteTodo(todoId);
             }
         });
 
